@@ -1,13 +1,13 @@
 <?php
-// $host = "localhost";
-// $username = "root";
-// $password = "";
-// $database = "finderdkv";
-
 $host = "localhost";
-$username = "u440649791_finder";
-$password = "Fauzaniwa1234aja*";
-$database = "u440649791_finderdkv";
+$username = "root";
+$password = "";
+$database = "finderdkv";
+
+// $host = "localhost";
+// $username = "u440649791_finder";
+// $password = "Fauzaniwa1234aja*";
+// $database = "u440649791_finderdkv";
 
 
 // Membuat koneksi
