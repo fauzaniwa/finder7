@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photobooth Responsif</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Photobooth - DKV UPI" />
+    <meta property="og:description" content="Ambil foto kerenmu di photobooth DKV UPI dan simpan sebagai kenangan!" />
+    <meta property="og:image" content="https://finderdkvupi.id/photobooth/frames/frame1.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://finderdkvupi.id/photobooth/" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Photobooth - DKV UPI" />
+    <meta name="twitter:description" content="Ambil foto kerenmu di photobooth DKV UPI dan simpan sebagai kenangan!" />
+    <meta name="twitter:image" content="https://finderdkvupi.id/photobooth/frames/frame1.png" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .frame-overlay,
+        .countdown {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .countdown span {
+            font-size: 4rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 10px black;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .slider-panel {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white py-6 px-4">
+
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-center mb-6">📸 Photobooth</h1>
+
+    <!-- Frame Selector -->
+    <div class="mb-4">
+        <p class="text-lg sm:text-xl mb-2 text-center">Pilih Frame:</p>
+        <div class="flex flex-wrap justify-center gap-2 sm:gap-4">
+            <button class="frame-btn border-white border-2 p-1 rounded" data-frame="frame1.png"><img
+                    src="frames/frame1.png" class="w-16 h-16 object-cover rounded" /></button>
+            <button class="frame-btn border-transparent border-2 p-1 rounded" data-frame="frame2.png"><img
+                    src="frames/frame2.png" class="w-16 h-16 object-cover rounded" /></button>
+            <button class="frame-btn border-transparent border-2 p-1 rounded" data-frame="frame3.png"><img
+                    src="frames/frame3.png" class="w-16 h-16 object-cover rounded" /></button>
+            <button class="frame-btn border-transparent border-2 p-1 rounded" data-frame="frame4.png"><img
+                    src="frames/frame4.png" class="w-16 h-16 object-cover rounded" /></button>
+        </div>
+    </div>
+
+    <!-- Camera Area -->
+    <div
+        class="relative w-full max-w-[90vw] sm:max-w-[640px] mx-auto aspect-[4/3] border-4 border-white rounded shadow-xl overflow-hidden">
+        <div id="videoWrapper" class="absolute top-0 left-0 w-full h-full z-0">
+            <video id="video" autoplay playsinline class="w-full h-full object-cover"></video>
+            <canvas id="canvas" width="640" height="480" class="w-full h-full object-cover hidden"></canvas>
+        </div>
+        <img id="frameOverlay" src="frames/frame1.png" class="frame-overlay z-10" />
+        <div id="countdown" class="countdown z-20 hidden"><span id="countText">3</span></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="flex justify-center gap-4 mt-4 flex-wrap">
+        <button id="snap" class="bg-white text-black px-4 py-2 rounded font-semibold hover:bg-gray-200">📸 Ambil
+            Foto</button>
+        <div id="afterCaptureButtons" class="hidden flex gap-4">
+            <button id="retakeBtn" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">🔄
+                Retake</button>
+            <a id="downloadLink" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                download="photo.png">👅 Download</a>
+        </div>
+    </div>
+
+    <!-- Mirror & Switch -->
+    <div class="flex justify-center gap-4 mt-4 flex-wrap">
+        <button id="toggleMirror" class="filter-icon w-10 h-10 bg-white rounded-full text-black">🪞</button>
+        <button id="switchCamera" class="filter-icon w-10 h-10 bg-white rounded-full text-black">🔄</button>
+    </div>
+
+    <!-- Filter Icons -->
+    <div class="flex justify-center items-center gap-3 sm:gap-4 mt-6 flex-wrap">
+        <button class="filter-icon w-10 h-10 bg-white rounded-full text-black" data-filter="brightness">☀️</button>
+        <button class="filter-icon w-10 h-10 bg-white rounded-full text-black" data-filter="contrast">🌃</button>
+        <button class="filter-icon w-10 h-10 bg-white rounded-full text-black" data-filter="saturate">🎨</button>
+        <button class="filter-icon w-10 h-10 bg-white rounded-full text-black" data-filter="hue">🌈</button>
+        <button class="filter-icon w-10 h-10 bg-white rounded-full text-black" data-filter="grain">🌫️</button>
+    </div>
+
+    <!-- Sliders -->
+    <div id="filterControls" class="mt-4 max-w-md mx-auto px-4">
+        <div class="slider-panel" id="panel-brightness"><label>Brightness</label><input type="range" id="brightness"
+                min="0.5" max="2" step="0.1" value="1" class="w-full" /></div>
+        <div class="slider-panel" id="panel-contrast"><label>Contrast</label><input type="range" id="contrast" min="0.5"
+                max="2" step="0.1" value="1" class="w-full" /></div>
+        <div class="slider-panel" id="panel-saturate"><label>Saturate</label><input type="range" id="saturate" min="0"
+                max="3" step="0.1" value="1" class="w-full" /></div>
+        <div class="slider-panel" id="panel-hue"><label>Hue</label><input type="range" id="hue" min="0" max="360"
+                step="1" value="0" class="w-full" /></div>
+        <div class="slider-panel" id="panel-grain"><label>Grain</label><input type="range" id="grain" min="0" max="100"
+                step="5" value="0" class="w-full" /></div>
+    </div>
+
+
+
+    <script>
+        const video = document.getElementById("video");
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const frameOverlay = document.getElementById("frameOverlay");
+        const countdown = document.getElementById("countdown");
+        const countText = document.getElementById("countText");
+        const downloadLink = document.getElementById("downloadLink");
+        const retakeBtn = document.getElementById("retakeBtn");
+        const afterCaptureButtons = document.getElementById("afterCaptureButtons");
+        const snapButton = document.getElementById("snap");
+
+        const sliders = {
+            brightness: document.getElementById("brightness"),
+            contrast: document.getElementById("contrast"),
+            saturate: document.getElementById("saturate"),
+            hue: document.getElementById("hue"),
+            grain: document.getElementById("grain")
+        };
+
+        let mirror = true;
+        let currentStream = null;
+        let currentDeviceIndex = 0;
+        let videoDevices = [];
+        let selectedFrame = "frame1.png";
+
+        function applyMirror() {
+            video.style.transform = mirror ? "scaleX(-1)" : "scaleX(1)";
+        }
+
+        async function getCameras() {
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            videoDevices = devices.filter(d => d.kind === "videoinput");
+        }
+
+        async function startCamera(deviceId = null) {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+            }
+            const constraints = {
+                video: deviceId ? { deviceId: { exact: deviceId } } : { facingMode: "user" }
+            };
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                currentStream = stream;
+                video.srcObject = stream;
+                applyMirror();
+            } catch (e) {
+                alert("Gagal mengakses kamera.");
+                console.error(e);
+            }
+        }
+
+        function updateFilter() {
+            video.style.filter = `
+        brightness(${sliders.brightness.value})
+        contrast(${sliders.contrast.value})
+        saturate(${sliders.saturate.value})
+        hue-rotate(${sliders.hue.value}deg)`;
+        }
+
+        function applyFilterToCanvas() {
+            const videoRect = video.getBoundingClientRect();
+            const scale = window.devicePixelRatio || 1;
+
+            const width = Math.round(videoRect.width * scale);
+            const height = Math.round(videoRect.height * scale);
+
+            canvas.width = width;
+            canvas.height = height;
+
+            ctx.filter = `
+      brightness(${sliders.brightness.value})
+      contrast(${sliders.contrast.value})
+      saturate(${sliders.saturate.value})
+      hue-rotate(${sliders.hue.value}deg)`;
+
+            ctx.save();
+            if (mirror) {
+                ctx.translate(width, 0);
+                ctx.scale(-1, 1);
+            }
+
+            ctx.drawImage(video, 0, 0, width, height);
+            ctx.restore();
+
+            const grainAmount = parseInt(sliders.grain.value);
+            if (grainAmount > 0) {
+                const imgData = ctx.getImageData(0, 0, width, height);
+                for (let i = 0; i < imgData.data.length; i += 4) {
+                    const noise = (Math.random() - 0.5) * grainAmount;
+                    imgData.data[i] += noise;
+                    imgData.data[i + 1] += noise;
+                    imgData.data[i + 2] += noise;
+                }
+                ctx.putImageData(imgData, 0, 0);
+            }
+        }
+
+        function drawImageCover(ctx, img, canvasWidth, canvasHeight) {
+            const imageRatio = img.width / img.height;
+            const canvasRatio = canvasWidth / canvasHeight;
+
+            let drawWidth, drawHeight;
+            let offsetX = 0, offsetY = 0;
+
+            if (imageRatio > canvasRatio) {
+                drawHeight = canvasHeight;
+                drawWidth = img.width * (canvasHeight / img.height);
+                offsetX = (canvasWidth - drawWidth) / 2;
+            } else {
+                drawWidth = canvasWidth;
+                drawHeight = img.height * (canvasWidth / img.width);
+                offsetY = (canvasHeight - drawHeight) / 2;
+            }
+
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        }
+
+        function startCountdownAndCapture() {
+            let count = 3;
+            countText.textContent = count;
+            countdown.classList.remove("hidden");
+
+            const interval = setInterval(() => {
+                count--;
+                if (count <= 0) {
+                    clearInterval(interval);
+                    countdown.classList.add("hidden");
+
+                    applyFilterToCanvas();
+
+                    const img = new Image();
+                    img.src = "frames/" + selectedFrame;
+                    img.onload = () => {
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height); // Gambar tepat sesuai ukuran canvas
+                        // Ganti drawImage biasa
+                        canvas.classList.remove("hidden");
+                        video.classList.add("hidden");
+                        frameOverlay.classList.add("hidden");
+                        afterCaptureButtons.classList.remove("hidden");
+                        snapButton.classList.add("hidden");
+                        downloadLink.href = canvas.toDataURL("image/png");
+
+                        const dataURL = canvas.toDataURL("image/png");
+
+                        fetch("upload.php", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                image: dataURL,
+                                frame: selectedFrame
+                            })
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                console.log("Upload berhasil:", data);
+                            })
+                            .catch(err => {
+                                console.error("Upload gagal:", err);
+                            });
+                    };
+
+                } else {
+                    countText.textContent = count;
+                }
+            }, 1000);
+        }
+
+        getCameras().then(() => startCamera());
+
+        document.querySelectorAll(".frame-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                selectedFrame = btn.getAttribute("data-frame");
+                frameOverlay.src = "frames/" + selectedFrame;
+                document.querySelectorAll(".frame-btn").forEach(b => b.classList.remove("border-white"));
+                btn.classList.add("border-white");
+            });
+        });
+
+        document.querySelectorAll(".filter-icon").forEach(icon => {
+            icon.addEventListener("click", () => {
+                const filter = icon.getAttribute("data-filter");
+                document.querySelectorAll(".slider-panel").forEach(panel => {
+                    panel.style.display = panel.id === `panel-${filter}` ? 'block' : 'none';
+                });
+            });
+        });
+
+        Object.values(sliders).forEach(slider => {
+            slider.addEventListener("input", updateFilter);
+        });
+
+        document.getElementById("toggleMirror").addEventListener("click", () => {
+            mirror = !mirror;
+            applyMirror();
+        });
+
+        document.getElementById("switchCamera").addEventListener("click", async () => {
+            if (videoDevices.length === 0) await getCameras();
+            currentDeviceIndex = (currentDeviceIndex + 1) % videoDevices.length;
+            startCamera(videoDevices[currentDeviceIndex].deviceId);
+        });
+
+        snapButton.addEventListener("click", startCountdownAndCapture);
+
+        retakeBtn.addEventListener("click", () => {
+            canvas.classList.add("hidden");
+            video.classList.remove("hidden");
+            frameOverlay.classList.remove("hidden");
+            afterCaptureButtons.classList.add("hidden");
+            snapButton.classList.remove("hidden");
+        });
+    </script>
+</body>
+
+</html>

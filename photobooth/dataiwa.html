@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Foto Photobooth</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-white min-h-screen p-6">
+  <h1 class="text-3xl font-bold mb-6 text-center">📷 Data Foto Photobooth</h1>
+
+  <div class="text-center mb-6">
+    <button onclick="deleteAllData()" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded font-semibold text-white">
+      🗑️ Hapus Semua Data
+    </button>
+  </div>
+
+  <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+
+  <script>
+    function loadPhotos() {
+      fetch("get_photos.php")
+        .then(res => res.json())
+        .then(data => {
+          const gallery = document.getElementById("gallery");
+          gallery.innerHTML = "";
+          data.forEach(photo => {
+            const container = document.createElement("div");
+            container.className = "relative group";
+
+            const img = document.createElement("img");
+            img.src = `imgphotobooth/${photo.filename}`;
+            img.alt = photo.filename;
+            img.className = "rounded shadow-lg w-full h-auto object-cover";
+
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "🗑️";
+            delBtn.className = "absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded opacity-80 group-hover:opacity-100";
+            delBtn.onclick = () => deletePhoto(photo.filename);
+
+            container.appendChild(img);
+            container.appendChild(delBtn);
+            gallery.appendChild(container);
+          });
+        })
+        .catch(err => {
+          console.error("Gagal mengambil data foto", err);
+        });
+    }
+
+    function deletePhoto(filename) {
+      if (confirm("Yakin ingin menghapus foto ini?")) {
+        fetch("delete_photo.php", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ filename })
+        })
+        .then(res => res.json())
+        .then(data => {
+          alert(data.message);
+          loadPhotos();
+        })
+        .catch(err => console.error("Gagal menghapus foto", err));
+      }
+    }
+
+    function deleteAllData() {
+      if (confirm("Yakin ingin menghapus semua data foto?")) {
+        fetch("delete_all_photos.php", {
+          method: "POST"
+        })
+          .then(res => res.json())
+          .then(data => {
+            alert(data.message);
+            loadPhotos();
+          })
+          .catch(err => {
+            console.error("Gagal menghapus data", err);
+          });
+      }
+    }
+
+    loadPhotos();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<?php
+header('Content-Type: application/json');
+require 'koneksi.php';
+
+$data = json_decode(file_get_contents('php://input'), true);
+
+if (!isset($data['filename'])) {
+    echo json_encode(['status' => 'error', 'message' => 'Filename tidak ditemukan.']);
+    exit;
+}
+
+$filename = basename($data['filename']); // Mencegah path traversal
+$filepath = "imgphotobooth/" . $filename;
+
+// Hapus file
+if (file_exists($filepath)) {
+    unlink($filepath);
+}
+
+// Hapus data dari database
+$stmt = $koneksi->prepare("DELETE FROM photobooth WHERE filename = ?");
+$stmt->bind_param("s", $filename);
+if ($stmt->execute()) {
+    echo json_encode(['status' => 'success', 'message' => 'Foto berhasil dihapus.']);
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Gagal menghapus dari database.']);
+}
+$stmt->close();
+?>
