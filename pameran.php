@@ -195,13 +195,13 @@
 
   <!-- Hero Section -->
   <section data-section-bg="dark"
-    class="w-10/12 min-h-screen flex flex-col lg:flex-row items-center justify-start px-4 mx-auto ">
+    class="w-10/12 min-h-screen flex flex-col lg:flex-row items-center justify-center px-4 mx-auto ">
     <!-- Central Content -->
     <div class="order-last lg:order-first relative z-10 w-full text-center text-white space-y-4">
-      <h2 class="text-6xl md:text-8xl font-bold text-center md:text-left leading-tight max-w-xs sm:max-w-fit">
+      <h2 class="text-4xl md:text-8xl font-bold text-center md:text-left leading-tight max-w-xs sm:max-w-fit">
         Ayo Lihat <br />Karya-Karya <br /> Finder!
       </h2>
-      <div class="flex flex-col gap-4 md:items-left">
+      <div class="flex flex-col gap-4 items-center md:items-start">
         <a href="https://www.instagram.com/finder_dkv/"
           class="w-48 sm:w-64 h-12 sm:h-16 flex items-center justify-center bg-[#008C62] text-white text-lg sm:text-xl font-medium rounded-xl sm:rounded-[20px] shadow-md hover:scale-105 transition-transform duration-300">
           See More
@@ -240,7 +240,7 @@
       </div>
     </div>
 
-    <div class="fixed flex md:hidden w-10/12 bottom-5 left-0 right-0 bg-gray-800 z-50 shadow-md justify-center items-center grid-cols-4 mx-auto rounded-3xl">
+    <div class="fixed flex md:hidden w-10/12 bottom-5 left-0 right-0 bg-neutral-800 z-50 shadow-md justify-center items-center grid-cols-4 mx-auto rounded-3xl">
       <div
         class="feeling flex-col aspect-square hover:border-pink-600 rounded-3xl px-4 py-2 hover-radial-bg duration-300 items-center justify-center "
         style="--hover-color: #db2777  ">
@@ -267,7 +267,7 @@
   <br><br>
 
   <!-- Search Bar -->
-  <section class="flex w-6/12 justify-center mx-auto ">
+  <section class="flex w-10/12 md:w-6/12 justify-center mx-auto ">
     <form action="" class=" flex flex-row w-full bg-white rounded-full " method="post">
       <div class="relative gap-2 w-full">
         <div class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-7">
@@ -289,15 +289,15 @@
 
   <!-- kategori -->
   <section>
-    <div class="flex gap-16 justify-center">
+    <div class="flex w-10/12 gap-4 md:gap-16 justify-center mx-auto">
       <a href="" style="font-family: 'Work Sans'" class="flex"><button
-          class="text-sm lg:text-xl text-white txt1">Animated Motion</button></a>
+          class="text-xs lg:text-xl text-white txt1">Animated Motion</button></a>
       <a href="" style="font-family: 'Work Sans'" class="flex"><button
-          class="text-sm lg:text-xl text-white txt2">Ilustrasi Digital</button></a>
+          class="text-xs lg:text-xl text-white txt2">Ilustrasi Digital</button></a>
       <a href="" style="font-family: 'Work Sans'" class="flex"><button
-          class="text-sm lg:text-xl text-white txt">Fotografi</button></a>
+          class="text-xs lg:text-xl text-white txt">Fotografi</button></a>
       <a href="" style="font-family: 'Work Sans'" class="flex"><button
-          class="text-sm lg:text-xl text-white txt">Poster</button></a>
+          class="text-xs lg:text-xl text-white txt">Poster</button></a>
     </div>
   </section>
 

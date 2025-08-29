@@ -1,20 +1,5 @@
-<?php
-// if (session_status() == PHP_SESSION_NONE) {
-//   session_start();
-// }
-
-session_start();
-
-// Periksa apakah session admin_name ada dan tidak kosong
-if (!isset($_SESSION['user_id'])) {
-  // Redirect ke halaman login.php jika session tidak ditemukan
-  header("Location: login.php");
-  exit(); // Pastikan untuk keluar setelah melakukan redirect
-}
-?>
-
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8" />
@@ -49,8 +34,12 @@ if (!isset($_SESSION['user_id'])) {
       },
     };
   </script>
-  <!-- ----------- -->
-
+  <style>
+    .filter-button.active {
+      background-color: #FFFFFF;
+      color: #000000;
+    }
+  </style>
   <style type="text/tailwindcss">
 
     .navbar-scrolled {
@@ -112,402 +101,198 @@ if (!isset($_SESSION['user_id'])) {
         background: red !important;
       }
     </style>
-  <!-- Title Web & Icon -->
-  <title>Finder - Pameran</title>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const today = new Date();
-      const targetDate = new Date('2024-07-24T00:00:00+07:00'); // 24 Juli 2024 WIB
+  <style>
+    .button-container {
+      display: flex;
+      gap: 10px;
+      margin: 20px;
+    }
 
-      if (today < targetDate) {
-        alert('Halaman ini hanya dapat diakses setelah 24 Juli 2024.');
-        window.location.href = 'homepage.php'; // Redirect ke homepage.php
-      }
-    });
-  </script>
+    .hidden {
+      display: none;
+    }
+
+    .button {
+      font-family: 'Work Sans';
+      border: 1px solid white;
+      padding: 10px 20px;
+      color: white;
+      background: transparent;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .button:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+  </style>
+
+  <style>
+    /* Custom styles for an elegant detail page */
+    .card-container {
+      max-width: 1200px;
+    }
+
+    .main-image {
+      /* object-fit: contain ensures the whole image is visible without being cropped */
+      object-fit: cover;
+    }
+
+    .icon-btn {
+      @apply flex items-center justify-center h-12 w-12 rounded-full transition-colors duration-200;
+    }
+
+    .icon-btn:hover {
+      @apply bg-gray-200;
+    }
+
+    .social-btn {
+      @apply text-gray-500 hover:text-blue-500 transition-colors duration-200;
+    }
+  </style>
+
+  <title>Finder 7 - Pameran</title>
   <link rel="icon" href="./img/FinderLogo.svg" type="image/x-icon" />
-  <!-- Script Navbar Menu -->
+
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <!-- Script Cursor -->
+
   <link rel="stylesheet" href="https://unpkg.com/kursor/dist/kursor.css" />
-  <!-- Script Cursor -->
+
   <link rel="stylesheet" href="style.css" />
+
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
-<body class="bg-[#000000]">
+<body class="bg-neutral-950 font-['Work_Sans']">
   <?php
   require '_navbar.php';
   ?>
-  <section id="" class="w-full h-full pt-32 bg-[#0D0D0D] gap-6">
-    <!-- Headline -->
-    <section class="flex flex-col text-center text-white max-w-[947px] mx-auto py-16 p-4">
-      <h2 class="w-full text-4xl max-md:max-w-full font-work">Pameran Finder</h2>
-      <p class="mt-3 w-full text-base font-light max-md:max-w-full font-work">
-        Halaman ini menampilkan berbagai karya yang luar biasa dari para kontributor yang telah berpartisipasi dalam
-        acara FINDER 6. Setiap individu yang terlibat telah memberikan sumbangsih yang berarti dalam berbagai bentuk,
-        mulai dari karya seni Hingga Fotografi
-      </p>
-    </section>
+  <div
+    class="w-2/3 h-3/4 blur-3xl absolute -z-10 rounded-full bg-[radial-gradient(circle,_#515151_0%,_rgba(244,114,182,0)_70%)] top-px left-1/2 -translate-x-1/2 -translate-y-1/2">
+  </div>
 
-    <!-- Form Pencarian -->
-    <!-- Form Pencarian -->
-    <form class="w-full flex flex-col justify-center md:flex-row text-center p-4 gap-4 mb-4 md:gap-6" method="GET"
-      action="">
+  <!-- deskripsi karya
+  <section class="flex">
+  <div class="w-1/2">
+    <img src="" alt="">
+  </div>
+  <div class="flex flex-col w-1/2">
+    <h1></h1>
+    <h2></h2>
 
-      <input type="text"
-        class="border-[1px] hover:bg-white hover:bg-opacity-25 py-2 px-6 border-white text-white rounded-full md:text-lg"
-        name="search" placeholder="Cari karya..." value="<?php echo htmlspecialchars($search); ?>">
-
-      <!-- Dropdown Filter Berdasarkan Kategori -->
-      <select
-        class="border-[1px] hover:bg-white hover:bg-opacity-25 py-2 px-6 border-white text-black rounded-full md:text-lg"
-        name="kategori">
-        <option class="text-black" value="">Semua Kategori</option>
-
-        <!-- Mengambil data kategori dari database -->
-        <?php
-        require_once "admin-one/dist/koneksi.php";
-
-        // Query untuk mengambil kategori dari tabel 'jenis_karya' diurutkan berdasarkan 'id_jenis' terbaru
-        $query_kategori = "SELECT `id_jenis`, `jenis` FROM `jenis_karya` ORDER BY `id_jenis` DESC";
-        $result_kategori = mysqli_query($koneksi, $query_kategori);
-
-        // Tampilkan opsi kategori di dropdown
-        while ($row_kategori = mysqli_fetch_assoc($result_kategori)) {
-          // Cek apakah kategori yang dipilih sama dengan id_jenis dari kategori saat ini
-          $selected = isset($_GET['kategori']) && $_GET['kategori'] == $row_kategori['id_jenis'] ? 'selected' : '';
-          echo "<option class='text-black' value='{$row_kategori['id_jenis']}' $selected>{$row_kategori['jenis']}</option>";
-        }
-        ?>
-      </select>
-
-
-      <select
-        class="border-[1px] hover:bg-white hover:bg-opacity-25 py-2 px-6 border-white text-black rounded-full md:text-lg"
-        name="angkatan">
-        <option class="text-black" value="">Semua Angkatan</option>
-        <option class="text-black" value="2021" <?php echo $angkatan == '2021' ? 'selected' : ''; ?>>Angkatan 2021
-        </option>
-        <option class="text-black" value="2022" <?php echo $angkatan == '2022' ? 'selected' : ''; ?>>Angkatan 2022
-        </option>
-        <option class="text-black" value="2023" <?php echo $angkatan == '2023' ? 'selected' : ''; ?>>Angkatan 2023
-        </option>
-      </select>
-
-      <button
-        class="border-[1px] hover:bg-white hover:bg-opacity-25 py-2 px-6 border-white text-white rounded-full md:text-lg"
-        type="submit">Cari</button>
-    </form>
-
-    <?php
-    // Sambungkan ke database
-    require_once "admin-one/dist/koneksi.php";
-    $koneksi = mysqli_connect($host, $username, $password, $database);
-
-    // Periksa koneksi
-    if (mysqli_connect_errno()) {
-      die("Koneksi database gagal: " . mysqli_connect_error());
-    }
-
-    // Ambil nilai pencarian, filter angkatan, dan filter kategori jika ada
-    $search = isset($_GET['search']) ? $_GET['search'] : '';
-    $angkatan = isset($_GET['angkatan']) ? $_GET['angkatan'] : '';
-    $kategori = isset($_GET['kategori']) ? $_GET['kategori'] : '';
-
-    // Buat kondisi filter berdasarkan angkatan
-    $angkatanCondition = '';
-    if ($angkatan == '2021') {
-      $angkatanCondition = " AND NIM LIKE '21%'";
-    } elseif ($angkatan == '2022') {
-      $angkatanCondition = " AND NIM LIKE '22%'";
-    } elseif ($angkatan == '2023') {
-      $angkatanCondition = " AND NIM LIKE '23%'";
-    }
-
-    // Buat kondisi filter berdasarkan kategori
-    $kategoriCondition = '';
-    if (!empty($kategori)) {
-      $kategoriCondition = " AND id_jenis = ?";
-    }
-
-    // Query untuk mengambil data karya, dengan pencarian, filter angkatan, dan filter kategori jika ada
-    $query = "SELECT id_karya, judul_karya, nama_karya, instagram, deskripsi, pict_karya, optional_karya, likes, comments 
-          FROM karya
-          WHERE (judul_karya LIKE ? OR nama_karya LIKE ? OR instagram LIKE ?)" . $angkatanCondition . $kategoriCondition . "
-          ORDER BY likes DESC";
-    $stmt = mysqli_prepare($koneksi, $query);
-    $searchParam = '%' . $search . '%';
-
-    // Bind parameter berdasarkan ada atau tidaknya filter kategori
-    if (!empty($kategori)) {
-      mysqli_stmt_bind_param($stmt, 'ssss', $searchParam, $searchParam, $searchParam, $kategori);
-    } else {
-      mysqli_stmt_bind_param($stmt, 'sss', $searchParam, $searchParam, $searchParam);
-    }
-
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-
-    // Periksa jika query berhasil dijalankan
-    if (!$result) {
-      die('Query error: ' . mysqli_error($koneksi));
-    }
-    ?>
-
-    <!-- Detail Acara -->
-    <section class="flex-wrap content-center pb-20 gap-6">
-      <div class="grid gap-5 px-8 md:px-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        <?php
-        // Pastikan koneksi ke database sudah dilakukan dan statement sudah dipersiapkan
-        $query_check_like = "SELECT id_like FROM likes WHERE id_karya = ? AND user_id = ?";
-        $stmt_check_like = mysqli_prepare($koneksi, $query_check_like);
-
-        if ($stmt_check_like === false) {
-          die("Error preparing the statement: " . mysqli_error($koneksi));
-        }
-
-        while ($row = mysqli_fetch_assoc($result)) {
-          $id_karya = $row['id_karya'];
-          $judul_karya = $row['judul_karya'];
-          $nama_karya = $row['nama_karya'];
-          $deskripsi = $row['deskripsi'];
-          $instagram = $row['instagram'];
-          $pict_karya = $row['pict_karya'];
-          $optional_karya = $row['optional_karya'];
-          $likes = $row['likes'];
-          $comments = $row['comments'];
-
-          // Memotong deskripsi maksimal 50 karakter
-          $deskripsi_short = strlen($deskripsi) > 50 ? substr($deskripsi, 0, 50) . '...' : $deskripsi;
-
-          // Menyiapkan dan mengeksekusi query untuk cek status like
-          mysqli_stmt_bind_param($stmt_check_like, "ii", $id_karya, $_SESSION['user_id']);
-          mysqli_stmt_execute($stmt_check_like);
-          mysqli_stmt_store_result($stmt_check_like);
-          $already_liked = mysqli_stmt_num_rows($stmt_check_like) > 0;
-
-          // Tentukan kelas CSS untuk tombol like berdasarkan status like
-          $likeButtonClass = $already_liked ? 'text-red-500' : 'text-white';
-          ?>
-          <article class="flex flex-col max-md:w-full">
-            <div class="flex flex-col grow text-center text-white max-md:mt-8">
-              <?php
-              $imagePath = !empty($pict_karya) ? "img/karya/{$pict_karya}" : "img/karya/default.jpg";
-              ?>
-              <a style="background-image: url(<?php echo $imagePath; ?>); background-size: cover; background-position: center;"
-                class="shrink-0 rounded-xl aspect-square bg-neutral-900 h-[340px]"
-                href="detailkarya.php?id=<?php echo $id_karya; ?>"></a>
-              <figcaption class="flex flex-col px-16 py-3 mt-4 rounded-xl bg-neutral-900 max-md:px-5">
-                <a class="self-center text-2xl font-work"
-                  href="detailkarya.php?id=<?php echo $id_karya; ?>"><?php echo $judul_karya; ?></a>
-                <p class="mt-1 text-sm font-work">by : <?php echo $nama_karya; ?></p>
-
-                <!-- Deskripsi -->
-                <div class="description text-left my-2">
-                  <span class="short-description"><?php echo $deskripsi_short; ?></span>
-                  <?php if (strlen($deskripsi) > 50): ?>
-                    <span class="full-description" style="display: none;"><?php echo $deskripsi; ?></span>
-                    <br><button class="see-more-button text-red-500 font-semibold" onclick="showFullDescription(this)">See
-                      more</button>
-                  <?php endif; ?>
-                </div>
-                <hr class="mb-2 mt-2">
-                <div class="flex justify-between items-center mt-auto">
-                  <!-- Tombol Like -->
-                  <div class="flex items-center">
-                    <button class="like-button <?php echo $likeButtonClass ?> hover:text-red-500 mr-2"
-                      onclick="likeArtwork(<?php echo $id_karya; ?>)">
-                      <i class="fas fa-heart"></i>
-                    </button>
-                    <span class="text-white" id="like-count-<?php echo $id_karya; ?>"><?php echo $likes; ?></span>
-                    <!-- Total Like -->
-                  </div>
-                  <!-- Tombol Komentar -->
-                  <a href="detailkarya.php?id=<?php echo $id_karya . '#komentar1'; ?>" class="flex items-center">
-                    <button class="comment-button text-white hover:text-green-500 mr-2">
-                      <i class="fas fa-comment"></i>
-                    </button>
-                    <span class="text-white"><?php echo $comments; ?></span> <!-- Total Komentar -->
-                  </a>
-                  <!-- Tombol Share -->
-                  <a href="detailkarya.php?id=<?php echo $id_karya . '#share'; ?>"
-                    class="share-button text-white hover:text-blue-500">
-                    <i class="fas fa-share"></i>
-                  </a>
-                </div>
-              </figcaption>
-            </div>
-          </article>
-          <?php
-        }
-        // Tutup statement setelah selesai
-        mysqli_stmt_close($stmt_check_like);
-        ?>
+    <div class="flex flex-row ">
+      <div></div>
+      <div class="flex justify-between">
+        <div></div>
+        <div></div>
       </div>
-    </section>
+    </div>
 
+    <p></p>
+    
+    <button></button>
+  </div>
+  </section> -->
 
-    <script>
-      function showFullDescription(button) {
-        let article = button.closest('article');
-        let shortDescSpan = article.querySelector('.short-description');
-        let fullDescSpan = article.querySelector('.full-description');
-        if (shortDescSpan && fullDescSpan) {
-          shortDescSpan.style.display = 'none';
-          fullDescSpan.style.display = 'inline';
-          button.innerText = 'See less';
-          button.classList.remove('text-red-500');
-          button.classList.remove('font-semibold');
-          button.classList.add('text-blue-500');
-          button.classList.add('font-normal');
-          button.onclick = function () { showLessDescription(this); };
-        }
-      }
-
-      function showLessDescription(button) {
-        let article = button.closest('article');
-        let shortDescSpan = article.querySelector('.short-description');
-        let fullDescSpan = article.querySelector('.full-description');
-        if (shortDescSpan && fullDescSpan) {
-          shortDescSpan.style.display = 'inline';
-          fullDescSpan.style.display = 'none';
-          button.innerText = 'See more';
-          button.classList.remove('text-blue-500');
-          button.classList.remove('font-normal');
-          button.classList.add('text-red-500');
-          button.classList.add('font-semibold');
-          button.onclick = function () { showFullDescription(this); };
-        }
-      }
-
-      function likeArtwork(idKarya) {
-        // Kirim permintaan Ajax ke server
-        fetch('like_artwork_process.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ idKarya: idKarya }),
-        })
-          .then(response => response.json())
-          .then(data => {
-            console.log('Respons dari server:', data); // Tambahkan ini untuk melihat respons dari server di konsol
-
-            if (data.success) {
-              // Update jumlah like di UI
-              const likeCountElement = document.getElementById(`like-count-${idKarya}`);
-              likeCountElement.textContent = data.likes;
-
-              // Ubah warna tombol like berdasarkan respons dari server
-              const likeButton = document.querySelector(`.like-button[onclick="likeArtwork(${idKarya})"]`);
-              if (data.alreadyLiked) {
-                likeButton.classList.add('text-red-500');
-                likeButton.classList.remove('text-white');
-              } else {
-                likeButton.classList.remove('text-red-500');
-                likeButton.classList.add('text-white');
-              }
-            } else {
-              alert('Gagal menambahkan like. Harap login terlebih dahulu.');
-            }
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan. Silakan coba lagi.');
-          });
-      }
-    </script>
-
-    <?php
-    // Tutup koneksi
-    mysqli_close($koneksi);
-    ?>
+  <br><br><br>
 
 
 
-    <!-- Script Toggle -->
-    <script>
-      const navLinks = document.querySelector('.nav-links');
-      function onToggleMenu(e) {
-        e.name = e.name === 'menu' ? 'close' : 'menu';
-        navLinks.classList.toggle('-bottom-52');
-      }
-    </script>
+  <div class="card-container mx-auto rounded-2xl shadow-xl p-6 sm:p-10 w-10/12">
+    <div class="flex flex-col md:flex-row gap-8 lg:gap-12">
 
-    <!-- Script Toggle -->
-    <!-- Script Navbar -->
-    <script>
-      const navEL = document.querySelector('.navbar');
+      <!-- Left side: Artwork Image -->
+      <div
+        class="md:w-1/2 rounded-xl overflow-hidden shadow-lg p-4 bg-gray-200 flex items-center justify-center main-image-container">
+        <img id="artwork-image" src="./img/Lomba/Juara1resize.jpg" alt="Artwork detail"
+          class="w-full h-full main-image">
+      </div>
 
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 56) {
-          navEL.classList.add('navbar-scrolled');
-        } else if (window.scrollY < 56) {
-          navEL.classList.remove('navbar-scrolled');
+      <!-- Right side: Details & Actions -->
+      <div class="md:w-1/2 flex flex-col justify-between">
+        <div>
+          <!-- Title & Like Button -->
+          <div class="flex items-start justify-between mb-2">
+            <h1 id="artwork-title" class="text-3xl sm:text-4xl font-bold text-white leading-tight">Judul Karya</h1>
+            <button id="like-button" class="icon-btn ml-4 transition-transform duration-300 hover:scale-110"
+              aria-label="Suka karya ini">
+              <svg id="like-icon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Creator name -->
+          <p class="text-lg text-white mb-6">
+            <span class="font-semibold">Oleh:</span> <span id="creator-name"
+              class="text-blue-500 hover:underline cursor-pointer">Nama Pembuat</span>
+          </p>
+
+          <!-- Description -->
+          <h2 class="text-xl font-semibold text-white mb-2">Deskripsi</h2>
+          <p id="artwork-description" class="text-white leading-relaxed mb-6">
+            Ini adalah deskripsi rinci dari karya seni. Deskripsi ini menjelaskan konsep di balik karya, inspirasi, dan
+            teknik yang digunakan oleh pembuatnya. Deskripsi ini dapat diperbarui dengan data spesifik dari setiap
+            karya.
+          </p>
+
+          <!-- Social Actions -->
+          <div class="flex items-center space-x-4 border-t pt-4 mt-6">
+            <!-- Comment Button (Placeholder) -->
+            <button class="icon-btn group" aria-label="Komentar">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white group-hover:text-white hover:scale-110" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </button>
+
+            <!-- Share Button (Placeholder) -->
+            <button class="icon-btn group" aria-label="Bagikan">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white group-hover:text-white hover:scale-110" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M8.684 13.342C8.882 13.123 9 12.872 9 12.617v-1.234c0-.255-.118-.506-.316-.725L5.293 7.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414l3.39-3.39z" />
+                <path d="M18 10a2 2 0 11-4 0 2 2 0 014 0zM8 18a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </button>
+          </div>
+          <br><br>
+          <button class="text-white bg-emerald-600 hover:bg-emerald-800 hover:scale-110 transition duration-300 p-5 px-8 rounded-2xl">
+            See the artist!
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const likeButton = document.getElementById('like-button');
+      const likeIcon = document.getElementById('like-icon');
+      let isLiked = false;
+
+      likeButton.addEventListener('click', () => {
+        isLiked = !isLiked;
+        if (isLiked) {
+          likeIcon.setAttribute('fill', 'currentColor');
+          likeIcon.classList.remove('text-white');
+          likeIcon.classList.add('text-red-500');
+        } else {
+          likeIcon.setAttribute('fill', 'none');
+          likeIcon.classList.remove('text-red-500');
+          likeIcon.classList.add('text-white');
         }
       });
-    </script>
-    <script>
-      const scrollers = document.querySelectorAll('.scroller');
-
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        addAnimation();
-      }
-
-      function addAnimation() {
-        scrollers.forEach((scroller) => {
-          scroller.setAttribute('data-animated', true);
-          const scrollerInner = scroller.querySelector('.scroller__inner');
-          const scrollerContent = Array.from(scrollerInner.children);
-          scrollerContent.forEach((item) => {
-            const duplicatedItem = item.cloneNode(true);
-            duplicatedItem.setAttribute('aria-hidden', true);
-            scrollerInner.appendChild(duplicatedItem);
-          });
-        });
-      }
-    </script>
-    <script src="system.js"></script>
-    <!-- Tambahkan link Font Awesome di head -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <!-- Corosuel Animasi Js -->
-    <script>
-      const scrollers = document.querySelectorAll('.scroller');
-
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        addAnimation();
-      }
-
-      function addAnimation() {
-        scrollers.forEach((scroller) => {
-          scroller.setAttribute('data-animated', true);
-          const scrollerInner = scroller.querySelector('.scroller__inner');
-          const scrollerContent = Array.from(scrollerInner.children);
-          scrollerContent.forEach((item) => {
-            const duplicatedItem = item.cloneNode(true);
-            duplicatedItem.setAttribute('aria-hidden', true);
-            scrollerInner.appendChild(duplicatedItem);
-          });
-        });
-      }
-    </script>
-
-    <?php
-    require '_footer.php';
-    ?>
+    });
+  </script>
 </body>
-<!-- Cursor CDN -->
-<script src="https://unpkg.com/kursor"></script>
-<script>
-  new kursor({
-    type: 4,
-    removeDefaultCursor: true,
-    color: '#ffffff',
-  });
-</script>
-<!-- Cursor CDN -->
-
 
 </html>
