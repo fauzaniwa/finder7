@@ -80,7 +80,7 @@ if (!isset($admin_role)) {
                         </span>
                     </button>
                     <ul id="seminar-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
-                        <li><a href="#" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Pemateri</a></li>
+                        <li><a href="speakers_list.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Pemateri</a></li>
                         <li><a href="#" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Jadwal Seminar</a></li>
                         <li><a href="#" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Daftar Hadir</a></li>
                     </ul>
@@ -101,7 +101,7 @@ if (!isset($admin_role)) {
                         </span>
                     </button>
                     <ul id="workshop-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
-                        <li><a href="#" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Pemateri</a></li>
+                        <li><a href="speakers_list.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Pemateri</a></li>
                         <li><a href="#" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Jadwal Workshop</a></li>
                         <li><a href="#" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Daftar Hadir</a></li>
                     </ul>
