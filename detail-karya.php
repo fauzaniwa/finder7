@@ -318,7 +318,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event'])) {
     <!-- Gambar: atas di mobile, KIRI di desktop -->
     <div class="order-first lg:order-first w-full lg:w-1/2 flex justify-center">
       <div class="relative bg-[#D9D9D9] rounded-2xl w-full max-w-[650px] md:aspect-[3/4] aspect-square overflow-hidden">
-        <img src="./img/event/<?php echo htmlspecialchars($row_event['thumbnail_event']); ?>"
+        <img src="./img/Lomba/deschar1resize.jpg"
              class="object-cover w-full h-full rounded-2xl" alt="Poster/Event Thumbnail">
         <!-- Dekorasi PNG kiri atas -->
         <img src="./img/dekorasi/atas.png"
