@@ -1,7 +1,13 @@
 <nav>
+<<<<<<< HEAD
     <div class="w-full h-24 fixed bg-transparent top-0 flex z-50 justify-center">
         <div
             class="flex w-full h-full bg-[#000000]  navbar mx-auto my-auto py-2 pl-4 md:px-8 gap-3 justify-between backrop-blur-md items-center bg-opacity-70">
+=======
+    <div class="w-full h-24 fixed bg-transparent top-0 backrop-blur-md flex z-50 justify-center">
+        <div
+            class="flex w-full h-full bg-[#000000]  navbar mx-auto my-auto py-2 pl-4 md:px-8 gap-3 justify-between items-center bg-opacity-70">
+>>>>>>> miftah
             <div class="flex items-center gap-4 w-[220px]">
                 <a href="homepage.php" class="md:h-2/3 my-auto"><img src="img/Finder 7 Logopack_Lockup Full White small.png" alt=""
                         class="w-[66%] h-[66%] md:w-full md:h-full" /></a>
