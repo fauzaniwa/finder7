@@ -198,6 +198,10 @@ mysqli_close($koneksi);
 <body class="bg-black items-center">
   <?php require '_navbar.php'; ?>
 
+  <div
+    class="w-2/3 h-3/4 blur-3xl absolute -z-10 rounded-full bg-[radial-gradient(circle,_#515151_0%,_rgba(244,114,182,0)_70%)] top-px left-1/2 -translate-x-1/2 -translate-y-1/2">
+  </div>
+
   <div id="profile" style="" class="flex flex-col items-center gap-4 py-10 max-w-full bg-cover">
     <div class="flex items-start w-[90%] pt-24 ">
       <a href="homepage.php" class="">
@@ -212,14 +216,16 @@ mysqli_close($koneksi);
 
       <!-- Profile Section -->
 
-      <div class="flex gap-10 w-full justify-start items-center bg-neutral-900 py-24 px-16 rounded-3xl">
-        <div style="background-image: url(./img/profill.png)" class="w-32 sm:w-64 aspect-square bg-cover rounded-full bg-slate-300 overflow-hidden">
+      <div
+        class="flex gap-10 w-full justify-start items-center bg-neutral-950 md:py-24 md:px-16 px-8 py-16 rounded-3xl">
+        <div style="background-image: url(./img/profill.png)"
+          class="w-24 sm:w-64 aspect-square bg-cover rounded-full bg-slate-300 overflow-hidden">
         </div>
         <div class="flex flex-col gap-4">
-          <h1 class="text-white text-lg sm:text-3xl font-semibold font-work w-full ">
+          <h1 class="text-white text-base sm:text-3xl font-semibold font-work w-full ">
             <?php echo htmlspecialchars($_SESSION['user_data']['nama']); ?>
           </h1>
-          <h2 class="text-white text-base sm:text-2xl font-light font-work w-full ">
+          <h2 class="text-white text-sm sm:text-2xl font-light font-work w-full ">
             <?php echo htmlspecialchars($_SESSION['user_data']['instansi']); ?>
           </h2>
         </div>
@@ -239,42 +245,45 @@ mysqli_close($koneksi);
 
 
       <!-- Tiket seminar dan workshop Section -->
-      <div id="tiket" class="w-full bg-[#0D0D0D] flex flex-col gap-8 py-32 rounded-3xl" >
-        <h1 class="text-white text-2xl md:text-4xl font-bold font-work w-full text-center">Tiket Seminar dan
+      <div id="tiket" class="w-full bg-[#0D0D0D] flex flex-col gap-8 py-32 rounded-3xl">
+        <h1 class="text-white text-xl md:text-4xl font-bold font-work w-10/12 mx-auto md:w-full text-center">Tiket
+          Seminar dan
           Workshop</h1>
 
         <!-- Loop untuk menampilkan setiap tiket -->
         <?php foreach ($tiket_data as $tiket): ?>
           <div
-            class="flex gap-5 md:justify-between items-center px-8 py-6 rounded-xl max-md:flex-wrap max-md:px-5 w-[90%] mx-auto bg-gradient-to-r from-[#121212] to-[#1A1A1A]">
+            class="flex flex-col-reverse md:flex-row gap-5 md:justify-between items-center px-10 py-10 rounded-xl max-md:flex-wrap max-md:px-5 w-[90%] mx-auto md:bg-gradient-to-r bg-gradient-to-t from-[#121212] to-[#1A1A1A]">
+
             <div
-              class="flex flex-col w-2/3 mx-auto md:mx-0 text-center md:items-start gap-2 my-auto text-3xl font-medium md:text-start text-white">
+              class="flex flex-col w-full md:w-2/3 mx-auto md:mx-0 text-center md:items-start gap-2 my-auto text-3xl font-medium md:text-start text-white">
               <div class="text-white text-2xl md:text-3xl font-semibold font-work">
                 <?php echo htmlspecialchars($tiket['judul_event']); ?>
               </div>
               <div class="text-white text-lg md:text-xl font-semibold font-works">By
                 <?php echo htmlspecialchars($tiket['speakers_event']); ?>
               </div>
-              <div class="text-white text-lg md:text-xl font-semibold font-works">
+              <div class="text-white text-sm md:text-xl font-semibold font-works">
                 Date: <?php echo htmlspecialchars($tiket['jadwal_event']); ?>
               </div>
-              <div class="text-white text-lg md:text-xl font-semibold font-works">
+              <div class="text-white text-sm md:text-xl font-semibold font-works">
                 Time: <?php echo htmlspecialchars($tiket['waktu_event']); ?>
               </div>
-              <div class="text-white text-lg md:text-xl font-semibold font-works">
+              <div class="text-white text-sm md:text-xl font-semibold font-works">
                 Location: <?php echo htmlspecialchars($tiket['lokasi_event']); ?>
               </div>
-              <div class="text-white text-lg md:text-xl font-semibold font-works"> Ticket Code :
+              <div class="text-white text-sm md:text-xl font-semibold font-works"> Ticket Code :
                 <?php echo htmlspecialchars($tiket['tiket_code']); ?>
               </div>
-              <a href="<?php echo htmlspecialchars($tiket['link_grup']); ?>" target="_blank"
+              <div class="pt-2 md:pt-5">
+                <a href="<?php echo htmlspecialchars($tiket['link_grup']); ?>" target="_blank"
                 style="font-family: 'Work Sans'"
-                class="border-[1px] hover:bg-white hover:bg-opacity-25 py-2 px-6 border-white text-white rounded-full md:text-lg">
+                class="bg-emerald-600 hover:bg-emerald-800 py-4 px-6  text-white rounded-full text-sm md:text-lg">
                 Group WhatsApp
               </a>
             </div>
-            <div
-              class="mx-auto md:mx-0 flex flex-col justify-center items-center max-w-[250px] max-h-[250px] rounded-xl">
+            </div>
+            <div class="mx-auto md:mx-0 flex flex-col justify-center items-center max-w-[250px] max-h-[250px] rounded-xl">
               <div id="qr-code-<?php echo $tiket['tiket_code']; ?>" class="qr-code-container">
                 <!-- QR Code akan di-generate menggunakan JavaScript -->
               </div>
@@ -300,14 +309,16 @@ mysqli_close($koneksi);
     </div>
 
     <!-- Tiket Section -->
-    <div id="tiket" class="w-full sm:w-1/3 bg-[#0D0D0D] flex flex-col gap-8 py-32 rounded-3xl">
+    <div id="tiket" class="w-full sm:w-1/3 flex flex-col gap-8 py-32 rounded-3xl">
       <h1 class="text-white text-2xl md:text-4xl font-bold font-work w-full text-center">Tiket Masuk Finder
       </h1>
 
       <!-- Loop untuk menampilkan setiap tiket -->
 
-      <div class="flex flex-col gap-5 md:justify-center items-center px-8 py-8 rounded-xl max-md:flex-wrap max-md:px-5 w-full mx-auto">
-        <div class="mx-auto md:mx-0 flex flex-col justify-center items-center bg-white max-w-[500px] max-h-[500px] rounded-xl">
+      <div
+        class="flex flex-col gap-5 md:justify-center items-center px-8 py-8 rounded-xl max-md:flex-wrap max-md:px-5 w-full mx-auto">
+        <div
+          class="mx-auto md:mx-0 flex flex-col justify-center items-center bg-white max-w-[500px] max-h-[500px] rounded-xl">
           <div id="qr-codee-<?php echo $_SESSION['user_data']['kode_account']; ?>" class="qr-code-container">
             <!-- QR Code akan di-generate menggunakan JavaScript -->
           </div>
@@ -354,6 +365,10 @@ mysqli_close($koneksi);
 
 
       <!-- Akhir Loop Tiket -->
+
+      <div class="hidden md:flex absolute -z-10 right-0 bottom-0 translate-y-[100%] -translate-x-[25%]">
+        <img src="./img/supergrafis/supergrafis1.png" alt="" class="scale-150">
+      </div>
     </div>
   </section>
 

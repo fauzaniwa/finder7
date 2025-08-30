@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
   <meta charset="UTF-8" />
@@ -202,7 +202,7 @@
         Ayo Lihat <br />Karya-Karya <br /> Finder!
       </h2>
       <div class="flex flex-col gap-4 items-center md:items-start">
-        <a href="https://www.instagram.com/finder_dkv/"
+        <a href="#scbar"
           class="w-48 sm:w-64 h-12 sm:h-16 flex items-center justify-center bg-[#008C62] text-white text-lg sm:text-xl font-medium rounded-xl sm:rounded-[20px] shadow-md hover:scale-105 transition-transform duration-300">
           See More
         </a>
@@ -267,7 +267,7 @@
   <br><br>
 
   <!-- Search Bar -->
-  <section class="flex w-10/12 md:w-6/12 justify-center mx-auto ">
+  <section id="scbar" class="flex w-10/12 md:w-6/12 justify-center mx-auto ">
     <form action="" class=" flex flex-row w-full bg-white rounded-full " method="post">
       <div class="relative gap-2 w-full">
         <div class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-7">
@@ -314,17 +314,17 @@
         <!-- Kategori 1: Ilustrasi -->
         <div>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a href="karya-detail.html?id=2"
+            <a href="detailpameran.php"
               class="relative w-full aspect-square-container rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all text-white duration-300 block zoom-container group">
               <img src="./img/Lomba/deschar1resize.jpg" alt="Ilustrasi Karya 2"
                 class="absolute inset-0 w-full h-full object-cover zoom-img">
               <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 to-transparent  flex flex-col justify-end p-4 gap-3">
                 <div class="flex items-center justify-between">
-                  <h3 class="text-3xl font-bold text-white">Judul Ilustrasi</h3>
+                  <h3 class="text-xl md:text-3xl font-bold text-white">Judul Ilustrasi</h3>
                   <!-- Tombol Like -->
                   <button class="like-button focus:outline-none transition-transform duration-200 hover:scale-110"
                     aria-label="Suka karya ini">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white transition-colors duration-200"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="md:h-10 md:w-10 w-6 h-6 text-white transition-colors duration-200"
                       fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round"
                         d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -332,21 +332,21 @@
                   </button>
                 </div>
                 <p class="text-sm text-white">Kreator: Budi Setiawan</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et at, eligendi dolor magnam cupiditate
+                <p class="text-xs md:text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et at, eligendi dolor magnam cupiditate
                   commodi iure temporibus officia nostrum consequuntur!</p>
               </div>
             </a>
-            <a href="karya-detail.html?id=2"
+            <a href="detailpameran.php"
               class="relative w-full aspect-square-container rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all text-white duration-300 block zoom-container group">
               <img src="./img/Lomba/Juara2resize.jpg" alt="Ilustrasi Karya 2"
                 class="absolute inset-0 w-full h-full object-cover zoom-img">
               <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 to-transparent flex flex-col justify-end p-4 gap-3">
                 <div class="flex items-center justify-between">
-                  <h3 class="text-3xl font-bold text-white">Judul Ilustrasi</h3>
+                  <h3 class="text-xl md:text-3xl font-bold text-white">Judul Ilustrasi</h3>
                   <!-- Tombol Like -->
                   <button class="like-button focus:outline-none transition-transform duration-200 hover:scale-110"
                     aria-label="Suka karya ini">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white transition-colors duration-200"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="md:h-10 md:w-10 w-6 h-6 text-white transition-colors duration-200"
                       fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round"
                         d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -354,21 +354,21 @@
                   </button>
                 </div>
                 <p class="text-sm text-white">Kreator: Budi Setiawan</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et at, eligendi dolor magnam cupiditate
+                <p class="text-xs md:text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et at, eligendi dolor magnam cupiditate
                   commodi iure temporibus officia nostrum consequuntur!</p>
               </div>
             </a>
-            <a href="karya-detail.html?id=2"
+            <a href="detailpameran.php"
               class="relative w-full aspect-square-container rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all text-white duration-300 block zoom-container group">
               <img src="./img/Lomba/Juara3resize.jpg" alt="Ilustrasi Karya 2"
                 class="absolute inset-0 w-full h-full object-cover zoom-img">
               <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 to-transparent  flex flex-col justify-end p-4 gap-3">
                 <div class="flex items-center justify-between">
-                  <h3 class="text-3xl font-bold text-white">Judul Ilustrasi</h3>
+                  <h3 class="text-xl md:text-3xl font-bold text-white">Judul Ilustrasi</h3>
                   <!-- Tombol Like -->
                   <button class="like-button focus:outline-none transition-transform duration-200 hover:scale-110"
                     aria-label="Suka karya ini">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white transition-colors duration-200"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="md:h-10 md:w-10 w-6 h-6 text-white transition-colors duration-200"
                       fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round"
                         d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -376,7 +376,7 @@
                   </button>
                 </div>
                 <p class="text-sm text-white">Kreator: Budi Setiawan</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et at, eligendi dolor magnam cupiditate
+                <p class="text-xs md:text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et at, eligendi dolor magnam cupiditate
                   commodi iure temporibus officia nostrum consequuntur!</p>
               </div>
             </a>
