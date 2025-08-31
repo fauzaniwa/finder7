@@ -623,12 +623,19 @@
     <!--</section>-->
 
     <br><br><br><br><br><br>
-    <div class="flex justify-center">
+    <div class="flex flex-col items-center justify-center gap-6">\
+        <a href="https://drive.google.com/drive/folders/1np8d4bniiAlN_xBAg4iHqvXgBt5TCo1A">
+            <button
+                class="submit-btn items-center bg-emerald-600 hover:bg-emerald-800 transition-all duration-300 ease-in-out px-10 py-3 md:px-20 md:py-5 rounded-2xl md:rounded-3xl mt-6 text-base md:text-xl text-white">
+                Download Template </button>
+        </a>
         <a href="./submitkaryawacom.php">
             <button
-                class="submit-btn bg-emerald-600 hover:bg-emerald-800 transition-all duration-300 ease-in-out px-10 py-3 md:px-20 md:py-5 rounded-2xl md:rounded-3xl mt-6 text-base md:text-xl text-white">Submit
+                class="submit-btn items-center bg-emerald-600 hover:bg-emerald-800 transition-all duration-300 ease-in-out px-10 py-3 md:px-20 md:py-5 rounded-2xl md:rounded-3xl mt-6 text-base md:text-xl text-white">Submit
                 karya </button>
         </a>
+
+        
     </div>
     <br><br><br><br><br><br>
 
