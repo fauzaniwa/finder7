@@ -416,8 +416,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event'])) {
     </div>
   </div>
 
-  
-
   <!-- Tombol di bawah -->
   <!-- <div class="fixed bottom-0 w-full bg-[#131313] border-t border-[#202020] z-50">
     <div class="w-full flex justify-center py-4">
