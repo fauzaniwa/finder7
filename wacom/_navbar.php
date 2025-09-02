@@ -17,10 +17,8 @@
                         class="text-sm lg:text-xl text-white txt2">Pameran</button></a> -->
                 <a href="../homepage.php#jadwal" style="font-family: 'Work Sans'" class="flex"><button
                         class="text-sm lg:text-xl text-white txt">Jadwal</button></a>
-                <a href="../submission.php" style="font-family: 'Work Sans'" class="flex"><button
+                <a href="../portal-lomba.php" style="font-family: 'Work Sans'" class="flex"><button
                         class="text-sm lg:text-xl text-white txt">Lomba</button></a>
-                <a href="index.php" style="font-family: 'Work Sans'" class="flex"><button
-                        class="text-sm lg:text-xl text-white txt">Lomba (New)</button></a>
             </div>
 
             <!-- Tombol Login -->
@@ -34,15 +32,15 @@
                         </button>
                         <div id="dropdownMenu"
                             class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg py-1 mx-auto">
-                            <a href="account.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
-                            <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</a>
+                            <a href="../account.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+                            <a href="../logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</a>
                         </div>
                     </div>
                 <?php else: ?>
                     <!-- Jika belum login, tampilkan tombol login dan daftar -->
-                    <a href="login.php" style="font-family: 'Work Sans'"
+                    <a href="../login.php" style="font-family: 'Work Sans'"
                         class="border-[1px] hover:bg-white hover:bg-opacity-25 py-2 px-6 border-white text-white rounded-full md:text-lg">Login</a>
-                    <a href="register.php" style="font-family: 'Work Sans'"
+                    <a href="../register.php" style="font-family: 'Work Sans'"
                         class="bg-[#0D0D0D] hover:bg-white hover:bg-opacity-25 py-2 px-6 text-white rounded-full md:text-lg">Daftar</a>
                 <?php endif; ?>
             </div>
@@ -59,7 +57,7 @@
             class="nav-links hidden flex flex-col absolute top-full bg-[#0D0D0D] w-full shadow-2xl text-center">
             <div
                 class="bg-[#0D0D0D] hover:bg-neutral-700 w-full p-2 transition duration-300 ease-in-out cursor-pointer">
-                <a href="homepage.php#finderdesc"><button style="font-family: 'Work Sans'"
+                <a href="../homepage.php#finderdesc"><button style="font-family: 'Work Sans'"
                         class="bg-transparent py-2 px-4 w-fit font-plus font-light text-white">About</button></a>
             </div>
             <!-- <div class="bg-[#0D0D0D] hover:bg-neutral-700 w-full p-2 transition duration-300 ease-in-out cursor-pointer">
@@ -68,30 +66,25 @@
             </div> -->
             <div
                 class="bg-[#0D0D0D] hover:bg-neutral-700 w-full p-2 transition duration-300 ease-in-out cursor-pointer">
-                <a href="homepage.php#jadwal"><button style="font-family: 'Work Sans'"
+                <a href="../homepage.php#jadwal"><button style="font-family: 'Work Sans'"
                         class="bg-transparent py-2 px-4 w-fit font-plus font-light text-white">Jadwal</button></a>
             </div>
             <div
                 class="bg-[#0D0D0D] hover:bg-neutral-700 w-full p-2 transition duration-300 ease-in-out cursor-pointer">
-                <a href="submission.php"><button style="font-family: 'Work Sans'"
+                <a href="../portal-lomba.php"><button style="font-family: 'Work Sans'"
                         class="bg-transparent py-2 px-4 w-fit font-plus font-light text-white">Lomba</button></a>
-            </div>
-            <div
-                class="bg-[#0D0D0D] hover:bg-neutral-700 w-full p-2 transition duration-300 ease-in-out cursor-pointer">
-                <a href="index.php"><button style="font-family: 'Work Sans'"
-                        class="bg-transparent py-2 px-4 w-fit font-plus font-light text-white">Lomba (New)</button></a>
             </div>
 
             <!-- -------- -->
             <div class="hidden flex flex-row items-center gap-6 justify-start mt-4">
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="account.php"><img src="./img/iconakun.svg" alt="" /></a>
-                    <a href="logout.php" style="font-family: 'Work Sans'"
+                    <a href="../account.php"><img src="./img/iconakun.svg" alt="" /></a>
+                    <a href="../logout.php" style="font-family: 'Work Sans'"
                         class="border-[1px] hover:bg-white hover:bg-opacity-25 py-2 px-6 border-white text-white rounded-full md:text-lg">Logout</a>
                 <?php else: ?>
-                    <a href="login.php" style="font-family: 'Work Sans'"
+                    <a href="../login.php" style="font-family: 'Work Sans'"
                         class="border-[1px] hover:bg-white hover:bg-opacity-25 py-2 px-6 border-white text-white rounded-full md:text-lg">Login</a>
-                    <a href="register.php" style="font-family: 'Work Sans'"
+                    <a href="../register.php" style="font-family: 'Work Sans'"
                         class="bg-[#0D0D0D] hover:bg-opacity-25 py-2 px-6 text-white rounded-full md:text-lg">Daftar</a>
                 <?php endif; ?>
             </div>

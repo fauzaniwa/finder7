@@ -198,7 +198,7 @@ $competitions = [
     [
         'id' => 1,
         'title' => 'Finder 7 x Wacom: Ilustrasi Buku',
-        'status' => ['New', 'Open'],
+        'status' => ['Open'],
         'deadline' => 'Diperpanjang - 9 September 2025',
         'prize' => 'Satu unit wacom, sertifikat, dan masih banyak lagi!',
         'message' => 'Baca Ketentuannya dan Daftar Sekarang!',
@@ -226,7 +226,7 @@ $competitions = [
         'prize' => 'Uang tunai, sertifikat, dan masih banyak lagi!',
         'message' => 'Maaf ya lomba ini sudah berakhir :(',
         'links' => [
-            'pemenang' => 'https://example.com/pemenang_karakter'
+            'pemenang' => 'pengumuman_lomba.php'
         ]
     ],
 ];

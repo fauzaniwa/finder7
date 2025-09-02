@@ -16,10 +16,8 @@
                         class="text-sm lg:text-xl text-white txt2">Pameran</button></a> -->
                 <a href="homepage.php#jadwal" style="font-family: 'Work Sans'" class="flex"><button
                         class="text-sm lg:text-xl text-white txt">Jadwal</button></a>
-                <a href="submission.php" style="font-family: 'Work Sans'" class="flex"><button
+                <a href="portal-lomba.php" style="font-family: 'Work Sans'" class="flex"><button
                         class="text-sm lg:text-xl text-white txt">Lomba</button></a>
-                <a href="./wacom/" style="font-family: 'Work Sans'" class="flex"><button
-                        class="text-sm lg:text-xl text-white txt">Lomba (New)</button></a>
             </div>
 
             <!-- Tombol Login -->
@@ -69,12 +67,8 @@
                 class="bg-transparent py-2 px-4 w-fit font-plus font-light text-white">Jadwal</button></a>
             </div>
             <div class="bg-[#0D0D0D] hover:bg-neutral-700 w-full p-2 transition duration-300 ease-in-out cursor-pointer">
-                <a href="submission.php"><button style="font-family: 'Work Sans'"
+                <a href="portal-lomba.php"><button style="font-family: 'Work Sans'"
                 class="bg-transparent py-2 px-4 w-fit font-plus font-light text-white">Lomba</button></a>
-            </div>
-            <div class="bg-[#0D0D0D] hover:bg-neutral-700 w-full p-2 transition duration-300 ease-in-out cursor-pointer">
-                <a href="./wacom/"><button style="font-family: 'Work Sans'"
-                class="bg-transparent py-2 px-4 w-fit font-plus font-light text-white">Lomba (New)</button></a>
             </div>
 
             <!-- -------- -->
