@@ -84,71 +84,93 @@ body { /* the element was body */
   <?php
   require '_navbar.php';
   ?>
-  <section id="register" class="w-full h-screen flex items-end sm:items-center justify-center md:justify-end sm:p-8 sm:pt-24 ">
-    <form action="systemdata.php" method="POST" class="overflow-y-auto hide-scrollbar max-h-full items-center h-1/2 sm:h-full w-full sm:w-3/4 md:w-1/2 bg-white rounded-3xl rounded-b-none sm:rounded-b-3xl">
-      <div class="flex flex-col justify-start sm:justify-center items-center w-full min-h-full bg-white rounded-xl gap-6  px-24 py-24">
+   <div
+        class="w-2/3 h-3/4 blur-3xl absolute z-0 rounded-full bg-[radial-gradient(circle,_#515151_0%,_rgba(244,114,182,0)_70%)] top-px left-1/2 -translate-x-1/2 -translate-y-1/2">
+    </div>
+  <section id="register"
+    class="w-full h-screen flex lg:flex-row flex-col-reverse sm:p-8 sm:pt-24 ">
+    <div class="order-first lg:order-last relative z-10 lg:w-1/2 w-full h-1/2 md:h-2/3 lg:h-full text-start text-white space-y-4">
 
-        <h1 class="text-2xl md:text-3xl text-black font-semibold">Daftar Akun</h1>
-        <hr>
-        <div class="flex-col gap-2 w-full">
-          <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Nama Lengkap</h1>
-          <input type="text" name="nama" class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200" required placeholder="Masukkan Nama Lengkap">
-        </div>
 
-        <div class="flex-col gap-2 w-full">
-          <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Nomor Handphone</h1>
-          <input type="number" name="no_hp" class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200" required placeholder="Masukkan Nomor Handphone">
-        </div>
+      <form action="systemdata.php" method="POST"
+        class="overflow-y-auto hide-scrollbar max-h-full items-center h-full w-full bg-white rounded-3xl rounded-b-none sm:rounded-b-3xl">
+        <div
+          class="flex flex-col justify-start sm:justify-center items-center w-full min-h-full bg-white rounded-xl gap-6 px-12 py-12  sm:px-24 sm:py-24">
 
-        <div class="flex-col gap-2 w-full">
-          <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Tanggal Lahir</h1>
-          <input type="date" name="tgl_lahir" class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200" required>
-        </div>
-
-        <div class="flex-col gap-2 w-full">
-          <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Instansi</h1>
-          <input type="text" name="instansi" class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200" required placeholder="Masukkan Instansi">
-        </div>
-
-        <div class="flex-col gap-2 w-full">
-          <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Email</h1>
-          <input type="email" name="email" class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200" required placeholder="Masukkan Email">
-        </div>
-
-        <div class="flex-col gap-2 w-full relative">
-          <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Password</h1>
-          <div class="relative">
-            <input type="password" name="password" id="passwordInput"
-              class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200" required placeholder="Masukkan Password">
-            <span id="togglePassword"
-              class="absolute inset-y-0 right-0 flex items-center justify-center pr-6 cursor-pointer text-base text-emerald-700">
-            <svg id="eyeIcon" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z" />
-            </svg>
-            </span>
+          <h1 class="text-2xl md:text-3xl text-black font-semibold">Daftar Akun</h1>
+          <hr>
+          <div class="flex-col gap-2 w-full">
+            <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Nama Lengkap</h1>
+            <input type="text" name="nama" class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200"
+              required placeholder="Masukkan Nama Lengkap">
           </div>
+
+          <div class="flex-col gap-2 w-full">
+            <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Nomor Handphone</h1>
+            <input type="number" name="no_hp"
+              class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200" required
+              placeholder="Masukkan Nomor Handphone">
+          </div>
+
+          <div class="flex-col gap-2 w-full">
+            <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Tanggal Lahir</h1>
+            <input type="date" name="tgl_lahir"
+              class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200" required>
+          </div>
+
+          <div class="flex-col gap-2 w-full">
+            <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Instansi</h1>
+            <input type="text" name="instansi"
+              class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200" required
+              placeholder="Masukkan Instansi">
+          </div>
+
+          <div class="flex-col gap-2 w-full">
+            <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Email</h1>
+            <input type="email" name="email" class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200"
+              required placeholder="Masukkan Email">
+          </div>
+
+          <div class="flex-col gap-2 w-full relative">
+            <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Password</h1>
+            <div class="relative">
+              <input type="password" name="password" id="passwordInput"
+                class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200" required
+                placeholder="Masukkan Password">
+              <span id="togglePassword"
+                class="absolute inset-y-0 right-0 flex items-center justify-center pr-6 cursor-pointer text-base text-emerald-700">
+                <svg id="eyeIcon" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z" />
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <div class="flex-col gap-2 w-full">
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="rounded-lg px-2 font-work font-medium bg-neutral-200" required>
+              <span class="text-black font-work">Saya setuju dengan Kebijakan Privasi.</span>
+            </label>
+          </div>
+
+
+
+          <button type="submit" name="register"
+            class="text-base w-full lg:text-xl text-black px-6 py-4 bg-neutral-300 rounded-lg font-work hover:bg-neutral-500 duration-150 hover:drop-shadow-md">Daftar
+            Sekarang</button>
+
+          <p class="text-black">Sudah memiliki akun? Login <span><a href="login.php"
+                class="font-bold text-emerald-700 hover:text-emerald-500">di
+                sini.</a></span></p>
+
         </div>
-
-        <div class="flex-col gap-2 w-full">
-          <label class="flex items-center gap-2">
-            <input type="checkbox" class="rounded-lg px-2 font-work font-medium bg-neutral-200" required >
-            <span class="text-black font-work">Saya setuju dengan Kebijakan Privasi.</span>
-          </label>
-        </div>
-
-
-
-        <button type="submit" name="register"
-          class="text-base w-full lg:text-xl text-black px-6 py-4 bg-neutral-300 rounded-lg font-work hover:bg-neutral-500 duration-150 hover:drop-shadow-md">Daftar
-          Sekarang</button>
-
-        <p class="text-black">Sudah memiliki akun? Login <span><a href="login.php" class="font-bold text-emerald-700 hover:text-emerald-500">di
-              sini.</a></span></p>
-
-      </div>
-    </form>
+      </form>
+    </div>
+    <div class="order-last lg:order-first lg:w-1/2 md:h-1/3 w-full h-1/2 lg:h-full mt-20 lg:mt-0 flex justify-center items-end md:items-center ">
+      <img src="./img/hero/char.png" alt="Mindspace Characters" class="max-w-full h-fit animate-pulse" />
+    </div>
   </section>
 
   <!-- JavaScript untuk menampilkan pesan error -->
@@ -173,25 +195,25 @@ body { /* the element was body */
 
 <script>
   const togglePassword = document.getElementById("togglePassword");
-    const passwordInput = document.getElementById("passwordInput");
-    const eyeIcon = document.getElementById("eyeIcon");
+  const passwordInput = document.getElementById("passwordInput");
+  const eyeIcon = document.getElementById("eyeIcon");
 
-    const eyeOpen = `<svg id="eyeIcon" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  const eyeOpen = `<svg id="eyeIcon" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/>
     </svg>` ;
 
-    const eyeClosed = `
+  const eyeClosed = `
     <svg id="eyeIcon" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M2 2L22 22" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`;
 
-    togglePassword.addEventListener("click", function () {
-      const isPassword = passwordInput.getAttribute("type") === "password";
-      passwordInput.setAttribute("type", isPassword ? "text" : "password");
-      togglePassword.innerHTML = isPassword ? eyeClosed : eyeOpen;
-    });
+  togglePassword.addEventListener("click", function () {
+    const isPassword = passwordInput.getAttribute("type") === "password";
+    passwordInput.setAttribute("type", isPassword ? "text" : "password");
+    togglePassword.innerHTML = isPassword ? eyeClosed : eyeOpen;
+  });
 </script>
 
 </html>
