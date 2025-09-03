@@ -17,22 +17,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $deskripsi = trim($_POST['deskripsi']);
     $kontak = trim($_POST['kontak']);
     $urutan = intval($_POST['urutan']);
-    $foto_speaker = null;
+    $foto_speaker_to_db = null;
 
     if (empty($nama_speaker) || empty($instansi)) {
         $error_message = "Nama speaker dan instansi tidak boleh kosong.";
     } else {
         if (isset($_FILES['foto_speaker']) && $_FILES['foto_speaker']['error'] == UPLOAD_ERR_OK) {
-            // Perbarui direktori unggahan
             $upload_dir = '../img/speakers/';
             if (!is_dir($upload_dir)) {
                 mkdir($upload_dir, 0755, true);
             }
             $file_name = uniqid() . '_' . basename($_FILES['foto_speaker']['name']);
-            $file_path = $file_name;
+            $file_path = $upload_dir . $file_name;
 
             if (move_uploaded_file($_FILES['foto_speaker']['tmp_name'], $file_path)) {
-                $foto_speaker = $file_path;
+                $foto_speaker_to_db = $file_name;
             } else {
                 $error_message = "Gagal mengunggah foto speaker.";
             }
@@ -47,10 +46,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $param_instansi = $instansi;
                 $param_deskripsi = $deskripsi;
                 $param_kontak = $kontak;
-                $param_foto = $foto_speaker;
+                $param_foto = $foto_speaker_to_db;
                 $param_urutan = $urutan;
 
                 if (mysqli_stmt_execute($stmt)) {
+                    if (isset($_SESSION['id'])) {
+                        log_admin_activity($conn, $_SESSION['id'], 'create', 'Menambah speaker baru: ' . $nama_speaker);
+                    }
                     header("location: speakers_list.php");
                     exit;
                 } else {
@@ -145,6 +147,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div>
                     <label for="foto_speaker" class="block text-sm font-medium text-light-gray">Foto Speaker</label>
+                    <div class="mt-2 mb-4">
+                        <img id="image-preview" src="#" alt="Pratinjau Foto" class="h-24 w-24 rounded-full object-cover hidden">
+                    </div>
                     <input type="file" id="foto_speaker" name="foto_speaker" class="mt-1 block w-full px-4 py-2 rounded-md bg-dark-gray text-light-gray file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-green file:text-dark">
                 </div>
                 <div>
@@ -161,6 +166,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </main>
     
     <script>
+        const fotoInput = document.getElementById('foto_speaker');
+        const imagePreview = document.getElementById('image-preview');
+
+        if (fotoInput) {
+            fotoInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreview.src = '#';
+                    imagePreview.classList.add('hidden');
+                }
+            });
+        }
+
+        // Fungsionalitas sidebar mobile
         const sidebar = document.getElementById('sidebar');
         const openBtn = document.getElementById('open-sidebar-btn');
         const overlay = document.getElementById('overlay');

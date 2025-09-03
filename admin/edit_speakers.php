@@ -84,6 +84,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && empty($error_message)) {
 
                 if (mysqli_stmt_execute($stmt)) {
                     $success_message = "Data speaker berhasil diperbarui!";
+                    
+                    // **TAMBAHAN:** Panggil fungsi log aktivitas setelah pembaruan berhasil
+                    if (isset($_SESSION['id'])) {
+                        log_admin_activity($conn, $_SESSION['id'], 'update', 'Memperbarui data speaker: ' . $nama_speaker);
+                    }
+                    
                     // Perbarui data speaker di halaman
                     $speaker['nama_speaker'] = $nama_speaker;
                     $speaker['instansi'] = $instansi;
@@ -187,8 +193,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && empty($error_message)) {
                 <div>
                     <label for="foto_speaker" class="block text-sm font-medium text-light-gray">Ganti Foto Speaker</label>
                     <div class="mt-2 mb-4 flex items-center space-x-4">
-                        <img id="image-preview" src="#" alt="Pratinjau Foto Baru" class="h-24 w-24 object-cover hidden">
-                        <img id="existing-image" src="../img/speakers/<?php echo htmlspecialchars($speaker['foto_speaker'] ?? ''); ?>" alt="Foto saat ini" class="h-24 w-24 object-cover <?php echo empty($speaker['foto_speaker']) ? 'hidden' : ''; ?>">
+                        <img id="image-preview" src="#" alt="Pratinjau Foto Baru" class="h-24 w-24 rounded-full object-cover hidden">
+                        <img id="existing-image" src="../img/speakers/<?php echo htmlspecialchars($speaker['foto_speaker'] ?? ''); ?>" alt="Foto saat ini" class="h-24 w-24 rounded-full object-cover <?php echo empty($speaker['foto_speaker']) ? 'hidden' : ''; ?>">
                     </div>
                     <input type="file" id="foto_speaker" name="foto_speaker" class="mt-1 block w-full px-4 py-2 rounded-md bg-dark-gray text-light-gray file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-green file:text-dark">
                 </div>

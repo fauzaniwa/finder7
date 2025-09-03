@@ -12,21 +12,24 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
 // Pastikan ID speaker tersedia di URL
 if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
     $id_speaker = trim($_GET["id"]);
+    $upload_dir = '../img/speakers/';
 
-    // Dapatkan path foto sebelum menghapus record
-    $sql_select = "SELECT foto_speaker FROM speakers WHERE id_speaker = ?";
+    // Dapatkan nama foto sebelum menghapus record
+    $sql_select = "SELECT nama_speaker, foto_speaker FROM speakers WHERE id_speaker = ?";
     if ($stmt_select = mysqli_prepare($conn, $sql_select)) {
         mysqli_stmt_bind_param($stmt_select, "i", $id_speaker);
         if (mysqli_stmt_execute($stmt_select)) {
-            mysqli_stmt_store_result($stmt_select);
-            if (mysqli_stmt_num_rows($stmt_select) == 1) {
-                mysqli_stmt_bind_result($stmt_select, $foto_speaker);
-                mysqli_stmt_fetch($stmt_select);
+            $result_select = mysqli_stmt_get_result($stmt_select);
+            $speaker_to_delete = mysqli_fetch_assoc($result_select);
+            
+            if ($speaker_to_delete) {
+                $nama_speaker_to_delete = $speaker_to_delete['nama_speaker'];
+                $foto_speaker_to_delete = $speaker_to_delete['foto_speaker'];
                 
-                // Hapus foto dari server jika ada dan path valid
-                // Periksa apakah path dimulai dengan ../img/speakers/
-                if ($foto_speaker && strpos($foto_speaker, '../img/speakers/') === 0 && file_exists($foto_speaker)) {
-                    unlink($foto_speaker);
+                // **Perbaikan:** Hapus foto dari server jika ada dan path valid
+                // Kita perlu membuat ulang path lengkap untuk memeriksa keberadaan file
+                if (!empty($foto_speaker_to_delete) && file_exists($upload_dir . $foto_speaker_to_delete)) {
+                    unlink($upload_dir . $foto_speaker_to_delete);
                 }
             }
         }
@@ -39,6 +42,10 @@ if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
         mysqli_stmt_bind_param($stmt_delete, "i", $id_speaker);
         
         if (mysqli_stmt_execute($stmt_delete)) {
+            // **TAMBAHAN:** Panggil fungsi log aktivitas setelah penghapusan berhasil
+            if (isset($_SESSION['id'])) {
+                log_admin_activity($conn, $_SESSION['id'], 'delete', 'Menghapus speaker: ' . ($nama_speaker_to_delete ?? 'ID ' . $id_speaker));
+            }
             header("location: speakers_list.php");
             exit;
         } else {

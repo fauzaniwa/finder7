@@ -81,7 +81,8 @@ if (!isset($admin_role)) {
                     </button>
                     <ul id="seminar-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
                         <li><a href="speakers_list.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Pemateri</a></li>
-                        <li><a href="#" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Jadwal Seminar</a></li>
+                        <li><a href="event.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Jadwal Seminar</a></li>
+                        <li><a href="pendaftar_event.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Pendaftar</a></li>
                         <li><a href="#" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Daftar Hadir</a></li>
                     </ul>
                 </li>
@@ -102,7 +103,8 @@ if (!isset($admin_role)) {
                     </button>
                     <ul id="workshop-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
                         <li><a href="speakers_list.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Pemateri</a></li>
-                        <li><a href="#" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Jadwal Workshop</a></li>
+                        <li><a href="event.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Jadwal Workshop</a></li>
+                        <li><a href="pendaftar_event.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Pendaftar</a></li>
                         <li><a href="#" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Daftar Hadir</a></li>
                     </ul>
                 </li>
@@ -130,7 +132,7 @@ if (!isset($admin_role)) {
                 <li class="my-4 h-px bg-gray-700"></li>
 
                 <li>
-                    <a href="register.php" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
+                    <a href="list-admin.php" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
                         <span class="material-symbols-outlined text-2xl mr-3">
                             admin_panel_settings
                         </span>
@@ -138,7 +140,7 @@ if (!isset($admin_role)) {
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
+                    <a href="activity.php" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
                         <span class="material-symbols-outlined text-2xl mr-3">
                             receipt_long
                         </span>
