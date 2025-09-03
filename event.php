@@ -7,10 +7,10 @@ date_default_timezone_set('Asia/Jakarta');
    ========================= */
 require_once __DIR__ . '/admin-one/dist/koneksi.php';
 if (!isset($koneksi) || !($koneksi instanceof mysqli)) {
-  die('Koneksi DB belum terinisialisasi. Pastikan koneksi.php mengatur variabel $koneksi.');
+    die('Koneksi DB belum terinisialisasi. Pastikan koneksi.php mengatur variabel $koneksi.');
 }
 if (!mysqli_ping($koneksi)) {
-  die('Gagal terhubung ke database: ' . mysqli_connect_error());
+    die('Gagal terhubung ke database: ' . mysqli_connect_error());
 }
 mysqli_set_charset($koneksi, 'utf8mb4');
 
@@ -20,41 +20,60 @@ mysqli_set_charset($koneksi, 'utf8mb4');
 $user_id = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
 
 /* =========================
-   AMBIL DATA EVENT + SISA KUOTA
+   AMBIL DATA EVENT + SISA KUOTA + SPEAKERS
    ========================= */
 $query_event = "
-  SELECT 
-    e.id_event,
-    e.judul_event,
-    e.speakers_event,
-    e.jadwal_event,   -- format YYYY-MM-DD
-    e.waktu_event,
-    e.kuota,
-    e.lokasi_event,
-    e.tiket_event,
-    e.event_status,
-    (e.kuota - COALESCE(t.cnt, 0)) AS sisa_kuota
-  FROM event e
-  LEFT JOIN (
-    SELECT id_event, COUNT(*) AS cnt
-    FROM tiket
-    GROUP BY id_event
-  ) t ON t.id_event = e.id_event
-  WHERE e.show_event = 1
-  ORDER BY e.urutan_show ASC
+    SELECT 
+        e.id_event,
+        e.judul_event,
+        e.jadwal_event,
+        e.waktu_event,
+        e.kuota,
+        e.lokasi_event,
+        e.tiket_event,
+        e.event_status,
+        e.statusbayar,  -- Kolom statusbayar ditambahkan di sini
+        (e.kuota - COALESCE(t.cnt, 0)) AS sisa_kuota
+    FROM event e
+    LEFT JOIN (
+        SELECT id_event, COUNT(*) AS cnt
+        FROM tiket
+        GROUP BY id_event
+    ) t ON t.id_event = e.id_event
+    WHERE e.show_event = 1
+    ORDER BY e.urutan_show ASC
 ";
 
 $stmt_event = mysqli_prepare($koneksi, $query_event);
 if (!$stmt_event) {
-  die('Prepare statement event failed: ' . mysqli_error($koneksi));
+    die('Prepare statement event failed: ' . mysqli_error($koneksi));
 }
 mysqli_stmt_execute($stmt_event);
 $result_event = mysqli_stmt_get_result($stmt_event);
 
 $events_data = [];
 while ($row_event = mysqli_fetch_assoc($result_event)) {
-  $row_event['sisa_kuota'] = max(0, (int)($row_event['sisa_kuota'] ?? 0));
-  $events_data[] = $row_event;
+    $id_event = $row_event['id_event'];
+
+    // Ambil speakers untuk event ini
+    $query_speakers = "SELECT s.nama_speaker, s.instansi 
+                       FROM event_speakers es
+                       JOIN speakers s ON es.id_speaker = s.id_speaker
+                       WHERE es.id_event = ?";
+    $stmt_speakers = mysqli_prepare($koneksi, $query_speakers);
+    mysqli_stmt_bind_param($stmt_speakers, "i", $id_event);
+    mysqli_stmt_execute($stmt_speakers);
+    $result_speakers = mysqli_stmt_get_result($stmt_speakers);
+
+    $speakers_data = [];
+    while ($row_speaker = mysqli_fetch_assoc($result_speakers)) {
+        $speakers_data[] = $row_speaker;
+    }
+    mysqli_stmt_close($stmt_speakers);
+
+    $row_event['sisa_kuota'] = max(0, (int)($row_event['sisa_kuota'] ?? 0));
+    $row_event['speakers'] = $speakers_data; // Tambahkan data speakers ke array event
+    $events_data[] = $row_event;
 }
 mysqli_stmt_close($stmt_event);
 
@@ -63,79 +82,78 @@ mysqli_stmt_close($stmt_event);
    ========================= */
 $events_with_tickets = [];
 if ($user_id) {
-  $query_check_tiket = "SELECT id_event FROM tiket WHERE id_user = ?";
-  $stmt_check_tiket = mysqli_prepare($koneksi, $query_check_tiket);
-  if (!$stmt_check_tiket) {
-    die('Prepare statement check tiket failed: ' . mysqli_error($koneksi));
-  }
-  mysqli_stmt_bind_param($stmt_check_tiket, "i", $user_id);
-  mysqli_stmt_execute($stmt_check_tiket);
-  $result_check_tiket = mysqli_stmt_get_result($stmt_check_tiket);
+    $query_check_tiket = "SELECT id_event FROM tiket WHERE id_user = ?";
+    $stmt_check_tiket = mysqli_prepare($koneksi, $query_check_tiket);
+    if (!$stmt_check_tiket) {
+        die('Prepare statement check tiket failed: ' . mysqli_error($koneksi));
+    }
+    mysqli_stmt_bind_param($stmt_check_tiket, "i", $user_id);
+    mysqli_stmt_execute($stmt_check_tiket);
+    $result_check_tiket = mysqli_stmt_get_result($stmt_check_tiket);
 
-  while ($row_check_tiket = mysqli_fetch_assoc($result_check_tiket)) {
-    $events_with_tickets[] = (int)$row_check_tiket['id_event'];
-  }
-  mysqli_stmt_close($stmt_check_tiket);
+    while ($row_check_tiket = mysqli_fetch_assoc($result_check_tiket)) {
+        $events_with_tickets[] = (int)$row_check_tiket['id_event'];
+    }
+    mysqli_stmt_close($stmt_check_tiket);
 }
 
 /* =========================
    FUNGSI KODE TIKET
    ========================= */
 function generateTicketCode($id_event, $user_id) {
-  $random_part  = substr(str_shuffle(str_repeat('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 6)), 0, 6);
-  $random_partt = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 2)), 0, 2);
-  return $random_partt . $id_event . $user_id . $random_part;
+    $random_part = substr(str_shuffle(str_repeat('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 6)), 0, 6);
+    $random_partt = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 2)), 0, 2);
+    return $random_partt . $id_event . $user_id . $random_part;
 }
 
 /* =========================
    HANDLE CLAIM TIKET (POST)
    ========================= */
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event'])) {
-  if (!$user_id) {
-    echo '<script>alert("Harap Login terlebih dahulu!");</script>';
-  } else {
-    $id_event = (int)$_POST['id_event'];
+    if (!$user_id) {
+        echo '<script>alert("Harap Login terlebih dahulu!");</script>';
+    } else {
+        $id_event = (int)$_POST['id_event'];
 
-    // Cegah duplikasi tiket untuk event yang sama
-    if (!in_array($id_event, $events_with_tickets, true)) {
-      $tiket_code = generateTicketCode($id_event, $user_id);
+        if (!in_array($id_event, $events_with_tickets, true)) {
+            $tiket_code = generateTicketCode($id_event, $user_id);
 
-      $query_insert_tiket = "INSERT INTO tiket (id_user, id_event, tiket_code, created_tiket) VALUES (?, ?, ?, NOW())";
-      $stmt_insert_tiket = mysqli_prepare($koneksi, $query_insert_tiket);
-      if (!$stmt_insert_tiket) {
-        die('Prepare statement insert tiket failed: ' . mysqli_error($koneksi));
-      }
-      mysqli_stmt_bind_param($stmt_insert_tiket, "iis", $user_id, $id_event, $tiket_code);
+            $query_insert_tiket = "INSERT INTO tiket (id_user, id_event, tiket_code, created_tiket) VALUES (?, ?, ?, NOW())";
+            $stmt_insert_tiket = mysqli_prepare($koneksi, $query_insert_tiket);
+            if (!$stmt_insert_tiket) {
+                die('Prepare statement insert tiket failed: ' . mysqli_error($koneksi));
+            }
+            mysqli_stmt_bind_param($stmt_insert_tiket, "iis", $user_id, $id_event, $tiket_code);
 
-      if (mysqli_stmt_execute($stmt_insert_tiket)) {
-        echo "<script>
-                alert('Ticket berhasil di-claim. Cek profile untuk mengambil tiket.');
-                document.location='account.php';
-              </script>";
-        exit;
-      } else {
-        echo '<script>alert("Gagal mengambil tiket. Silakan coba lagi.");</script>';
-      }
-      mysqli_stmt_close($stmt_insert_tiket);
+            if (mysqli_stmt_execute($stmt_insert_tiket)) {
+                echo "<script>
+                        alert('Ticket berhasil di-claim. Cek profile untuk mengambil tiket.');
+                        document.location='account.php';
+                      </script>";
+                exit;
+            } else {
+                echo '<script>alert("Gagal mengambil tiket. Silakan coba lagi.");</script>';
+            }
+            mysqli_stmt_close($stmt_insert_tiket);
+        }
     }
-  }
 }
 
 /* =========================
    GROUPING BY TANGGAL
    ========================= */
 function indoMonth($n) {
-  $bulan = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-  $n = (int)$n; 
-  return $bulan[$n] ?? '';
+    $bulan = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    $n = (int)$n; 
+    return $bulan[$n] ?? '';
 }
 
 $grouped_by_date = [];
 foreach ($events_data as $ev) {
-  $dateKey = $ev['jadwal_event'] ?? '';
-  if ($dateKey !== '') {
-    $grouped_by_date[$dateKey][] = $ev;
-  }
+    $dateKey = $ev['jadwal_event'] ?? '';
+    if ($dateKey !== '') {
+        $grouped_by_date[$dateKey][] = $ev;
+    }
 }
 ksort($grouped_by_date);
 $events_found = !empty($grouped_by_date);
@@ -169,7 +187,7 @@ $events_found = !empty($grouped_by_date);
                 extend: {
                     fontFamily: {
                         work: ['Work Sans'],
-                        sans: ['Inter', 'sans-serif'], // Set Inter sebagai font default
+                        sans: ['Inter', 'sans-serif'],
                     },
                     animation: {
                         'spin-slow': 'spin 4s linear infinite',
@@ -189,87 +207,110 @@ $events_found = !empty($grouped_by_date);
         .navbar-scrolled { box-shadow: 2px 2px 30px #000000; }
         .ext-scrolled { color: black; }
         .navbar { transition: all 0.5s; }
-        /* Style lain yang mungkin Anda perlukan bisa tetap di sini */
     </style>
 </head>
 
 <body class="bg-black text-white">
     <?php require '_navbar.php'; ?>
 
-    <main class="container mx-auto px-6 py-20 pt-32"> 
-  <h1 class="text-4xl md:text-5xl font-bold text-center mb-16">Jadwal Acara</h1>
+    <main class="container mx-auto px-6 py-20 pt-32">
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-16">Jadwal Acara</h1>
 
-  <?php if ($events_found): ?>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 md:gap-x-8">
+        <?php if ($events_found): ?>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 md:gap-x-8">
 
-    <?php 
-      $card_count = 0;
-      $total_cards = count($grouped_by_date);
-      foreach ($grouped_by_date as $tanggal => $events): 
-        $card_count++;
-        $border_class = ($card_count < $total_cards) ? 'lg:border-r lg:border-neutral-800' : '';
-    ?>
-    <div class="flex flex-col space-y-8 px-4 <?php echo $border_class; ?>">
-      <div class="flex items-center space-x-4">
-        <span class="text-6xl md:text-7xl font-bold"><?php echo date('d', strtotime($tanggal)); ?></span>
-        <div class="flex flex-col">
-          <span class="text-2xl md:text-3xl"><?php echo indoMonth(date('n', strtotime($tanggal))); ?></span>
-          <span class="text-2xl md:text-3xl text-neutral-400"><?php echo date('Y', strtotime($tanggal)); ?></span>
-        </div>
-      </div>
+                <?php
+                $card_count = 0;
+                $total_cards = count($grouped_by_date);
+                foreach ($grouped_by_date as $tanggal => $events):
+                    $card_count++;
+                    $border_class = ($card_count < $total_cards) ? 'lg:border-r lg:border-neutral-800' : '';
+                ?>
+                <div class="flex flex-col space-y-8 px-4 <?php echo $border_class; ?>">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-6xl md:text-7xl font-bold"><?php echo date('d', strtotime($tanggal)); ?></span>
+                        <div class="flex flex-col">
+                            <span class="text-2xl md:text-3xl"><?php echo indoMonth(date('n', strtotime($tanggal))); ?></span>
+                            <span class="text-2xl md:text-3xl text-neutral-400"><?php echo date('Y', strtotime($tanggal)); ?></span>
+                        </div>
+                    </div>
 
-      <div class="flex flex-col space-y-12">
-        <?php foreach ($events as $event): ?>
-        <div>
-          <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?></h3>
-          <p class="text-neutral-400 text-sm mt-2">Pembicara: <?php echo htmlspecialchars($event['speakers_event']); ?></p>
+                    <div class="flex flex-col space-y-12">
+                        <?php foreach ($events as $event): ?>
+                        <div>
+                            <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?></h3>
+                            <?php if (!empty($event['speakers'])): ?>
+                                <p class="text-sm text-neutral-400 mt-1">
+                                    Speakers:
+                                    <?php 
+                                    $speaker_names = array_map(function($speaker) {
+                                        $instansi = !empty($speaker['instansi']) ? " ({$speaker['instansi']})" : "";
+                                        return htmlspecialchars($speaker['nama_speaker'] . $instansi);
+                                    }, $event['speakers']);
+                                    echo implode(', ', $speaker_names);
+                                    ?>
+                                </p>
+                            <?php endif; ?>
 
-          <div class="flex justify-between items-center mt-1 pr-3">
-            <span class="text-neutral-400 text-sm">Waktu: <?php echo htmlspecialchars($event['waktu_event']); ?></span>
-            <span class="font-semibold">
-              <?php
-                $price = is_numeric($event['tiket_event']) ? (int)$event['tiket_event'] : 0;
-                echo ($price > 0) ? 'Rp ' . number_format($price, 0, ',', '.') : 'Gratis';
-              ?>
-            </span>
-          </div>
+                            <div class="flex justify-between items-center mt-1 pr-3">
+                                <span class="text-neutral-400 text-sm">Waktu: <?php echo htmlspecialchars($event['waktu_event']); ?></span>
+                                <span class="font-semibold text-sm">
+                                    <?php
+                                    $status_bayar = htmlspecialchars($event['statusbayar']);
+                                    echo ($status_bayar == 'yes') ? 'Berbayar' : 'Gratis';
+                                    ?>
+                                </span>
+                            </div>
+                             <div class="flex justify-between items-center mt-1 pr-3">
+                                <span class="text-neutral-400 text-sm">Lokasi: <?php echo htmlspecialchars($event['lokasi_event']); ?></span>
+                                <span class="font-semibold text-sm">Kuota Tersedia: <?php echo htmlspecialchars($event['sisa_kuota']); ?></span>
+                            </div>
 
-          <div class="flex space-x-4 mt-6">
-            <a href="detailevent.php?id_event=<?php echo $event['id_event']; ?>" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail Kegiatan</a>
 
-            <?php if (!$user_id || !in_array((int)$event['id_event'], $events_with_tickets, true)): ?>
-              <?php if ((int)$event['event_status'] === 1): ?>
-                <form method="post" class="inline">
-                  <input type="hidden" name="id_event" value="<?php echo (int)$event['id_event']; ?>">
-                  <button type="submit" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Daftar</button>
-                </form>
-              <?php elseif ((int)$event['event_status'] === 2): ?>
-                <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Segera Hadir</button>
-              <?php else: ?>
-                <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Event Selesai</button>
-              <?php endif; ?>
-            <?php else: ?>
-              <span class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-sm">Tiket Diambil</span>
-            <?php endif; ?>
-          </div>
-        </div>
-        <?php endforeach; ?>
-      </div>
-    </div>
-    <?php endforeach; ?>
-  </div>
+                            <div class="flex space-x-4 mt-6">
+                                <a href="detailevent.php?id_event=<?php echo $event['id_event']; ?>" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail Kegiatan</a>
 
-  <div class="text-center mt-20">
-    <button class="bg-[#26d0a5] text-black font-bold py-3 px-16 rounded-full hover:bg-[#21b38f] transition-colors duration-300 text-lg">
-      See More
-    </button>
-  </div>
+                                <?php if (!$user_id || !in_array((int)$event['id_event'], $events_with_tickets, true)): ?>
+                                    <?php 
+                                    $sisa_kuota = isset($event['sisa_kuota']) ? $event['sisa_kuota'] : 0;
+                                    ?>
+                                    <?php if ($event['event_status'] == 0): ?>
+                                        <?php if ($sisa_kuota > 0): ?>
+                                            <form method="post" class="inline">
+                                                <input type="hidden" name="id_event" value="<?php echo $event['id_event']; ?>">
+                                                <button type="submit" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Daftar</button>
+                                            </form>
+                                        <?php else: ?>
+                                            <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Kuota Penuh</button>
+                                        <?php endif; ?>
+                                    <?php elseif ($event['event_status'] == 1): ?>
+                                        <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Telah Berakhir</button>
+                                    <?php elseif ($event['event_status'] == 2): ?>
+                                        <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Kuota Penuh</button>
+                                    <?php elseif ($event['event_status'] == 4): ?>
+                                        <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Segera Hadir</button>
+                                    <?php endif; ?>
+                                <?php else: ?>
+                                    <span class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-sm">Tiket Diambil</span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
 
-  <?php else: ?>
-    <p class="text-center text-neutral-400 text-xl">Saat ini belum ada jadwal acara yang tersedia.</p>
-  <?php endif; ?>
-</main>
+            <div class="text-center mt-20">
+                <button class="bg-[#26d0a5] text-black font-bold py-3 px-16 rounded-full hover:bg-[#21b38f] transition-colors duration-300 text-lg">
+                    See More
+                </button>
+            </div>
 
+        <?php else: ?>
+            <p class="text-center text-neutral-400 text-xl">Saat ini belum ada jadwal acara yang tersedia.</p>
+        <?php endif; ?>
+    </main>
 
     <?php require '_footer.php'; ?>
     
