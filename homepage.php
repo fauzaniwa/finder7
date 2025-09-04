@@ -423,7 +423,10 @@ include 'homepage_data.php';
                                 </div>
 
                                 <div class="flex space-x-4 mt-6">
-    <a href="detailevent.php?id_event=<?php echo $event['id_event']; ?>" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail</a>
+                                  <?php 
+                                    $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug'); // Mengambil slug atau nilai default
+                                ?>
+    <a href="detailevent.php?slug=<?php echo $slug_event; ?>" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail</a>
 
     <?php if (!$user_id || !in_array($event['id_event'], $events_with_tickets)): ?>
         <?php

@@ -6,7 +6,30 @@ ini_set('display_errors', 1);
 include 'admin-one/dist/koneksi.php';
 
 $user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
-$id_event_target = isset($_GET['id_event']) ? intval($_GET['id_event']) : 0;
+$slug_target = isset($_GET['slug']) ? htmlspecialchars($_GET['slug']) : '';
+
+// Validasi apakah slug ada
+if (empty($slug_target)) {
+    die("Slug event tidak ditemukan.");
+}
+
+// Ambil id_event berdasarkan slug
+$id_event_target = 0;
+$query_get_id = "SELECT id_event FROM event WHERE slug = ?";
+$stmt_get_id = mysqli_prepare($koneksi, $query_get_id);
+if ($stmt_get_id) {
+    mysqli_stmt_bind_param($stmt_get_id, "s", $slug_target);
+    mysqli_stmt_execute($stmt_get_id);
+    mysqli_stmt_bind_result($stmt_get_id, $id_event_target_result);
+    mysqli_stmt_fetch($stmt_get_id);
+    mysqli_stmt_close($stmt_get_id);
+}
+
+if ($id_event_target_result) {
+    $id_event_target = $id_event_target_result;
+} else {
+    die("Event tidak ditemukan.");
+}
 
 function generateTicketCode($id_event, $user_id)
 {
@@ -105,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event']) && isset($
                     const thankYouModal = document.getElementById('thankYouModal');
                     if (registrationModal) registrationModal.classList.add('hidden');
                     if (thankYouModal) thankYouModal.classList.remove('hidden');
-                      </script>";
+                </script>";
             } else {
                 echo '<script>alert("Gagal mendaftar. Silakan coba lagi.");</script>';
             }
@@ -115,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event']) && isset($
 }
 
 
-// Query untuk mengambil detail event
+// Query untuk mengambil detail event berdasarkan slug
 $query_event_detail = "
     SELECT 
         e.id_event,
@@ -130,14 +153,14 @@ $query_event_detail = "
         e.thumbnail_event,
         e.deskripsi_event
     FROM event e 
-    WHERE e.id_event = ? AND e.show_event = 1
+    WHERE e.slug = ? AND e.show_event = 1
 ";
 
 $stmt_event_detail = mysqli_prepare($koneksi, $query_event_detail);
 if (!$stmt_event_detail) {
     die("Prepare statement failed: " . mysqli_error($koneksi));
 }
-mysqli_stmt_bind_param($stmt_event_detail, "i", $id_event_target);
+mysqli_stmt_bind_param($stmt_event_detail, "s", $slug_target);
 mysqli_stmt_execute($stmt_event_detail);
 $result_event_detail = mysqli_stmt_get_result($stmt_event_detail);
 $row_event = mysqli_fetch_assoc($result_event_detail);
@@ -150,7 +173,7 @@ if (!$row_event) {
 // Query untuk mengambil speakers
 $query_speakers = "SELECT nama_speaker, instansi FROM event_speakers JOIN speakers ON event_speakers.id_speaker = speakers.id_speaker WHERE id_event = ?";
 $stmt_speakers = mysqli_prepare($koneksi, $query_speakers);
-mysqli_stmt_bind_param($stmt_speakers, "i", $id_event_target);
+mysqli_stmt_bind_param($stmt_speakers, "i", $row_event['id_event']);
 mysqli_stmt_execute($stmt_speakers);
 $result_speakers = mysqli_stmt_get_result($stmt_speakers);
 $speakers_data = [];
@@ -162,7 +185,7 @@ mysqli_stmt_close($stmt_speakers);
 // Query untuk menghitung total user
 $query_count_users = "SELECT COUNT(*) as total FROM tiket WHERE id_event = ?";
 $stmt_count_users = mysqli_prepare($koneksi, $query_count_users);
-mysqli_stmt_bind_param($stmt_count_users, "i", $id_event_target);
+mysqli_stmt_bind_param($stmt_count_users, "i", $row_event['id_event']);
 mysqli_stmt_execute($stmt_count_users);
 $result_count_users = mysqli_stmt_get_result($stmt_count_users);
 $row_count_users = mysqli_fetch_assoc($result_count_users);

@@ -11,7 +11,7 @@ include 'admin-one/dist/koneksi.php';
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 // Query untuk mendapatkan data dari tabel event dengan show_event = 1 dan diurutkan berdasarkan urutan_show
-$query_event = "SELECT id_event, judul_event, jadwal_event, waktu_event, kuota, lokasi_event, tiket_event, event_status FROM event WHERE show_event = 1 ORDER BY urutan_show ASC";
+$query_event = "SELECT id_event, slug, judul_event, jadwal_event, waktu_event, kuota, lokasi_event, tiket_event, event_status FROM event WHERE show_event = 1 ORDER BY urutan_show ASC";
 
 // Persiapkan statement untuk query event
 $stmt_event = mysqli_prepare($koneksi, $query_event);
@@ -27,7 +27,7 @@ $result_event = mysqli_stmt_get_result($stmt_event);
 $events_data = [];
 while ($row_event = mysqli_fetch_assoc($result_event)) {
     $id_event = $row_event['id_event'];
-
+    $slug_event = $row_event['slug']; 
     // Query untuk menghitung jumlah pengguna yang mendaftar untuk event ini
     $query_count_users = "SELECT COUNT(*) as total FROM tiket WHERE id_event = ?";
     $stmt_count_users = mysqli_prepare($koneksi, $query_count_users);

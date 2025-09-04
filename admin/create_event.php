@@ -12,6 +12,31 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !in_array
 $success_message = '';
 $error_message = '';
 
+/**
+ * Generate a unique random slug of 6 characters.
+ *
+ * @param mysqli $conn The database connection.
+ * @return string The unique slug.
+ */
+function generateUniqueSlug($conn) {
+    do {
+        // Generate a random 6-character string from alphanumeric characters
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $slug = substr(str_shuffle($characters), 0, 6);
+
+        // Check if the slug already exists in the database
+        $sql = "SELECT id_event FROM event WHERE slug = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "s", $slug);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+        $slugExists = mysqli_stmt_num_rows($stmt) > 0;
+        mysqli_stmt_close($stmt);
+    } while ($slugExists);
+    
+    return $slug;
+}
+
 // Proses form tambah event baru
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'create_event') {
     $judul_event = trim($_POST['judul_event']);
@@ -38,11 +63,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         mysqli_begin_transaction($conn);
         $insert_success = true;
 
-        // 1. Insert data event baru
-        $sql_event = "INSERT INTO event (judul_event, kategori, audiens, statusbayar, jadwal_event, waktu_event, lokasi_event, tiket_event, kuota, link_grup, event_status, show_event, urutan_show, deskripsi_event) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // 1. Generate slug unik
+        $slug = generateUniqueSlug($conn);
+        
+        // 2. Insert data event baru, termasuk slug
+        $sql_event = "INSERT INTO event (judul_event, slug, kategori, audiens, statusbayar, jadwal_event, waktu_event, lokasi_event, tiket_event, kuota, link_grup, event_status, show_event, urutan_show, deskripsi_event) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         if ($stmt_event = mysqli_prepare($conn, $sql_event)) {
-            mysqli_stmt_bind_param($stmt_event, "sssssssiissssi", 
-                $judul_event, $kategori, $audiens, $statusbayar, $jadwal_event, $waktu_event, $lokasi_event, $tiket_event, $kuota, $link_grup, $event_status, $show_event, $urutan_show, $deskripsi_event
+            mysqli_stmt_bind_param($stmt_event, "ssssssssiissssi", 
+                $judul_event, $slug, $kategori, $audiens, $statusbayar, $jadwal_event, $waktu_event, $lokasi_event, $tiket_event, $kuota, $link_grup, $event_status, $show_event, $urutan_show, $deskripsi_event
             );
             if (!mysqli_stmt_execute($stmt_event)) {
                 $error_message = "Terjadi kesalahan saat menambahkan event: " . mysqli_stmt_error($stmt_event);
@@ -56,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             $insert_success = false;
         }
 
-        // 2. Tambahkan speakers baru
+        // 3. Tambahkan speakers baru
         if ($insert_success && !empty($selected_speakers)) {
             $sql_insert_speakers = "INSERT INTO event_speakers (id_event, id_speaker) VALUES (?, ?)";
             if ($stmt_insert = mysqli_prepare($conn, $sql_insert_speakers)) {

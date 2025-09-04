@@ -32,7 +32,8 @@ $query_event = "
         e.lokasi_event,
         e.tiket_event,
         e.event_status,
-        e.statusbayar,  -- Kolom statusbayar ditambahkan di sini
+        e.statusbayar,
+        e.slug,  -- Kolom slug ditambahkan di sini
         (e.kuota - COALESCE(t.cnt, 0)) AS sisa_kuota
     FROM event e
     LEFT JOIN (
@@ -72,7 +73,7 @@ while ($row_event = mysqli_fetch_assoc($result_event)) {
     mysqli_stmt_close($stmt_speakers);
 
     $row_event['sisa_kuota'] = max(0, (int)($row_event['sisa_kuota'] ?? 0));
-    $row_event['speakers'] = $speakers_data; // Tambahkan data speakers ke array event
+    $row_event['speakers'] = $speakers_data;
     $events_data[] = $row_event;
 }
 mysqli_stmt_close($stmt_event);
@@ -268,7 +269,10 @@ $events_found = !empty($grouped_by_date);
 
 
                             <div class="flex space-x-4 mt-6">
-                                <a href="detailevent.php?id_event=<?php echo $event['id_event']; ?>" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail Kegiatan</a>
+                                <?php 
+                                    $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug'); // Mengambil slug atau nilai default
+                                ?>
+                                <a href="detailevent.php?slug=<?php echo $slug_event; ?>" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail Kegiatan</a>
 
                                 <?php if (!$user_id || !in_array((int)$event['id_event'], $events_with_tickets, true)): ?>
                                     <?php 
