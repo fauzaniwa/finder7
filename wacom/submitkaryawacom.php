@@ -1,5 +1,6 @@
 <?php
 include '../admin-one/dist/koneksi.php';
+session_start();
 ?>
 
 
@@ -10,9 +11,7 @@ include '../admin-one/dist/koneksi.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
@@ -118,34 +117,14 @@ include '../admin-one/dist/koneksi.php';
     </style>
     <title>Finder - Lomba Ilustrasi</title>
     <link rel="icon" href="../img/FinderLogo.svg" type="image/x-icon" />
-    <!-- Script Navbar Menu -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <!-- Script Cursor -->
     <link rel="stylesheet" href="https://unpkg.com/kursor/dist/kursor.css" />
-    <!-- Script Cursor -->
-    <!-- <link rel="stylesheet" href="style.css" /> -->
-</head>
+    </head>
 
 <body class="bg-black pt-40">
-    <!-- Trigger button (optional) -->
-    <!-- <button onclick="openModal()" class="bg-emerald-500 text-white px-4 py-2 rounded">Lihat Info</button> -->
-
-    <!-- Modal -->
-    <!-- <div id="infoModal" class="modal fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50">
-  <div class="bg-neutral-900 rounded-xl px-8 py-6 w-11/12 md:w-1/2 text-center text-white shadow-lg relative">
-    <h2 class="text-xl md:text-2xl font-bold mb-4 text-emerald-400">Kami Akan Kembali!</h2>
-    <p class="text-sm md:text-base text-neutral-300">Ayo persiapkan karya kamu dan kumpulkan di sini.</p>
-    <button onclick="closeModal()" class="mt-6 bg-emerald-400 hover:bg-emerald-600 text-black px-6 py-2 rounded-xl shadow">
-      Oke
-    </button>
-  </div>
-</div> -->
-
-
     <?php require '_navbar.php'; ?>
     <div class="flex flex-col justify-center items-center pb-20">
-        <!-- Modal Success -->
         <div id="successModal"
             class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 hidden">
             <div class="bg-emerald-400 text-black rounded-xl p-8 max-w-sm text-center shadow-lg">
@@ -161,14 +140,11 @@ include '../admin-one/dist/koneksi.php';
             <h1 class="font-bold text-3xl text-white">Submit Karya</h1>
         </div>
 
-        <!-- Form -->
         <br>
         <div class="flex justify-center items-center py-12 px-5 bg-neutral-900 rounded-xl w-10/12 md:w-6/12">
 
-            <!-- PERUBAHAN UTAMA: Tambahkan enctype="multipart/form-data" di sini -->
             <form id="form" action="process_wacom.php" method="post" class="flex flex-col gap-5 w-full" enctype="multipart/form-data">
 
-                <!-- Modal Konfirmasi -->
                 <div id="infoModal" class="modal fixed inset-0 bg-black bg-opacity-60 justify-center items-center z-50"
                     style="display:none;">
                     <div
@@ -192,7 +168,6 @@ include '../admin-one/dist/koneksi.php';
                     </div>
                 </div>
 
-                <!-- Hidden input for selected category -->
                 <input type="hidden" name="kategori_karya" id="kategori_karya" value="Wacom">
 
                 <div class="flex gap-5 justify-center">
@@ -228,24 +203,6 @@ include '../admin-one/dist/koneksi.php';
                     </p>
                     <input type="url" id="linkkarya" name="Link_Karya" placeholder="Link Google Drive" required
                         class="rounded-lg pl-4 py-2 text-white bg-neutral-800 w-full placeholder:text-neutral-700">
-                </div>
-
-                <div class="relative">
-                    <div class="mb-4 p-4 bg-neutral-800 rounded-lg text-white">
-                        <h3 class="font-bold text-lg mb-2">Informasi Pembayaran</h3>
-                        <p class="text-sm">Silakan lakukan pembayaran ke rekening berikut:</p>
-                        <div class="mt-2">
-                            <p class="font-semibold">NOREK TUJUAN:</p>
-                            <p class="text-lg text-emerald-400">441301053472532 (BRI)</p>
-                            <p class="text-sm">Atas Nama: Idlal Nadia Izdihar</p>
-                        </div>
-                    </div>
-                    <p class="italic text-neutral-500 text-sm pt-2">
-                        *Upload Bukti Pembayaran
-                    </p>
-                    <input type="file" id="buktipembayaran" name="Bukti_Pembayaran" accept="image/*, application/pdf" placeholder="Upload Bukti Pembayaran" required
-                        class="w-full text-white bg-neutral-800 rounded-lg px-4 py-2 file:ml-auto file:py-1 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-emerald-400 file:text-black hover:file:bg-emerald-600:" />
-                    <br><br>
                 </div>
 
                 <div class="flex items-start gap-3 text-white text-sm">

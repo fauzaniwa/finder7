@@ -2,7 +2,7 @@
 // Pastikan variabel $admin_role sudah didefinisikan sebelum file ini di-include
 // Jika belum, Anda bisa mengambilnya dari sesi di sini
 if (!isset($admin_role)) {
-    session_start();
+    
     $admin_role = $_SESSION['role'] ?? 'guest';
 }
 ?>

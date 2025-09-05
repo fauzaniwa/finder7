@@ -20,11 +20,8 @@ $error_message = '';
  */
 function generateUniqueSlug($conn) {
     do {
-        // Generate a random 6-character string from alphanumeric characters
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $slug = substr(str_shuffle($characters), 0, 6);
-
-        // Check if the slug already exists in the database
         $sql = "SELECT id_event FROM event WHERE slug = ?";
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "s", $slug);
@@ -59,29 +56,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     if ($_SESSION['role'] !== 'master' && $_SESSION['role'] !== $kategori) {
         $error_message = "Anda tidak memiliki izin untuk membuat event di kategori ini.";
     } else {
+        // Konversi nilai string `event_status` ke integer yang sesuai dengan skema DB
+        switch ($event_status) {
+            case 'Dibuka':
+                $event_status_db = 1;
+                break;
+            case 'Tutup':
+                $event_status_db = 0;
+                break;
+            case 'Kuota Penuh':
+                $event_status_db = 2;
+                break;
+            default:
+                $event_status_db = 0;
+                break;
+        }
+
         // Mulai transaksi untuk memastikan konsistensi
         mysqli_begin_transaction($conn);
         $insert_success = true;
 
-        // 1. Generate slug unik
-        $slug = generateUniqueSlug($conn);
-        
-        // 2. Insert data event baru, termasuk slug
-        $sql_event = "INSERT INTO event (judul_event, slug, kategori, audiens, statusbayar, jadwal_event, waktu_event, lokasi_event, tiket_event, kuota, link_grup, event_status, show_event, urutan_show, deskripsi_event) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        if ($stmt_event = mysqli_prepare($conn, $sql_event)) {
-            mysqli_stmt_bind_param($stmt_event, "ssssssssiissssi", 
-                $judul_event, $slug, $kategori, $audiens, $statusbayar, $jadwal_event, $waktu_event, $lokasi_event, $tiket_event, $kuota, $link_grup, $event_status, $show_event, $urutan_show, $deskripsi_event
-            );
-            if (!mysqli_stmt_execute($stmt_event)) {
-                $error_message = "Terjadi kesalahan saat menambahkan event: " . mysqli_stmt_error($stmt_event);
+        // Proses upload file thumbnail
+        $thumbnail_path = '';
+        $upload_dir = '../img/thumbnail/';
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0755, true);
+        }
+
+        if (isset($_FILES['thumbnail_event']) && $_FILES['thumbnail_event']['error'] == UPLOAD_ERR_OK) {
+            $file_tmp_name = $_FILES['thumbnail_event']['tmp_name'];
+            $file_name = uniqid() . '-' . basename($_FILES['thumbnail_event']['name']);
+            $file_target = $upload_dir . $file_name;
+            $image_file_type = strtolower(pathinfo($file_target, PATHINFO_EXTENSION));
+
+            if ($image_file_type != "jpg" && $image_file_type != "png" && $image_file_type != "jpeg") {
+                $error_message = "Maaf, hanya file JPG, JPEG, & PNG yang diperbolehkan.";
                 $insert_success = false;
+            } else if (move_uploaded_file($file_tmp_name, $file_target)) {
+                $thumbnail_path = $file_name;
             } else {
-                $new_event_id = mysqli_insert_id($conn);
+                $error_message = "Terjadi kesalahan saat mengunggah file thumbnail.";
+                $insert_success = false;
             }
-            mysqli_stmt_close($stmt_event);
         } else {
-            $error_message = "Terjadi kesalahan saat mempersiapkan statement event: " . mysqli_error($conn);
+            $error_message = "Thumbnail event wajib diunggah.";
             $insert_success = false;
+        }
+        
+        if ($insert_success) {
+            // 1. Generate slug unik
+            $slug = generateUniqueSlug($conn);
+            
+            // 2. Insert data event baru, termasuk slug dan thumbnail
+            $sql_event = "INSERT INTO event (judul_event, slug, kategori, audiens, statusbayar, jadwal_event, waktu_event, lokasi_event, tiket_event, kuota, link_grup, event_status, show_event, urutan_show, deskripsi_event, thumbnail_event) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            if ($stmt_event = mysqli_prepare($conn, $sql_event)) {
+                // Perhatikan jumlah parameter binding dan urutannya
+                mysqli_stmt_bind_param($stmt_event, "ssssssssiissssis", 
+                    $judul_event, $slug, $kategori, $audiens, $statusbayar, $jadwal_event, $waktu_event, $lokasi_event, $tiket_event, $kuota, $link_grup, $event_status_db, $show_event, $urutan_show, $deskripsi_event, $thumbnail_path
+                );
+                if (!mysqli_stmt_execute($stmt_event)) {
+                    $error_message = "Terjadi kesalahan saat menambahkan event: " . mysqli_stmt_error($stmt_event);
+                    $insert_success = false;
+                } else {
+                    $new_event_id = mysqli_insert_id($conn);
+                }
+                mysqli_stmt_close($stmt_event);
+            } else {
+                $error_message = "Terjadi kesalahan saat mempersiapkan statement event: " . mysqli_error($conn);
+                $insert_success = false;
+            }
         }
 
         // 3. Tambahkan speakers baru
@@ -238,7 +281,7 @@ mysqli_close($conn);
                 </div>
             <?php endif; ?>
 
-            <form id="createForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" class="space-y-4">
+            <form id="createForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data" class="space-y-4">
                 <input type="hidden" name="action" value="create_event">
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -292,8 +335,8 @@ mysqli_close($conn);
                     <div>
                         <label for="statusbayar" class="block text-sm font-medium text-light-gray">Status Bayar</label>
                         <select id="statusbayar" name="statusbayar" class="mt-1 block w-full px-4 py-2 rounded-md bg-dark-gray text-light-gray border-gray-700 focus:border-primary-green focus:ring focus:ring-primary-green focus:ring-opacity-50">
-                            <option value="Free">Free</option>
-                            <option value="Paid">Paid</option>
+                            <option value="no">Gratis</option>
+                            <option value="yes">Berbayar</option>
                         </select>
                     </div>
                     <div>
@@ -315,13 +358,17 @@ mysqli_close($conn);
                         <label for="urutan_show" class="block text-sm font-medium text-light-gray">Urutan Tampil (0 untuk default)</label>
                         <input type="number" id="urutan_show" name="urutan_show" class="mt-1 block w-full px-4 py-2 rounded-md bg-dark-gray text-light-gray border-gray-700 focus:border-primary-green focus:ring focus:ring-primary-green focus:ring-opacity-50">
                     </div>
+                    <div>
+                        <label for="thumbnail_event" class="block text-sm font-medium text-light-gray">Thumbnail Event</label>
+                        <input type="file" id="thumbnail_event" name="thumbnail_event" required class="mt-1 block w-full text-sm text-light-gray file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-green file:text-dark hover:file:bg-opacity-80">
+                    </div>
                 </div>
 
                 <div class="mt-4">
                     <label class="block text-sm font-medium text-light-gray">Pilih Speakers</label>
                     <input type="text" id="speaker_search" placeholder="Cari speakers..." class="mb-2 block w-full px-4 py-2 rounded-md bg-dark-gray text-light-gray border-gray-700 focus:border-primary-green focus:ring focus:ring-primary-green focus:ring-opacity-50">
                     <div id="speakers-container" class="speaker-grid mt-1 max-h-48 overflow-y-auto">
-                        </div>
+                    </div>
                 </div>
 
                 <div class="mt-4">
@@ -389,7 +436,6 @@ mysqli_close($conn);
                 speaker.nama_speaker.toLowerCase().includes(searchTerm)
             );
             
-            // Saat di halaman buat, tidak ada speaker yang terpilih secara default
             renderSpeakers(filteredSpeakers, []);
         });
         

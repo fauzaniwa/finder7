@@ -280,10 +280,7 @@ $events_found = !empty($grouped_by_date);
                                     ?>
                                     <?php if ($event['event_status'] == 0): ?>
                                         <?php if ($sisa_kuota > 0): ?>
-                                            <form method="post" class="inline">
-                                                <input type="hidden" name="id_event" value="<?php echo $event['id_event']; ?>">
-                                                <button type="submit" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Daftar</button>
-                                            </form>
+                                            <a href="detailevent.php?slug=<?php echo $slug_event; ?>" class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
                                         <?php else: ?>
                                             <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Kuota Penuh</button>
                                         <?php endif; ?>

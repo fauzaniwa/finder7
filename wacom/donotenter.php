@@ -124,7 +124,7 @@ $result = $koneksi->query($sql);
             echo "</td>";
             
             echo "<td class='px-3 sm:px-5 py-5 border-b border-neutral-800 bg-neutral-900 text-sm whitespace-nowrap'>";
-            echo "<button class='bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 mr-2' onclick='openPaymentModal(\"../../wacom/uploads/" . htmlspecialchars($row['bukti_pembayaran']) . "\")'>Bukti Pembayaran</button>";
+            // echo "<button class='bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 mr-2' onclick='openPaymentModal(\"../../wacom/uploads/" . htmlspecialchars($row['bukti_pembayaran']) . "\")'>Bukti Pembayaran</button>";
             echo "<button class='bg-emerald-500 text-white px-3 py-1 rounded text-xs hover:bg-emerald-700' onclick='openDataModal({$data_json})'>Data Lengkap</button>";
             echo "</td>";
             echo "</tr>";

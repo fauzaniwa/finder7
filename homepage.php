@@ -426,7 +426,7 @@ include 'homepage_data.php';
                                   <?php 
                                     $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug'); // Mengambil slug atau nilai default
                                 ?>
-    <a href="detailevent.php?slug=<?php echo $slug_event; ?>" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail</a>
+    <a href="detailevent.php?slug=<?php echo $slug_event; ?>" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail Kegiatan</a>
 
     <?php if (!$user_id || !in_array($event['id_event'], $events_with_tickets)): ?>
         <?php
@@ -434,10 +434,7 @@ include 'homepage_data.php';
         ?>
         <?php if ($event['event_status'] == 0): ?>
             <?php if ($sisa_kuota > 0): ?>
-                <form method="post" class="inline">
-                    <input type="hidden" name="id_event" value="<?php echo $event['id_event']; ?>">
-                    <button type="submit" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Daftar</button>
-                </form>
+                    <a href="detailevent.php?slug=<?php echo $slug_event; ?>" class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
             <?php else: ?>
                 <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Kuota Penuh</button>
             <?php endif; ?>
@@ -449,7 +446,7 @@ include 'homepage_data.php';
             <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Segera Hadir</button>
         <?php endif; ?>
     <?php else: ?>
-        <span class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-sm">Tiket Diambil</span>
+        <span class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-sm">Kamu Memiliki Tiket</span>
     <?php endif; ?>
 </div>
                             </div>

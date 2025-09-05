@@ -5,7 +5,6 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Sertakan file koneksi.php untuk koneksi database
-// Catatan: Path ini disesuaikan berdasarkan lokasi file yang Anda berikan.
 require_once '../admin-one/dist/koneksi.php';
 
 // Sertakan file PHPMailer
@@ -18,13 +17,16 @@ require 'PHPMailer/src/SMTP.php';
 // Fungsi untuk membersihkan input data
 if (!function_exists('bersihkanInput')) {
     function bersihkanInput($data) {
-        return htmlspecialchars(strip_tags(trim($data)));
+        // Cek apakah data adalah null sebelum dilewatkan ke trim()
+        return htmlspecialchars(strip_tags(trim($data ?? '')));
     }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ambil dan bersihkan data dari POST
     $required_fields = ['kategori_karya', 'Nama_Lengkap', 'Nomor_Telepon', 'Email', 'Judul_Karya', 'Media_Sosial', 'Deskripsi_Karya', 'Link_Karya', 'persetujuan'];
+    
+    // Perbaikan: Ubah perulangan validasi agar memeriksa key yang benar
     foreach ($required_fields as $field) {
         if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
             die("Error: Semua field wajib diisi.");
@@ -46,43 +48,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Error: Format email tidak valid.");
     }
 
-    // --- LOGIKA UNGGAH FILE BUKTI PEMBAYARAN ---
-    $bukti_pembayaran = '';
-    if (isset($_FILES['Bukti_Pembayaran']) && $_FILES['Bukti_Pembayaran']['error'] == 0) {
-        $target_dir = "uploads/";
-        // Pastikan folder uploads ada, jika tidak, coba buat
-        if (!is_dir($target_dir)) {
-            if (!mkdir($target_dir, 0755, true)) {
-                die("Error: Gagal membuat folder 'uploads'. Periksa izin direktori.");
-            }
-        }
-        
-        $file_extension = pathinfo($_FILES['Bukti_Pembayaran']['name'], PATHINFO_EXTENSION);
-        $new_filename = uniqid('bukti_pembayaran_') . '.' . $file_extension;
-        $target_file = $target_dir . $new_filename;
-        $allowed_types = ['jpg', 'jpeg', 'png', 'pdf'];
-
-        if (!in_array(strtolower($file_extension), $allowed_types)) {
-            die("Error: Hanya file JPG, JPEG, PNG, dan PDF yang diizinkan.");
-        }
-        
-        // Pindahkan file yang diunggah ke folder target
-        if (move_uploaded_file($_FILES['Bukti_Pembayaran']['tmp_name'], $target_file)) {
-            $bukti_pembayaran = $new_filename;
-        } else {
-            // Jika gagal, tampilkan pesan error yang lebih spesifik
-            die("Error saat mengunggah file bukti pembayaran. Pastikan folder 'uploads' memiliki izin tulis (755/775).");
-        }
-    } else {
-        // Tambahkan penanganan error jika file tidak diunggah atau ada masalah
-        if (isset($_FILES['Bukti_Pembayaran']) && $_FILES['Bukti_Pembayaran']['error'] !== 4) {
-            die("Error saat mengunggah file. Kode error: " . $_FILES['Bukti_Pembayaran']['error']);
-        }
-    }
+    $bukti_pembayaran = 'Tidak Ada';
 
     // Simpan data ke database
     $sql = "INSERT INTO pendaftaran_wacom (kategori_karya, nama_lengkap, nomor_telepon, email, instansi, judul_karya, media_sosial, deskripsi_karya, link_karya, bukti_pembayaran, persetujuan) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $koneksi->prepare($sql);
     
     if ($stmt === false) {
@@ -154,7 +124,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } catch (Exception $e) {
             // Email konfirmasi gagal dikirim.
             // Anda dapat menambahkan log di sini jika diperlukan.
-            // die("Email konfirmasi gagal dikirim. Error: {$mail->ErrorInfo}");
         }
 
         header("Location: submitkaryawacom.php?success=1");

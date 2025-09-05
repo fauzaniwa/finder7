@@ -1,3 +1,6 @@
+<?php session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 
@@ -313,7 +316,6 @@
                     <li>Peserta wajib mengikuti tema yang telah ditentukan.</li>
                     <li>Keputusan juri bersifat mutlak dan tidak dapat diganggu gugat. Bila didapati kecurangan, pihak
                         panitia dan juri berhak untuk mengubah keputusan.</li>
-                    <li>Peserta membayar uang pendaftaran sebesar Rp15.000.</li>
                     <li>Peserta wajib mengikuti akun Instagram @finder_dkv @wacomindonesia @neonexp_</li>
                     <li>Seluruh peserta yang telah mendaftar akan mendapatkan voucher digital potongan harga untuk pembelian di Finder Store.</li>
                     <li>Peserta yang lolos babak penyisihan bersedia untuk melaksanakan perlombaan babak final (20
