@@ -54,7 +54,7 @@ mysqli_stmt_close($stmt_user);
 
 // Query untuk mendapatkan data tiket dan event berdasarkan id_user
 $query_tiket_event = "
-    SELECT tiket.tiket_code, event.judul_event, event.jadwal_event, event.waktu_event, event.lokasi_event, event.link_grup
+    SELECT tiket.tiket_code, event.judul_event, event.jadwal_event, event.waktu_event, event.lokasi_event, event.link_grup, event.thumbnail_event
     FROM tiket
     JOIN event ON tiket.id_event = event.id_event
     WHERE tiket.id_user = ?";
@@ -85,8 +85,6 @@ mysqli_close($koneksi);
 
 
 <!DOCTYPE html>
-<html lang="en">
-
 <html lang="en" class="scroll-smooth">
 
 <head>
@@ -104,284 +102,182 @@ mysqli_close($koneksi);
                     fontFamily: {
                         work: ['Work Sans'],
                     },
-                    animation: {
-                        'spin-slow': 'spin 4s linear infinite',
-                        'loop-scroll': 'loop-scroll 10s linear infinite',
-                    },
-                    keyframes: {
-                        'loop-scroll': {
-                            from: { transform: 'translateX(0)' },
-                            to: { transform: 'translateX(-100%)' },
-                        },
-                    },
                 },
             },
         };
     </script>
-    <style type="text/tailwindcss">
-        .navbar-scrolled {
-            box-shadow: 2px 2px 30px #000000;
-        }
-        .ext-scrolled {
-            color: black;
-        }
-        .navbar {
-            transition: all 0.5s;
-        }
-        .scroller {
-            max-width: 600px;
+    <style>
+        .custom-hr {
+            border: none;
+            height: 1px;
+            background-color: #4a4a4a;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
         }
 
-        .scroller__inner {
-            padding-block: 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3rem;
-        }
-
-        .scroller[data-animated='true'] {
-            overflow: hidden;
-            -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
-            mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
-        }
-
-        .scroller[data-animated='true'] .scroller__inner {
-            width: max-content;
-            flex-wrap: nowrap;
-            animation: scroll var(--_animation-duration, 40s) var(--_animation-direction, forwards) linear infinite;
-        }
-
-        .scroller[data-direction='right'] {
-            --_animation-direction: reverse;
-        }
-
-        .scroller[data-direction='left'] {
-            --_animation-direction: forwards;
-        }
-
-        .scroller[data-speed='fast'] {
-            --_animation-duration: 20s;
-        }
-
-        .scroller[data-speed='slow'] {
-            --_animation-duration: 60s;
-        }
-
-        @keyframes scroll {
-            to {
-                transform: translate(calc(-50% - 0.5rem));
+        @media (min-width: 768px) {
+            .custom-hr {
+                margin-top: 4rem;
+                margin-bottom: 4rem;
             }
         }
-
-        /* for testing purposed to ensure the animation lined up correctly */
-        .test {
-            background: red !important;
+        .modal {
+            transition: all 0.3s ease-in-out;
         }
     </style>
-
-    <title>Finder 6 - Profile</title>
+    <title>Profile - Finder 7 Mindspace</title>
     <link rel="icon" href="./img/FinderLogo.svg" type="image/x-icon" />
-
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
-    <link rel="stylesheet" href="https://unpkg.com/kursor/dist/kursor.css" />
-
-    <link rel="stylesheet" href="style.css" />
-
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
 </head>
 
-<body class="bg-black items-center">
+<body class="bg-neutral-950 font-['Work_Sans'] text-white">
     <?php require '_navbar.php'; ?>
-
-    <div
-        class="w-2/3 h-3/4 blur-3xl absolute -z-10 rounded-full bg-[radial-gradient(circle,_#515151_0%,_rgba(244,114,182,0)_70%)] top-px left-1/2 -translate-x-1/2 -translate-y-1/2">
-    </div>
-
-    <div id="profile" style="" class="flex flex-col items-center gap-4 py-10 max-w-full bg-cover">
-        <div class="flex items-start w-[90%] pt-24 ">
-            <a href="homepage.php" class="">
-                <img src="./img/arrow-left 1.svg" alt="Back" />
-            </a>
-        </div>
-    </div>
-
-    <section class="flex flex-col sm:flex-row w-11/12 mx-auto gap-8">
-
-        <div class="flex flex-col w-full sm:w-2/3 gap-8">
-
-            <div
-                class="flex gap-10 w-full justify-start items-center bg-neutral-950 md:py-24 md:px-16 px-8 py-16 rounded-3xl">
-                <div style="background-image: url(./img/profill.png)"
-                    class="w-24 sm:w-64 aspect-square bg-cover rounded-full bg-slate-300 overflow-hidden">
+    <div class="w-full min-h-screen pt-32 pb-32 bg-neutral-950 font-work px-4 md:px-8 lg:px-16">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row md:items-start md:space-x-8 lg:space-x-12">
+                <div class="hidden md:flex md:flex-col md:w-1/4 lg:w-1/5 bg-neutral-900 rounded-2xl p-4 md:p-6 space-y-2">
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg bg-neutral-800 text-white font-semibold">
+                        <ion-icon name="person-circle-outline" class="text-2xl"></ion-icon>
+                        <span class="text-base">Profile</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors duration-300">
+                        <ion-icon name="heart-outline" class="text-2xl"></ion-icon>
+                        <span class="text-base">Liked Post</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors duration-300">
+                        <ion-icon name="settings-outline" class="text-2xl"></ion-icon>
+                        <span class="text-base">Setting</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors duration-300">
+                        <ion-icon name="log-out-outline" class="text-2xl"></ion-icon>
+                        <span class="text-base">Logout</span>
+                    </a>
                 </div>
-                <div class="flex flex-col gap-4">
-                    <h1 class="text-white text-base sm:text-3xl font-semibold font-work w-full ">
-                        <?php echo htmlspecialchars($_SESSION['user_data']['nama']); ?>
-                    </h1>
-                    <h2 class="text-white text-sm sm:text-2xl font-light font-work w-full ">
-                        <?php echo htmlspecialchars($_SESSION['user_data']['instansi']); ?>
-                    </h2>
-                </div>
-            </div>
 
-            <div id="tiket" class="w-full bg-[#0D0D0D] flex flex-col gap-8 py-32 rounded-3xl">
-                <h1 class="text-white text-xl md:text-4xl font-bold font-work w-10/12 mx-auto md:w-full text-center">
-                    Tiket
-                    Seminar dan
-                    Workshop</h1>
+                <div class="w-full md:w-3/4 lg:w-4/5">
+                    <div class="flex md:hidden justify-around items-center bg-neutral-900 rounded-xl p-3 mb-6">
+                        <a href="#" class="flex flex-col items-center text-white">
+                            <ion-icon name="person-circle-outline" class="text-2xl mb-1"></ion-icon>
+                            <span class="text-xs">Profile</span>
+                        </a>
+                        <a href="#" class="flex flex-col items-center text-neutral-400">
+                            <ion-icon name="heart-outline" class="text-2xl mb-1"></ion-icon>
+                            <span class="text-xs">Liked Post</span>
+                        </a>
+                        <a href="#" class="flex flex-col items-center text-neutral-400">
+                            <ion-icon name="settings-outline" class="text-2xl mb-1"></ion-icon>
+                            <span class="text-xs">Setting</span>
+                        </a>
+                        <a href="#" class="flex flex-col items-center text-neutral-400">
+                            <ion-icon name="log-out-outline" class="text-2xl mb-1"></ion-icon>
+                            <span class="text-xs">Logout</span>
+                        </a>
+                    </div>
 
-                <?php foreach ($tiket_data as $tiket): ?>
-                    <div
-                        class="flex flex-col-reverse md:flex-row gap-5 md:justify-between items-center px-10 py-10 rounded-xl max-md:flex-wrap max-md:px-5 w-[90%] mx-auto md:bg-gradient-to-r bg-gradient-to-t from-[#121212] to-[#1A1A1A]">
-
-                        <div
-                            class="flex flex-col w-full md:w-2/3 mx-auto md:mx-0 text-center md:items-start gap-2 my-auto text-3xl font-medium md:text-start text-white">
-                            <div class="text-white text-2xl md:text-3xl font-semibold font-work">
-                                <?php echo htmlspecialchars($tiket['judul_event']); ?>
-                            </div>
-                            <div class="text-white text-sm md:text-xl font-semibold font-works">
-                                Tanggal: <?php echo htmlspecialchars($tiket['jadwal_event']); ?>
-                            </div>
-                            <div class="text-white text-sm md:text-xl font-semibold font-works">
-                                Waktu: <?php echo htmlspecialchars($tiket['waktu_event']); ?>
-                            </div>
-                            <div class="text-white text-sm md:text-xl font-semibold font-works">
-                                Lokasi: <?php echo htmlspecialchars($tiket['lokasi_event']); ?>
-                            </div>
-                            <div class="text-white text-sm md:text-xl font-semibold font-works"> Ticket Code :
-                                <?php echo htmlspecialchars($tiket['tiket_code']); ?>
-                            </div>
-                            <div class="pt-2 md:pt-5">
-                                <a href="<?php echo htmlspecialchars($tiket['link_grup']); ?>" target="_blank"
-                                    style="font-family: 'Work Sans'"
-                                    class="bg-emerald-600 hover:bg-emerald-800 py-4 px-6  text-white rounded-full text-sm md:text-lg">
-                                    Group WhatsApp
-                                </a>
+                    <div class="bg-neutral-900 p-6 md:p-8 rounded-3xl mb-8">
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-neutral-700 flex-shrink-0"></div>
+                            <div>
+                                <h2 class="text-2xl md:text-3xl font-bold"><?php echo htmlspecialchars($_SESSION['user_data']['nama']); ?></h2>
+                                <p class="text-lg md:text-xl text-neutral-400"><?php echo htmlspecialchars($_SESSION['user_data']['instansi']); ?></p>
                             </div>
                         </div>
-                        <div
-                            class="mx-auto md:mx-0 flex flex-col justify-center items-center max-w-[250px] max-h-[250px] rounded-xl">
-                            <div id="qr-code-<?php echo $tiket['tiket_code']; ?>" class="qr-code-container">
-                                </div>
+                    </div>
+
+                    <div class="bg-neutral-900 p-6 md:p-8 rounded-3xl mb-8">
+                        <h2 class="text-2xl md:text-3xl font-bold mb-6">Tiket Pameran</h2>
+                        <div class="bg-neutral-800 rounded-2xl p-6 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                            <div class="w-32 h-32 md:w-40 md:h-40 rounded-xl flex-shrink-0 p-2 bg-white flex justify-center items-center">
+                                <div id="qr-exhibition-ticket"></div>
+                            </div>
+                            <div class="text-center md:text-left">
+                                <p class="text-base md:text-lg text-neutral-300 leading-relaxed mb-2">Gunakan tiket ini untuk masuk pada area pameran.</p>
+                                <p class="text-sm font-semibold text-neutral-400">Ticket Code: <?php echo htmlspecialchars($_SESSION['user_data']['kode_account']); ?></p>
+                            </div>
                         </div>
                     </div>
-                <?php endforeach; ?>
 
-                </div>
-        </div>
-
-        <div id="tiket" class="w-full sm:w-1/3 flex flex-col gap-8 py-32 rounded-3xl">
-            <h1 class="text-white text-2xl md:text-4xl font-bold font-work w-full text-center">Tiket Masuk Finder
-            </h1>
-
-            <div
-                class="flex flex-col gap-5 md:justify-center items-center px-8 py-8 rounded-xl max-md:flex-wrap max-md:px-5 w-full mx-auto">
-                <div
-                    class="mx-auto md:mx-0 flex flex-col justify-center items-center bg-white max-w-[500px] max-h-[500px] rounded-xl">
-                    <div id="qr-codee-<?php echo $_SESSION['user_data']['kode_account']; ?>"
-                        class="qr-code-container">
+                    <div class="bg-neutral-900 p-6 md:p-8 rounded-3xl">
+                        <h2 class="text-2xl md:text-3xl font-bold mb-6">Seminar dan Workshop</h2>
+                        <div class="space-y-8 md:space-y-12">
+                            <?php if (!empty($tiket_data)): ?>
+                                <?php foreach ($tiket_data as $tiket): ?>
+                                    <div class="ticket-card cursor-pointer" 
+                                         data-title="<?php echo htmlspecialchars($tiket['judul_event']); ?>"
+                                         data-code="<?php echo htmlspecialchars($tiket['tiket_code']); ?>">
+                                        <div class="flex flex-col md:flex-row md:items-start space-y-4 md:space-y-0 md:space-x-6">
+                                            <img src="img/thumbnail/<?php echo htmlspecialchars($tiket['thumbnail_event']); ?>" alt="Poster Event" class="w-24 h-24 md:w-36 md:h-36 rounded-xl object-cover flex-shrink-0 mx-auto md:mx-0">
+                                            <div class="flex-grow text-center md:text-left">
+                                                <h3 class="text-xl md:text-2xl font-bold mb-2"><?php echo htmlspecialchars($tiket['judul_event']); ?></h3>
+                                                <div class="space-y-1 text-sm md:text-base text-neutral-300">
+                                                    <p>Tanggal: <span class="text-neutral-400"><?php echo htmlspecialchars($tiket['jadwal_event']); ?></span></p>
+                                                    <p>Waktu: <span class="text-neutral-400"><?php echo htmlspecialchars($tiket['waktu_event']); ?></span></p>
+                                                    <p>Lokasi: <span class="text-neutral-400"><?php echo htmlspecialchars($tiket['lokasi_event']); ?></span></p>
+                                                    <p>Ticket Code: <span class="text-neutral-400"><?php echo htmlspecialchars($tiket['tiket_code']); ?></span></p>
+                                                </div>
+                                                <a href="<?php echo htmlspecialchars($tiket['link_grup']); ?>" target="_blank" class="mt-4 md:mt-6 inline-block bg-[#008C62] text-white font-medium py-2 px-6 rounded-full hover:bg-[#007b56] transition-colors duration-300">Group Whatsapp</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-hr md:hidden"></div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p class="text-center text-neutral-400">Anda belum memiliki tiket seminar atau workshop.</p>
+                            <?php endif; ?>
                         </div>
-                </div>
-                <hr>
-                <hr>
-                <div
-                    class="flex flex-col mx-auto md:mx-0 text-center md:items-center gap-4 my-auto text-3xl font-medium md:text-center text-white w-5/6">
-                    <div class="text-white text-2xl md:text-3xl font-bold font-work">
-                        Akses Masuk
-                    </div>
-                    <div class="text-white text-lg md:text-xl font-semibold font-works italic">
-                        Ticket Code: <?php echo htmlspecialchars($_SESSION['user_data']['kode_account']); ?>
-                    </div>
-                    <div class="text-white text-base md:text-lg font-light font-works">
-                        Tunjukkan tiket ini kepada panitia disaat kamu memasuki area Finder 6 Pusaka
                     </div>
                 </div>
             </div>
-
-
-            <script>
-                // Ambil nilai kode_account dari PHP untuk tiket ini
-                var kodeAccount = "<?php echo htmlspecialchars($_SESSION['user_data']['kode_account']); ?>";
-
-                // Buat QR Code menggunakan data URI
-                var qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=" + encodeURIComponent(kodeAccount);
-
-                // Tampilkan QR Code di dalam div yang sesuai
-                document.getElementById('qr-codee-<?php echo $_SESSION['user_data']['kode_account']; ?>').innerHTML = '<img src="' + qrCodeUrl + '" alt="QR Code">';
-            </script>
-
         </div>
-    </section>
-
-
-    <?php require '_footer.php'; ?>
-</body>
-<script src="https://unpkg.com/kursor"></script>
-<script>
-    new kursor({
-        type: 4,
-        removeDefaultCursor: true,
-        color: '#ffffff',
-    });
-</script>
-<script src="system.js"></script>
-<script>
-    const navLinks = document.querySelector('.nav-links');
-
-    function onToggleMenu(e) {
-        e.name = e.name === 'menu' ? 'close' : 'menu';
-        navLinks.classList.toggle('-bottom-52');
-    }
-</script>
-<script>
-    const navEL = document.querySelector('.navbar');
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 56) {
-            navEL.classList.add('navbar-scrolled');
-        } else if (window.scrollY < 56) {
-            navEL.classList.remove('navbar-scrolled');
+    </div>
+    
+    <div id="modal-tiket" class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50 hidden modal">
+        <div class="bg-neutral-900 p-8 rounded-2xl w-11/12 max-w-lg relative">
+            <button id="close-modal" class="absolute top-4 right-4 text-white hover:text-neutral-400">
+                <ion-icon name="close-circle-outline" class="text-3xl"></ion-icon>
+            </button>
+            <h3 id="modal-title" class="text-2xl md:text-3xl font-bold text-center mb-6"></h3>
+            <div class="bg-white p-4 rounded-xl flex justify-center items-center mb-6">
+                <div id="modal-qr-code"></div>
+            </div>
+            <p class="text-center text-lg md:text-xl text-neutral-400 mb-2">Tunjukkan QR code ini kepada panitia.</p>
+            <p id="modal-ticket-code" class="text-center text-base md:text-lg font-semibold text-neutral-300"></p>
+        </div>
+    </div>
+    
+    <script>
+        // Function to generate and display QR code
+        function generateQRCode(elementId, data) {
+            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(data)}`;
+            document.getElementById(elementId).innerHTML = `<img src="${qrCodeUrl}" alt="QR Code">`;
         }
-    });
-</script>
-<script>
-    const scrollers = document.querySelectorAll('.scroller');
-
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        addAnimation();
-    }
-
-    function addAnimation() {
-        scrollers.forEach((scroller) => {
-            scroller.setAttribute('data-animated', true);
-            const scrollerInner = scroller.querySelector('.scroller__inner');
-            const scrollerContent = Array.from(scrollerInner.children);
-            scrollerContent.forEach((item) => {
-                const duplicatedItem = item.cloneNode(true);
-                duplicatedItem.setAttribute('aria-hidden', true);
-                scrollerInner.appendChild(duplicatedItem);
+    
+        // Generate QR code for Exhibition Ticket
+        document.addEventListener("DOMContentLoaded", function() {
+            const exhibitionCode = "<?php echo htmlspecialchars($_SESSION['user_data']['kode_account']); ?>";
+            generateQRCode('qr-exhibition-ticket', exhibitionCode);
+        });
+    
+        // Event listener for Seminar and Workshop ticket cards
+        document.querySelectorAll('.ticket-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.getAttribute('data-title');
+                const code = this.getAttribute('data-code');
+    
+                document.getElementById('modal-title').innerText = title;
+                document.getElementById('modal-ticket-code').innerText = `Ticket Code: ${code}`;
+                
+                generateQRCode('modal-qr-code', code);
+    
+                document.getElementById('modal-tiket').classList.remove('hidden');
             });
         });
-    }
-</script>
-
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-    // Loop melalui setiap elemen dengan kelas 'qr-code-container'
-    document.querySelectorAll('.qr-code-container').forEach(container => {
-        const tiketCode = container.id.split('-')[2]; // Ambil kode tiket dari ID
-        
-        // Pastikan tiketCode valid
-        if (tiketCode) {
-            // Buat QR Code menggunakan data URI
-            const qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(tiketCode);
-
-            // Tampilkan QR Code di dalam div yang sesuai
-            container.innerHTML = `<img src="${qrCodeUrl}" alt="QR Code">`;
-        }
-    });
-</script>
+    
+        // Event listener for close modal button
+        document.getElementById('close-modal').addEventListener('click', function() {
+            document.getElementById('modal-tiket').classList.add('hidden');
+        });
+    </script>
+</body>
 </html>
