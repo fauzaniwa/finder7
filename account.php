@@ -177,7 +177,7 @@ mysqli_close($koneksi);
 
                     <div class="bg-neutral-900 p-6 md:p-8 rounded-3xl mb-8">
                         <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-neutral-700 flex-shrink-0"></div>
+                            <img src="img/profill.png" alt="Poster Event" class="w-20 h-20 md:w-24 md:h-24 rounded-full flex-shrink-0 mx-auto md:mx-0">
                             <div>
                                 <h2 class="text-2xl md:text-3xl font-bold"><?php echo htmlspecialchars($_SESSION['user_data']['nama']); ?></h2>
                                 <p class="text-lg md:text-xl text-neutral-400"><?php echo htmlspecialchars($_SESSION['user_data']['instansi']); ?></p>
