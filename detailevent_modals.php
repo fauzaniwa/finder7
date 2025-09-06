@@ -1,3 +1,27 @@
+<?php
+// Letakkan kode ini di bagian paling atas file detailevent.php
+
+// Asumsikan kode koneksi database dan query untuk $row_event, $slug_target sudah ada di sini
+// ... (kode yang mengambil data event dari database) ...
+
+// Inisialisasi variabel untuk menampilkan modal
+$show_verification_modal = false;
+
+// Periksa variabel sesi
+if (isset($_SESSION['show_verification_modal']) && $_SESSION['show_verification_modal'] === true) {
+    $show_verification_modal = true;
+    // Hapus variabel sesi agar modal tidak muncul lagi saat di-refresh
+    unset($_SESSION['show_verification_modal']);
+}
+
+// Opsional: periksa variabel sesi untuk error
+if (isset($_SESSION['registration_error']) && $_SESSION['registration_error'] === true) {
+    // Tampilkan pesan error
+    echo '<script>alert("Gagal mendaftar. Silakan coba lagi.");</script>';
+    unset($_SESSION['registration_error']);
+}
+
+?>
 <div id="registrationModal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4 hidden">
     <?php if ($row_event['statusbayar'] === 'no'): // Modal FREE ?>
         <div class="bg-white rounded-2xl p-8 max-w-lg w-full relative overflow-y-auto max-h-[95vh]">
@@ -85,7 +109,7 @@
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-bold text-lg">QRIS PAY</h3>
                             <span id="total-price-display" class="bg-gray-800 text-white px-4 py-2 rounded-full font-semibold">
-                                <i class="fa-solid fa-dollar-sign text-[#00E091] mr-1"></i>Rp. <?php echo number_format($row_event['tiket_event'], 0, ',', '.'); ?>,-
+                                <i class="fa-solid fa-money-bill-1-wave text-[#00E091] mr-1"></i>Rp. <?php echo number_format($row_event['tiket_event'], 0, ',', '.'); ?>,-
                             </span>
                         </div>
                         <div class="bg-gray-200 w-full aspect-square rounded-lg flex items-center justify-center">
@@ -242,97 +266,95 @@
                 }
             });
         }
-    });
-
-    // --- Logika Formulir Dinamis untuk Peserta Berbayar ---
-    const addUserBtn = document.getElementById('addUserBtn');
-    const userFormContainer = document.getElementById('user-form-container');
-    const discountInfo = document.getElementById('discount-info');
-    const totalPriceDisplay = document.getElementById('total-price-display');
-    const totalHargaPromoSpan = document.getElementById('total-harga-promo');
-    let userCount = 1;
     
-    // Asumsi harga tiket dari PHP
-    const tiketEventPrice = <?php echo json_encode($row_event['tiket_event']); ?>;
+        // --- Logika Formulir Dinamis untuk Peserta Berbayar ---
+        const addUserBtn = document.getElementById('addUserBtn');
+        const userFormContainer = document.getElementById('user-form-container');
+        const discountInfo = document.getElementById('discount-info');
+        const totalPriceDisplay = document.getElementById('total-price-display');
+        const totalHargaPromoSpan = document.getElementById('total-harga-promo');
+        let userCount = 1;
+        
+        // Asumsi harga tiket dari PHP
+        const tiketEventPrice = <?php echo json_encode($row_event['tiket_event']); ?>;
 
-    function formatRupiah(number) {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            minimumFractionDigits: 0
-        }).format(number);
-    }
-    
-    function updateTotalPrice() {
-        let totalHarga = userCount * tiketEventPrice;
-        if (userCount === 3) {
-            if (tiketEventPrice === 20000) {
-                totalHarga = 50000;
-                totalHargaPromoSpan.textContent = formatRupiah(totalHarga);
-                discountInfo.classList.remove('hidden');
-            } else if (tiketEventPrice === 35000) {
-                totalHarga = 90000;
-                totalHargaPromoSpan.textContent = formatRupiah(totalHarga);
-                discountInfo.classList.remove('hidden');
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(number);
+        }
+        
+        function updateTotalPrice() {
+            let totalHarga = userCount * tiketEventPrice;
+            if (userCount === 3) {
+                if (tiketEventPrice === 20000) {
+                    totalHarga = 50000;
+                    totalHargaPromoSpan.textContent = formatRupiah(totalHarga);
+                    discountInfo.classList.remove('hidden');
+                } else if (tiketEventPrice === 35000) {
+                    totalHarga = 90000;
+                    totalHargaPromoSpan.textContent = formatRupiah(totalHarga);
+                    discountInfo.classList.remove('hidden');
+                } else {
+                    discountInfo.classList.add('hidden');
+                }
             } else {
                 discountInfo.classList.add('hidden');
             }
-        } else {
-            discountInfo.classList.add('hidden');
+            totalPriceDisplay.innerHTML = ` <i class="fa-solid fa-money-bill-1-wave text-[#00E091] mr-1"></i>${formatRupiah(totalHarga)}`;
         }
-        totalPriceDisplay.innerHTML = `<i class="fa-solid fa-dollar-sign text-[#00E091] mr-1"></i>${formatRupiah(totalHarga)}`;
-    }
 
-    if (addUserBtn) {
-        addUserBtn.addEventListener('click', () => {
-            if (userCount < 3) {
-                userCount++;
-                const newUserForm = document.createElement('div');
-                newUserForm.classList.add('user-form-group', 'border-b', 'pb-4', 'pt-4');
-                newUserForm.innerHTML = `
-                    <h5 class="font-bold text-left text-gray-700">Data Peserta ${userCount}</h5>
-                    <label class="block text-sm font-medium text-gray-700 mt-2"><i class="fa-solid fa-user text-gray-400 mr-2"></i>Nama Lengkap</label>
-                    <input type="text" name="nama_lengkap[]" placeholder="Nama Lengkap" class="mt-1 block w-full px-3 py-2 bg-gray-100 border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500" required>
-                    
-                    <label class="block text-sm font-medium text-gray-700 mt-2"><i class="fa-solid fa-envelope text-gray-400 mr-2"></i>Email</label>
-                    <input type="email" name="email[]" placeholder="Email" class="mt-1 block w-full px-3 py-2 bg-gray-100 border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500" required>
-                    
-                    <label class="block text-sm font-medium text-gray-700 mt-2"><i class="fa-solid fa-mobile-screen-button text-gray-400 mr-2"></i>Nomor Telepon</label>
-                    <input type="tel" name="no_whatsapp[]" placeholder="Nomor Telepon" class="mt-1 block w-full px-3 py-2 bg-gray-100 border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500" required>
-                    
-                    <button type="button" class="remove-user-btn text-red-500 hover:underline mt-2 text-sm">Hapus</button>
-                `;
-                userFormContainer.appendChild(newUserForm);
+        if (addUserBtn) {
+            addUserBtn.addEventListener('click', () => {
+                if (userCount < 3) {
+                    userCount++;
+                    const newUserForm = document.createElement('div');
+                    newUserForm.classList.add('user-form-group', 'border-b', 'pb-4', 'pt-4');
+                    newUserForm.innerHTML = `
+                        <h5 class="font-bold text-left text-gray-700">Data Peserta ${userCount}</h5>
+                        <label class="block text-sm font-medium text-gray-700 mt-2"><i class="fa-solid fa-user text-gray-400 mr-2"></i>Nama Lengkap</label>
+                        <input type="text" name="nama_lengkap[]" placeholder="Nama Lengkap" class="mt-1 block w-full px-3 py-2 bg-gray-100 border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500" required>
+                        
+                        <label class="block text-sm font-medium text-gray-700 mt-2"><i class="fa-solid fa-envelope text-gray-400 mr-2"></i>Email</label>
+                        <input type="email" name="email[]" placeholder="Email" class="mt-1 block w-full px-3 py-2 bg-gray-100 border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500" required>
+                        
+                        <label class="block text-sm font-medium text-gray-700 mt-2"><i class="fa-solid fa-mobile-screen-button text-gray-400 mr-2"></i>Nomor Telepon</label>
+                        <input type="tel" name="no_whatsapp[]" placeholder="Nomor Telepon" class="mt-1 block w-full px-3 py-2 bg-gray-100 border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500" required>
+                        
+                        <button type="button" class="remove-user-btn text-red-500 hover:underline mt-2 text-sm">Hapus</button>
+                    `;
+                    userFormContainer.appendChild(newUserForm);
 
-                if (userCount === 3) {
-                    addUserBtn.classList.add('hidden');
+                    if (userCount === 3) {
+                        addUserBtn.classList.add('hidden');
+                    }
+                    updateTotalPrice();
+                }
+            });
+        }
+
+        userFormContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('remove-user-btn')) {
+                const formGroup = event.target.closest('.user-form-group');
+                formGroup.remove();
+                userCount--;
+                document.querySelectorAll('.user-form-group').forEach((group, index) => {
+                    group.querySelector('h5').textContent = `Data Peserta ${index + 1}`;
+                    const labels = group.querySelectorAll('label');
+                    labels[0].textContent = `Nama Lengkap`;
+                    labels[1].textContent = `Email`;
+                    labels[2].textContent = `Nomor Telepon`;
+                });
+                if (userCount < 3) {
+                    addUserBtn.classList.remove('hidden');
                 }
                 updateTotalPrice();
             }
         });
-    }
 
-    userFormContainer.addEventListener('click', (event) => {
-        if (event.target.classList.contains('remove-user-btn')) {
-            const formGroup = event.target.closest('.user-form-group');
-            formGroup.remove();
-            userCount--;
-            document.querySelectorAll('.user-form-group').forEach((group, index) => {
-                group.querySelector('h5').textContent = `Data Peserta ${index + 1}`;
-                const labels = group.querySelectorAll('label');
-                labels[0].textContent = `Nama Lengkap`;
-                labels[1].textContent = `Email`;
-                labels[2].textContent = `Nomor Telepon`;
-            });
-            if (userCount < 3) {
-                addUserBtn.classList.remove('hidden');
-            }
-            updateTotalPrice();
-        }
-    });
-
-    // Logic untuk modal verifikasi
-    document.addEventListener('DOMContentLoaded', function() {
+        // Logic untuk modal verifikasi
         const verificationPendingModal = document.getElementById('verificationPendingModal');
         const closeVerificationPendingModalBtn = document.getElementById('closeVerificationPendingModalBtn');
         const okVerificationPendingModalBtn = document.getElementById('okVerificationPendingModalBtn');
@@ -354,7 +376,7 @@
         if (showVerificationModal) {
             verificationPendingModal.classList.remove('hidden');
         }
-    });
 
-    updateTotalPrice(); // Initial price update on page load
+        updateTotalPrice(); // Initial price update on page load
+    });
 </script>

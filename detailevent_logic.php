@@ -43,18 +43,23 @@ function generateTicketCode($id_event, $user_id)
 }
 
 $events_with_tickets = [];
-if ($user_id) {
-    $query_check_tiket = "SELECT id_event, is_verified FROM tiket WHERE id_user = ?";
+// Pastikan email pengguna tersedia, misalnya dari sesi
+$user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : null;
+
+// Pastikan user_id juga tersedia
+$user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
+
+// Lakukan pengecekan sebelum menjalankan query
+if ($user_id && $user_email) {
+    $query_check_tiket = "SELECT id_event, is_verified FROM tiket WHERE id_user = ? AND email = ?";
     $stmt_check_tiket = mysqli_prepare($koneksi, $query_check_tiket);
     if ($stmt_check_tiket) {
-        mysqli_stmt_bind_param($stmt_check_tiket, "i", $user_id);
+        // PERHATIAN: Perhatikan urutan dan tipe data parameter (i untuk integer, s untuk string)
+        mysqli_stmt_bind_param($stmt_check_tiket, "is", $user_id, $user_email);
         mysqli_stmt_execute($stmt_check_tiket);
         $result_check_tiket = mysqli_stmt_get_result($stmt_check_tiket);
         while ($row_check_tiket = mysqli_fetch_assoc($result_check_tiket)) {
-            $events_with_tickets[] = [
-                'id_event' => intval($row_check_tiket['id_event']),
-                'is_verified' => intval($row_check_tiket['is_verified'])
-            ];
+            $events_with_tickets[$row_check_tiket['id_event']] = intval($row_check_tiket['is_verified']);
         }
         mysqli_stmt_close($stmt_check_tiket);
     }
@@ -71,15 +76,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event']) && isset($
     $insert_success = true;
 
     // Cek apakah user sudah mendaftar event ini
-    $sudah_daftar = false;
-    $is_verified_status = 0;
-    foreach ($events_with_tickets as $event_ticket) {
-        if ($event_ticket['id_event'] == $id_event) {
-            $sudah_daftar = true;
-            $is_verified_status = $event_ticket['is_verified'];
-            break;
-        }
-    }
+    // Cek apakah user sudah mendaftar event ini
+    $sudah_daftar = isset($events_with_tickets[$id_event]);
+    $is_verified_status = $sudah_daftar ? $events_with_tickets[$id_event] : 0;
 
     if ($sudah_daftar) {
         if ($is_verified_status == 0) {
@@ -202,27 +201,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event']) && isset($
                 }
 
                 if ($insert_success && $first_tiket_id && $bukti_path) {
-                    // Perbaikan: Pastikan total_harga diikat sebagai integer (i)
+                    // --- PERBAIKAN DI BAGIAN INI ---
                     $query_insert_bukti = "INSERT INTO path_pembayaran (id_tiket, path_file, total_bayar, created_at) VALUES (?, ?, ?, NOW())";
                     $stmt_insert_bukti = mysqli_prepare($koneksi, $query_insert_bukti);
-                    mysqli_stmt_bind_param($stmt_insert_bukti, "iis", $first_tiket_id, $bukti_path, $total_harga);
-                    mysqli_stmt_execute($stmt_insert_bukti);
-                    mysqli_stmt_close($stmt_insert_bukti);
+                    
+                    // Tambahkan penanganan error untuk debugging
+                    if (!$stmt_insert_bukti) {
+                        echo '<script>alert("Gagal mempersiapkan statement path_pembayaran: ' . mysqli_error($koneksi) . '");</script>';
+                        $insert_success = false;
+                    } else {
+                        // Perbaikan: Ubah "iis" menjadi "isi" untuk id_tiket (integer), path_file (string), total_bayar (integer)
+                        mysqli_stmt_bind_param($stmt_insert_bukti, "isi", $first_tiket_id, $bukti_path, $total_harga);
+                        
+                        if (!mysqli_stmt_execute($stmt_insert_bukti)) {
+                            echo '<script>alert("Gagal menyimpan bukti pembayaran: ' . mysqli_stmt_error($stmt_insert_bukti) . '");</script>';
+                            $insert_success = false;
+                        }
+                        mysqli_stmt_close($stmt_insert_bukti);
+                    }
+                    // --- AKHIR PERBAIKAN ---
                 }
             }
         }
         
         if ($insert_success) {
-            echo "<script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const registrationModal = document.getElementById('registrationModal');
-                    const thankYouModal = document.getElementById('thankYouModal');
-                    if (registrationModal) registrationModal.classList.add('hidden');
-                    if (thankYouModal) thankYouModal.classList.remove('hidden');
-                });
-            </script>";
+            // Setel variabel sesi untuk menandakan keberhasilan pendaftaran
+            $_SESSION['show_verification_modal'] = true;
+            
+            // Alihkan pengguna kembali ke detailevent.php tanpa parameter
+            header("Location: detailevent.php?slug=" . $slug_target);
+            exit();
         } else {
-            echo '<script>alert("Gagal mendaftar. Silakan coba lagi.");</script>';
+            // Opsional: setel variabel sesi untuk error jika diperlukan
+            $_SESSION['registration_error'] = true;
+            
+            header("Location: detailevent.php?slug=" . $slug_target);
+            exit();
         }
     }
 }
@@ -273,11 +287,11 @@ $sisa_kuota = max(0, $total_kuota - $total_users);
 mysqli_stmt_close($stmt_count_users);
 
 // Logika untuk menampilkan modal verifikasi
+// Logika untuk menampilkan modal verifikasi
 $show_verification_modal = false;
-foreach ($events_with_tickets as $event_ticket) {
-    if ($event_ticket['id_event'] == $row_event['id_event'] && $event_ticket['is_verified'] == 0) {
-        $show_verification_modal = true;
-        break;
-    }
+// Cek apakah tiket untuk event ini ada dan statusnya belum diverifikasi (0)
+if (isset($events_with_tickets[$row_event['id_event']]) && $events_with_tickets[$row_event['id_event']] == 0) {
+    $show_verification_modal = true;
 }
+
 ?>

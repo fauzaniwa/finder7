@@ -21,65 +21,58 @@ if ($sort_by === 'terlama') {
     $order_by = 't.created_tiket ASC';
 }
 
-// Bangun query SQL dasar
+// Bangun query SQL utama
 $sql = "SELECT
     t.id_tiket,
+    t.id_user,
+    t.id_event,
+    t.created_tiket,
     t.tiket_code,
     t.payment_status,
     t.is_verified,
-    u.nama AS nama_user,
-    u.email,
-    u.no_hp,
-    e.judul_event AS judul_event,
-    e.statusbayar AS event_statusbayar
-FROM
-    `tiket` AS t
-JOIN
-    `user` AS u ON t.id_user = u.id_user
-JOIN
-    `event` AS e ON t.id_event = e.id_event";
+    t.nama_lengkap AS nama_user,
+    t.email,
+    t.no_whatsapp AS no_hp,
+    e.judul_event AS judul_event
+FROM `tiket` AS t
+JOIN `event` AS e ON t.id_event = e.id_event";
 
 // Persiapan parameter untuk klausa WHERE
-$params_where = [];
-$types_where = '';
+$params = [];
+$types = '';
 $where_clauses = [];
 
-// Tambahkan filter berdasarkan peran jika bukan master
 if ($role !== 'master') {
     $where_clauses[] = "e.kategori = ?";
-    $params_where[] = $role;
-    $types_where .= 's';
+    $params[] = $role;
+    $types .= 's';
 }
 
-// Tambahkan filter event_id jika ada
 if ($event_id) {
     $where_clauses[] = "e.id_event = ?";
-    $params_where[] = $event_id;
-    $types_where .= 'i';
+    $params[] = $event_id;
+    $types .= 'i';
 }
 
-// Tambahkan filter pencarian jika ada
 if ($search_query) {
-    $where_clauses[] = "(u.nama LIKE ? OR u.email LIKE ? OR u.no_hp LIKE ? OR e.judul_event LIKE ?)";
-    $params_where[] = $search_query;
-    $params_where[] = $search_query;
-    $params_where[] = $search_query;
-    $params_where[] = $search_query;
-    $types_where .= 'ssss';
+    $where_clauses[] = "(t.nama_lengkap LIKE ? OR t.email LIKE ? OR t.no_whatsapp LIKE ? OR e.judul_event LIKE ?)";
+    $params[] = $search_query;
+    $params[] = $search_query;
+    $params[] = $search_query;
+    $params[] = $search_query;
+    $types .= 'ssss';
 }
 
-// Gabungkan semua klausa WHERE
 if (!empty($where_clauses)) {
     $sql .= " WHERE " . implode(" AND ", $where_clauses);
 }
 
-// Tambahkan ORDER BY
 $sql .= " ORDER BY " . $order_by;
 
 $registrants = [];
 if ($stmt = mysqli_prepare($conn, $sql)) {
-    if (!empty($params_where)) {
-        mysqli_stmt_bind_param($stmt, $types_where, ...$params_where);
+    if (!empty($params)) {
+        call_user_func_array('mysqli_stmt_bind_param', array_merge([$stmt, $types], $params));
     }
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
@@ -87,6 +80,27 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
         $registrants[] = $row;
     }
     mysqli_stmt_close($stmt);
+}
+
+// Query untuk cek grup
+$sql_group = "SELECT `id_user`, `id_event`, `created_tiket` FROM `tiket`";
+$grouped_data = [];
+if (!empty($where_clauses)) {
+    $sql_group .= " WHERE " . implode(" AND ", $where_clauses);
+}
+$sql_group .= " GROUP BY `id_user`, `id_event`, `created_tiket` HAVING COUNT(*) > 1";
+
+if ($stmt_group = mysqli_prepare($conn, $sql_group)) {
+    if (!empty($params)) {
+        call_user_func_array('mysqli_stmt_bind_param', array_merge([$stmt_group, $types], $params));
+    }
+    mysqli_stmt_execute($stmt_group);
+    $result_group = mysqli_stmt_get_result($stmt_group);
+    while ($row = mysqli_fetch_assoc($result_group)) {
+        $key = $row['id_user'] . '|' . $row['id_event'] . '|' . $row['created_tiket'];
+        $grouped_data[$key] = true;
+    }
+    mysqli_stmt_close($stmt_group);
 }
 
 mysqli_close($conn);
@@ -104,14 +118,22 @@ fputcsv($output, array('No', 'Nama User', 'Email', 'No. HP', 'Nama Event', 'Kode
 // Isi data
 $i = 1;
 foreach ($registrants as $registrant) {
+    $key = $registrant['id_user'] . '|' . $registrant['id_event'] . '|' . $registrant['created_tiket'];
+    $is_group = isset($grouped_data[$key]);
+    
+    $nama_user = $registrant['nama_user'];
+    if ($is_group) {
+        $nama_user .= ' (Group)';
+    }
+
     $row = [
         $i++,
-        $registrant['nama_user'],
+        $nama_user,
         $registrant['email'],
         $registrant['no_hp'],
         $registrant['judul_event'],
         $registrant['tiket_code'],
-        $registrant['payment_status'] === 'paid' ? 'Sudah Dibayar' : 'Belum Dibayar',
+        $registrant['payment_status'] == 'paid' ? 'Sudah Dibayar' : 'Belum Dibayar',
         $registrant['is_verified'] == 1 ? 'Sudah Diverifikasi' : 'Belum Diverifikasi'
     ];
     fputcsv($output, $row);

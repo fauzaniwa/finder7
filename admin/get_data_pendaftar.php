@@ -35,9 +35,13 @@ $sql_select = "SELECT
     t.tiket_code,
     t.payment_status,
     t.is_verified,
+    t.nama_lengkap,
+    t.id_user,
+    t.id_event,
+    t.created_tiket,
     u.nama AS nama_user,
-    u.email,
-    u.no_hp,
+    u.email AS user_email,
+    u.no_hp AS user_no_hp,
     e.judul_event AS judul_event,
     e.statusbayar AS event_statusbayar,
     pp.path_file
@@ -116,10 +120,36 @@ if ($stmt = mysqli_prepare($conn, $sql_select)) {
     mysqli_stmt_bind_param($stmt, $types_select, ...$params_select);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
+    $raw_registrants = [];
     while ($row = mysqli_fetch_assoc($result)) {
-        $registrants[] = $row;
+        $raw_registrants[] = $row;
     }
     mysqli_stmt_close($stmt);
+    
+    // Proses pengelompokan data
+    $groups = [];
+    foreach ($raw_registrants as $r) {
+        $key = $r['id_user'] . '-' . $r['id_event'] . '-' . $r['created_tiket'];
+        if (!isset($groups[$key])) {
+            $groups[$key] = [];
+        }
+        $groups[$key][] = $r;
+    }
+    
+    foreach ($groups as $group) {
+        // Jika grup memiliki lebih dari 1 anggota
+        if (count($group) > 1) {
+            // Ambil data anggota pertama sebagai representasi grup
+            $main_registrant = $group[0];
+            $main_registrant['is_grouped'] = true;
+            $main_registrant['group_members'] = $group; // Tambahkan array anggota ke data utama
+            $registrants[] = $main_registrant;
+        } else {
+            // Jika hanya satu anggota, tambahkan seperti biasa
+            $registrants[] = $group[0];
+        }
+    }
+
 } else {
     http_response_code(500);
     echo json_encode(['error' => 'Terjadi kesalahan saat mengambil data pendaftar: ' . mysqli_error($conn)]);

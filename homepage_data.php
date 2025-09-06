@@ -156,6 +156,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event'])) {
     }
 }
 
+// Pastikan email pengguna tersedia, misalnya dari sesi
+$user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : null;
+
+// Pastikan user_id juga tersedia
+$user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
+
+// Lakukan pengecekan sebelum menjalankan query
+if ($user_id && $user_email) {
+    $query_check_tiket = "SELECT id_event, is_verified FROM tiket WHERE id_user = ? AND email = ?";
+    $stmt_check_tiket = mysqli_prepare($koneksi, $query_check_tiket);
+    if ($stmt_check_tiket) {
+        // PERHATIAN: Perhatikan urutan dan tipe data parameter (i untuk integer, s untuk string)
+        mysqli_stmt_bind_param($stmt_check_tiket, "is", $user_id, $user_email);
+        mysqli_stmt_execute($stmt_check_tiket);
+        $result_check_tiket = mysqli_stmt_get_result($stmt_check_tiket);
+        while ($row_check_tiket = mysqli_fetch_assoc($result_check_tiket)) {
+            $events_with_tickets[$row_check_tiket['id_event']] = intval($row_check_tiket['is_verified']);
+        }
+        mysqli_stmt_close($stmt_check_tiket);
+    }
+}
 // Tutup koneksi MySQL
 mysqli_close($koneksi);
 ?>
