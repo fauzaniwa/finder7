@@ -2,13 +2,13 @@
 // Pastikan variabel $admin_role sudah didefinisikan sebelum file ini di-include
 // Jika belum, Anda bisa mengambilnya dari sesi di sini
 if (!isset($admin_role)) {
-    
+
     $admin_role = $_SESSION['role'] ?? 'guest';
 }
 ?>
 
 <aside id="sidebar" class="bg-dark-card w-64 min-h-screen p-6 shadow-lg fixed top-0 left-0 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:block flex flex-col">
-    
+
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center">
             <span class="material-symbols-outlined text-primary-green text-3xl mr-3">
@@ -35,7 +35,7 @@ if (!isset($admin_role)) {
                     </a>
                 </li>
                 <li class="my-4 h-px bg-gray-700"></li>
-                
+
                 <?php if ($admin_role === 'master'): ?>
                 <li>
                     <a href="users.php" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
@@ -128,7 +128,16 @@ if (!isset($admin_role)) {
                     </ul>
                 </li>
                 <?php endif; ?>
-                
+
+                <li>
+                    <a href="faq.php" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
+                        <span class="material-symbols-outlined text-2xl mr-3">
+                            help
+                        </span>
+                        FaQ
+                    </a>
+                </li>
+
                 <li class="my-4 h-px bg-gray-700"></li>
 
                 <li>
@@ -147,6 +156,7 @@ if (!isset($admin_role)) {
                         Log Admin
                     </a>
                 </li>
+                
             </ul>
         </nav>
     </div>
