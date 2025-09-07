@@ -520,7 +520,7 @@ include 'homepage_data.php';
 
                 <div class="text-center mt-20">
                     <a href="event.php"
-                        class="bg-[#26d0a5] text-black font-bold py-3 px-16 rounded-full hover:bg-[#21b38f] transition-colors duration-300 text-lg">
+                        class="inline-block rounded-2xl font-semibold text-center tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black whitespace-nowrap px-16 py-3 text-base md:text-lg bg-emerald-400 text-emerald-950 hover:bg-emerald-500 focus:ring-emerald-400">
                         Lihat Semua
                     </a>
                 </div>
