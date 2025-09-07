@@ -14,6 +14,7 @@ if (!isset($_SESSION['user_id'])) {
 include 'admin-one/dist/koneksi.php';
 // Ambil user_id dari session
 $user_id = $_SESSION['user_id'];
+$user_email = $_SESSION['user_data']['email'];
 
 // Persiapkan query untuk mengambil data user berdasarkan user_id
 $query_user = "SELECT nama, tgl_lahir, no_hp, instansi, email, kode_account FROM user WHERE id_user = ?";
@@ -52,12 +53,25 @@ if ($row_user = mysqli_fetch_assoc($result_user)) {
 mysqli_stmt_close($stmt_user);
 
 
-// Query untuk mendapatkan data tiket dan event berdasarkan id_user
+// Query untuk mendapatkan data tiket dan event berdasarkan id_user, diurutkan dari yang terbaru
 $query_tiket_event = "
-    SELECT tiket.tiket_code, event.judul_event, event.jadwal_event, event.waktu_event, event.lokasi_event, event.link_grup, event.thumbnail_event
+    SELECT 
+        tiket.id_tiket,
+        tiket.tiket_code, 
+        tiket.is_verified, 
+        tiket.email,
+        tiket.nama_lengkap,
+        event.judul_event, 
+        event.slug, 
+        event.jadwal_event, 
+        event.waktu_event, 
+        event.lokasi_event, 
+        event.link_grup, 
+        event.thumbnail_event
     FROM tiket
     JOIN event ON tiket.id_event = event.id_event
-    WHERE tiket.id_user = ?";
+    WHERE tiket.id_user = ? OR tiket.email = ?
+    ORDER BY tiket.id_tiket DESC";
 
 // Persiapkan statement untuk data tiket dan event
 $stmt_tiket_event = mysqli_prepare($koneksi, $query_tiket_event);
@@ -65,7 +79,8 @@ if (!$stmt_tiket_event) {
     // Handle error jika prepare statement gagal
     die('Prepare statement tiket event failed: ' . mysqli_error($koneksi));
 }
-mysqli_stmt_bind_param($stmt_tiket_event, "i", $user_id);
+// Binding parameter dengan 'is' untuk integer dan string
+mysqli_stmt_bind_param($stmt_tiket_event, "is", $user_id, $user_email);
 mysqli_stmt_execute($stmt_tiket_event);
 
 // Ambil hasil query data tiket dan event
@@ -199,34 +214,67 @@ mysqli_close($koneksi);
                         <div class="space-y-8 md:space-y-12">
                             <?php if (!empty($tiket_data)): ?>
                                 <?php foreach ($tiket_data as $tiket): ?>
-                                    <div class="ticket-card cursor-pointer"
+                                    <div class="ticket-card"
                                         data-title="<?php echo htmlspecialchars($tiket['judul_event']); ?>"
-                                        data-code="<?php echo htmlspecialchars($tiket['tiket_code']); ?>">
+                                        data-code="<?php echo htmlspecialchars($tiket['tiket_code']); ?>"
+                                        data-is-verified="<?php echo htmlspecialchars($tiket['is_verified']); ?>">
                                         <div
                                             class="flex flex-col md:flex-row md:items-start space-y-4 md:space-y-0 md:space-x-6">
-                                            <img src="img/thumbnail/<?php echo htmlspecialchars($tiket['thumbnail_event']); ?>"
-                                                alt="Poster Event"
-                                                class="w-24 h-24 md:w-36 md:h-36 rounded-xl object-cover flex-shrink-0 mx-auto md:mx-0">
+                                            <?php
+                                            $image_path_thumbnail = "img/thumbnail/" . htmlspecialchars($tiket['thumbnail_event']);
+                                            $image_path_event = "img/event/" . htmlspecialchars($tiket['thumbnail_event']);
+                                            $final_image_path = '';
+
+                                            if (file_exists($image_path_thumbnail)) {
+                                                $final_image_path = $image_path_thumbnail;
+                                            } else if (file_exists($image_path_event)) {
+                                                $final_image_path = $image_path_event;
+                                            }
+                                            ?>
+                                            <?php if (!empty($final_image_path)): ?>
+                                                <img src="<?php echo htmlspecialchars($final_image_path); ?>"
+                                                    alt="Poster Event"
+                                                    class="w-24 h-24 md:w-36 md:h-36 rounded-xl object-cover flex-shrink-0 mx-auto md:mx-0 cursor-pointer">
+                                            <?php endif; ?>
                                             <div class="flex-grow text-center md:text-left">
                                                 <h3 class="text-xl md:text-2xl font-bold mb-2">
                                                     <?php echo htmlspecialchars($tiket['judul_event']); ?></h3>
+                                                <?php if ($tiket['email'] === $_SESSION['user_data']['email']): ?>
+                                                    <p class="text-sm md:text-base text-neutral-400 mb-2">
+                                                        <span class="font-bold">Tiket ini adalah milik Anda</span>
+                                                    </p>
+                                                <?php else: ?>
+                                                    <p class="text-sm md:text-base text-neutral-400 mb-2">
+                                                        Tiket ini adalah milik <span class="font-bold">"<?php echo !empty($tiket['nama_lengkap']) ? htmlspecialchars($tiket['nama_lengkap']) : '-'; ?>"</span>
+                                                    </p>
+                                                <?php endif; ?>
                                                 <div class="space-y-1 text-sm md:text-base text-neutral-300">
                                                     <p>Tanggal: <span
-                                                            class="text-neutral-400"><?php echo htmlspecialchars($tiket['jadwal_event']); ?></span>
+                                                            class="text-neutral-400"><?php echo !empty($tiket['jadwal_event']) ? htmlspecialchars($tiket['jadwal_event']) : '-'; ?></span>
                                                     </p>
                                                     <p>Waktu: <span
-                                                            class="text-neutral-400"><?php echo htmlspecialchars($tiket['waktu_event']); ?></span>
+                                                            class="text-neutral-400"><?php echo !empty($tiket['waktu_event']) ? htmlspecialchars($tiket['waktu_event']) : '-'; ?></span>
                                                     </p>
                                                     <p>Lokasi: <span
-                                                            class="text-neutral-400"><?php echo htmlspecialchars($tiket['lokasi_event']); ?></span>
+                                                            class="text-neutral-400"><?php echo !empty($tiket['lokasi_event']) ? htmlspecialchars($tiket['lokasi_event']) : '-'; ?></span>
                                                     </p>
                                                     <p>Ticket Code: <span
                                                             class="text-neutral-400"><?php echo htmlspecialchars($tiket['tiket_code']); ?></span>
                                                     </p>
                                                 </div>
-                                                <a href="<?php echo htmlspecialchars($tiket['link_grup']); ?>" target="_blank"
-                                                    class="mt-4 md:mt-6 inline-block bg-[#008C62] text-white font-medium py-2 px-6 rounded-full hover:bg-[#007b56] transition-colors duration-300">Group
-                                                    Whatsapp</a>
+                                                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mt-4 md:mt-6 items-center justify-center md:justify-start">
+                                                    <a href="detailevent.php?slug=<?php echo htmlspecialchars($tiket['slug']); ?>" 
+                                                        class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail Kegiatan</a>
+                                                    <?php if ($tiket['is_verified']): ?>
+                                                        <span class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-sm">Tiket Diambil</span>
+                                                    <?php else: ?>
+                                                        <span class="border border-yellow-800 bg-yellow-950 text-yellow-400 rounded-xl px-5 py-2 text-sm cursor-pointer" onclick="openThankYouModal()">Menunggu Verifikasi</span>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <?php if (!empty($tiket['link_grup'])): ?>
+                                                    <a href="<?php echo htmlspecialchars($tiket['link_grup']); ?>" target="_blank"
+                                                        class="mt-4 md:mt-6 inline-block bg-[#008C62] text-white font-medium py-2 px-6 rounded-full hover:bg-[#007b56] transition-colors duration-300">Group Whatsapp</a>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -256,6 +304,14 @@ mysqli_close($koneksi);
             <p id="modal-ticket-code" class="text-center text-base md:text-lg font-semibold text-neutral-300"></p>
         </div>
     </div>
+    
+    <div id="thankYouModal" class="fixed inset-0 bg-black bg-opacity-80 z-[60] flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center relative">
+            <h2 class="text-2xl font-bold text-neutral-900 mb-4">Terima Kasih!</h2>
+            <p class="text-gray-700 mb-6">Tunggu 1x24 jam dan cek berkala halaman account page pada bagian Tiket. Hubungi CP admin dibawah jika dalam batas waktu tersebut tiket belum didapatkan atau terdapat bug sistem. CP : 085155471153</p>
+            <a href="account.php" class="inline-block bg-[#00E091] hover:bg-[#00c77e] text-black font-semibold px-8 py-3 rounded-2xl text-lg transition-all">Tutup</a>
+        </div>
+    </div>
 
     <script>
         // Function to generate and display QR code
@@ -272,28 +328,38 @@ mysqli_close($koneksi);
 
         // Event listener for Seminar and Workshop ticket cards
         document.querySelectorAll('.ticket-card').forEach(card => {
-            card.addEventListener('click', function () {
+            card.addEventListener('click', function (e) {
+                // Prevent modal from opening if a link or button is clicked
+                if (e.target.closest('a') || e.target.closest('span')) {
+                    return;
+                }
+
                 const title = this.getAttribute('data-title');
                 const code = this.getAttribute('data-code');
-
-                document.getElementById('modal-title').innerText = title;
-                document.getElementById('modal-ticket-code').innerText = `Ticket Code: ${code}`;
-
-                generateQRCode('modal-qr-code', code);
-
-                document.getElementById('modal-tiket').classList.remove('hidden');
+                const isVerified = this.getAttribute('data-is-verified');
+                
+                if (isVerified == '1') {
+                    document.getElementById('modal-title').innerText = title;
+                    document.getElementById('modal-ticket-code').innerText = `Ticket Code: ${code}`;
+                    generateQRCode('modal-qr-code', code);
+                    document.getElementById('modal-tiket').classList.remove('hidden');
+                } else {
+                    document.getElementById('thankYouModal').classList.remove('hidden');
+                }
             });
         });
 
-        // Event listener for close modal button
+        // Event listener for close QR modal button
         document.getElementById('close-modal').addEventListener('click', function () {
             document.getElementById('modal-tiket').classList.add('hidden');
         });
+        
+        // This function can be called by the "Menunggu Verifikasi" span
+        function openThankYouModal() {
+            document.getElementById('thankYouModal').classList.remove('hidden');
+        }
     </script>
 
     <?php require '_footer.php'; ?>
 </body>
-
-
-
 </html>

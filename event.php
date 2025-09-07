@@ -15,9 +15,10 @@ if (!mysqli_ping($koneksi)) {
 mysqli_set_charset($koneksi, 'utf8mb4');
 
 /* =========================
-   AMBIL USER ID (JIKA LOGIN)
+   AMBIL USER ID & EMAIL (JIKA LOGIN)
    ========================= */
 $user_id = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
+$user_email = isset($_SESSION['user_data']['email']) ? $_SESSION['user_data']['email'] : null;
 
 /* =========================
    AMBIL DATA EVENT + SISA KUOTA + SPEAKERS
@@ -58,9 +59,9 @@ while ($row_event = mysqli_fetch_assoc($result_event)) {
 
     // Ambil speakers untuk event ini
     $query_speakers = "SELECT s.nama_speaker, s.instansi 
-                       FROM event_speakers es
-                       JOIN speakers s ON es.id_speaker = s.id_speaker
-                       WHERE es.id_event = ?";
+                        FROM event_speakers es
+                        JOIN speakers s ON es.id_speaker = s.id_speaker
+                        WHERE es.id_event = ?";
     $stmt_speakers = mysqli_prepare($koneksi, $query_speakers);
     mysqli_stmt_bind_param($stmt_speakers, "i", $id_event);
     mysqli_stmt_execute($stmt_speakers);
@@ -82,43 +83,27 @@ mysqli_stmt_close($stmt_event);
    CEK TIKET USER (JIKA LOGIN)
    ========================= */
 $events_with_tickets = [];
-if ($user_id) {
-    $query_check_tiket = "SELECT id_event FROM tiket WHERE id_user = ?";
+if ($user_id || $user_email) {
+    // Gunakan OR untuk mencocokkan id_user atau email
+    $query_check_tiket = "SELECT id_event, is_verified FROM tiket WHERE id_user = ? OR email = ?";
     $stmt_check_tiket = mysqli_prepare($koneksi, $query_check_tiket);
-    if (!$stmt_check_tiket) {
-        die('Prepare statement check tiket failed: ' . mysqli_error($koneksi));
-    }
-    mysqli_stmt_bind_param($stmt_check_tiket, "i", $user_id);
-    mysqli_stmt_execute($stmt_check_tiket);
-    $result_check_tiket = mysqli_stmt_get_result($stmt_check_tiket);
-
-    while ($row_check_tiket = mysqli_fetch_assoc($result_check_tiket)) {
-        $events_with_tickets[] = (int)$row_check_tiket['id_event'];
-    }
-    mysqli_stmt_close($stmt_check_tiket);
-}
-
-// Pastikan email pengguna tersedia, misalnya dari sesi
-$user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : null;
-
-// Pastikan user_id juga tersedia
-$user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
-
-// Lakukan pengecekan sebelum menjalankan query
-if ($user_id && $user_email) {
-    $query_check_tiket = "SELECT id_event, is_verified FROM tiket WHERE id_user = ? AND email = ?";
-    $stmt_check_tiket = mysqli_prepare($koneksi, $query_check_tiket);
+    
+    // Asumsi: jika $user_id null, kita gunakan 0 atau null. Dan jika $user_email null, kita gunakan string kosong.
+    $id_param = $user_id ?? 0;
+    $email_param = $user_email ?? '';
+    
     if ($stmt_check_tiket) {
-        // PERHATIAN: Perhatikan urutan dan tipe data parameter (i untuk integer, s untuk string)
-        mysqli_stmt_bind_param($stmt_check_tiket, "is", $user_id, $user_email);
+        mysqli_stmt_bind_param($stmt_check_tiket, "is", $id_param, $email_param);
         mysqli_stmt_execute($stmt_check_tiket);
         $result_check_tiket = mysqli_stmt_get_result($stmt_check_tiket);
+        
         while ($row_check_tiket = mysqli_fetch_assoc($result_check_tiket)) {
             $events_with_tickets[$row_check_tiket['id_event']] = intval($row_check_tiket['is_verified']);
         }
         mysqli_stmt_close($stmt_check_tiket);
     }
 }
+
 
 /* =========================
    FUNGSI KODE TIKET
@@ -138,15 +123,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event'])) {
     } else {
         $id_event = (int)$_POST['id_event'];
 
-        if (!in_array($id_event, $events_with_tickets, true)) {
+        // Menggunakan array yang diperbarui
+        if (!array_key_exists($id_event, $events_with_tickets)) {
             $tiket_code = generateTicketCode($id_event, $user_id);
 
-            $query_insert_tiket = "INSERT INTO tiket (id_user, id_event, tiket_code, created_tiket) VALUES (?, ?, ?, NOW())";
+            $query_insert_tiket = "INSERT INTO tiket (id_user, id_event, tiket_code, email, created_tiket) VALUES (?, ?, ?, ?, NOW())";
             $stmt_insert_tiket = mysqli_prepare($koneksi, $query_insert_tiket);
             if (!$stmt_insert_tiket) {
                 die('Prepare statement insert tiket failed: ' . mysqli_error($koneksi));
             }
-            mysqli_stmt_bind_param($stmt_insert_tiket, "iis", $user_id, $id_event, $tiket_code);
+            // Tambahkan email ke query insert
+            mysqli_stmt_bind_param($stmt_insert_tiket, "iiss", $user_id, $id_event, $tiket_code, $user_email);
 
             if (mysqli_stmt_execute($stmt_insert_tiket)) {
                 echo "<script>

@@ -10,6 +10,8 @@ if (session_status() == PHP_SESSION_NONE) {
 require_once 'admin-one/dist/koneksi.php';
 
 $user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
+$user_email = isset($_SESSION['user_data']['email']) ? $_SESSION['user_data']['email'] : null;
+
 $slug_target = isset($_GET['slug']) ? htmlspecialchars($_GET['slug']) : '';
 
 if (empty($slug_target)) {
@@ -43,21 +45,23 @@ function generateTicketCode($id_event, $user_id)
 }
 
 $events_with_tickets = [];
-// Pastikan email pengguna tersedia, misalnya dari sesi
-$user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : null;
 
-// Pastikan user_id juga tersedia
-$user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
-
-// Lakukan pengecekan sebelum menjalankan query
-if ($user_id && $user_email) {
-    $query_check_tiket = "SELECT id_event, is_verified FROM tiket WHERE id_user = ? AND email = ?";
+// Perbaikan logika pengecekan tiket:
+// Gunakan id_user ATAU email untuk memeriksa tiket
+if ($user_id || $user_email) {
+    $query_check_tiket = "SELECT id_event, is_verified FROM tiket WHERE (id_user = ? OR email = ?) AND id_event = ?";
     $stmt_check_tiket = mysqli_prepare($koneksi, $query_check_tiket);
+    
+    // Siapkan parameter, gunakan 0 jika user_id tidak ada, dan string kosong jika email tidak ada
+    $id_param = $user_id ?? 0;
+    $email_param = $user_email ?? '';
+    
     if ($stmt_check_tiket) {
         // PERHATIAN: Perhatikan urutan dan tipe data parameter (i untuk integer, s untuk string)
-        mysqli_stmt_bind_param($stmt_check_tiket, "is", $user_id, $user_email);
+        mysqli_stmt_bind_param($stmt_check_tiket, "isi", $id_param, $email_param, $id_event_target);
         mysqli_stmt_execute($stmt_check_tiket);
         $result_check_tiket = mysqli_stmt_get_result($stmt_check_tiket);
+        
         while ($row_check_tiket = mysqli_fetch_assoc($result_check_tiket)) {
             $events_with_tickets[$row_check_tiket['id_event']] = intval($row_check_tiket['is_verified']);
         }
@@ -75,7 +79,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event']) && isset($
     $form_type = $_POST['form_type'];
     $insert_success = true;
 
-    // Cek apakah user sudah mendaftar event ini
     // Cek apakah user sudah mendaftar event ini
     $sudah_daftar = isset($events_with_tickets[$id_event]);
     $is_verified_status = $sudah_daftar ? $events_with_tickets[$id_event] : 0;
@@ -201,16 +204,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event']) && isset($
                 }
 
                 if ($insert_success && $first_tiket_id && $bukti_path) {
-                    // --- PERBAIKAN DI BAGIAN INI ---
                     $query_insert_bukti = "INSERT INTO path_pembayaran (id_tiket, path_file, total_bayar, created_at) VALUES (?, ?, ?, NOW())";
                     $stmt_insert_bukti = mysqli_prepare($koneksi, $query_insert_bukti);
                     
-                    // Tambahkan penanganan error untuk debugging
                     if (!$stmt_insert_bukti) {
                         echo '<script>alert("Gagal mempersiapkan statement path_pembayaran: ' . mysqli_error($koneksi) . '");</script>';
                         $insert_success = false;
                     } else {
-                        // Perbaikan: Ubah "iis" menjadi "isi" untuk id_tiket (integer), path_file (string), total_bayar (integer)
                         mysqli_stmt_bind_param($stmt_insert_bukti, "isi", $first_tiket_id, $bukti_path, $total_harga);
                         
                         if (!mysqli_stmt_execute($stmt_insert_bukti)) {
@@ -219,22 +219,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event']) && isset($
                         }
                         mysqli_stmt_close($stmt_insert_bukti);
                     }
-                    // --- AKHIR PERBAIKAN ---
                 }
             }
         }
         
         if ($insert_success) {
-            // Setel variabel sesi untuk menandakan keberhasilan pendaftaran
             $_SESSION['show_verification_modal'] = true;
-            
-            // Alihkan pengguna kembali ke detailevent.php tanpa parameter
             header("Location: detailevent.php?slug=" . $slug_target);
             exit();
         } else {
-            // Opsional: setel variabel sesi untuk error jika diperlukan
             $_SESSION['registration_error'] = true;
-            
             header("Location: detailevent.php?slug=" . $slug_target);
             exit();
         }
@@ -286,7 +280,6 @@ $total_users = intval($row_count_users['total']);
 $sisa_kuota = max(0, $total_kuota - $total_users);
 mysqli_stmt_close($stmt_count_users);
 
-// Logika untuk menampilkan modal verifikasi
 // Logika untuk menampilkan modal verifikasi
 $show_verification_modal = false;
 // Cek apakah tiket untuk event ini ada dan statusnya belum diverifikasi (0)
