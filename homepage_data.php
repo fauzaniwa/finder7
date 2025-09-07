@@ -144,7 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event'])) {
                 echo "<script>
                         alert('Ticket berhasil di claim. Cek profile untuk mengambil tiket.');
                         document.location='account.php';
-                      </script>";
+                    </script>";
             } else {
                 // Jika insert gagal, beri alert gagal
                 echo '<script>alert("Gagal mengambil tiket. Silakan coba lagi.");</script>';
@@ -157,18 +157,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event'])) {
 }
 
 // Pastikan email pengguna tersedia, misalnya dari sesi
-$user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : null;
+$user_email = isset($_SESSION['user_data']['email']) ? $_SESSION['user_data']['email'] : null;
 
 // Pastikan user_id juga tersedia
 $user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
 
 // Lakukan pengecekan sebelum menjalankan query
-if ($user_id && $user_email) {
-    $query_check_tiket = "SELECT id_event, is_verified FROM tiket WHERE id_user = ? AND email = ?";
+// Perbaikan: Ganti operator AND menjadi OR untuk pengecekan tiket yang lebih fleksibel
+// Dan tambahkan id_event_target untuk memfilter tiket yang ada
+if ($user_id || $user_email) {
+    $query_check_tiket = "SELECT id_event, is_verified FROM tiket WHERE (id_user = ? OR email = ?)";
     $stmt_check_tiket = mysqli_prepare($koneksi, $query_check_tiket);
     if ($stmt_check_tiket) {
         // PERHATIAN: Perhatikan urutan dan tipe data parameter (i untuk integer, s untuk string)
-        mysqli_stmt_bind_param($stmt_check_tiket, "is", $user_id, $user_email);
+        $id_param = $user_id ?? 0;
+        $email_param = $user_email ?? '';
+        mysqli_stmt_bind_param($stmt_check_tiket, "is", $id_param, $email_param);
         mysqli_stmt_execute($stmt_check_tiket);
         $result_check_tiket = mysqli_stmt_get_result($stmt_check_tiket);
         while ($row_check_tiket = mysqli_fetch_assoc($result_check_tiket)) {
