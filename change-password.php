@@ -175,54 +175,35 @@ mysqli_stmt_close($stmt_user);
                     </div>
 
                     <div class="w-full mx-auto p-8 rounded-3xl shadow-lg bg-neutral-900 text-white">
-                        <h2 class="text-3xl font-bold text-center mb-8">Edit Profil</h2>
+                        <h2 class="text-3xl font-bold text-center mb-8">Ubah Kata Sandi</h2>
 
                         <form action="#" method="POST" class="space-y-6">
                             <div>
-                                <label for="username"
-                                    class="block text-sm font-medium text-neutral-400">Username</label>
+                                <label for="current-password"
+                                    class="block text-sm font-medium text-neutral-400">Kata Sandi Sebelumnya</label>
                                 <input type="text" id="username" name="username"
                                     class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                             </div>
 
                             <div>
-                                <label for="tgl_lahir" class="block text-sm font-medium text-neutral-400">Tempat Tanggal
-                                    Lahir</label>
+                                <label for="new-password" class="block text-sm font-medium text-neutral-400">Kata Sandi Baru</label>
                                 <input type="text" id="tgl_lahir" name="tgl_lahir"
                                     class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                             </div>
 
                             <div>
-                                <label for="email" class="block text-sm font-medium text-neutral-400">Email</label>
+                                <label for="confirm-password" class="block text-sm font-medium text-neutral-400">Konfirmasi Kata Sandi Baru</label>
                                 <input type="email" id="email" name="email"
-                                    class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
-                            </div>
-
-                            <div>
-                                <label for="universitas"
-                                    class="block text-sm font-medium text-neutral-400">Universitas</label>
-                                <input type="text" id="universitas" name="universitas"
-                                    class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
-                            </div>
-
-                            <div>
-                                <label for="no_telepon" class="block text-sm font-medium text-neutral-400">No.
-                                    Telepon</label>
-                                <input type="tel" id="no_telepon" name="no_telepon"
                                     class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                             </div>
 
                             <div
                                 class="flex flex-col sm:flex-row justify-between pt-4 space-y-4 sm:space-y-0 sm:space-x-4">
-                                <button type="submit"
-                                    class="w-full sm:w-1/2 flex justify-center py-3 px-4 border border-transparent transition-colors duration-300 rounded-md shadow-sm text-sm font-medium text-neutral-900 bg-emerald-500 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
-                                    Simpan
-                                </button>
-                                <a href="change-password.php" class="w-full sm:w-1/2 flex justify-center py-3 px-4 focus:border transition-colors duration-300 rounded-md shadow-sm text-sm font-medium text-emerald-500 bg-neutral-800 hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-600">
+                                <a href="setting.php" class="w-full flex justify-center py-3 px-4 border border-transparent transition-colors duration-300 rounded-md shadow-sm text-sm font-medium text-neutral-900 bg-emerald-500 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
 
-                                    <button type="button"
+                                    <button type="submit"
                                     class="">
-                                    Ubah Kata Sandi
+                                    Simpan
                                 </button>
                             </a>
                             </div>
