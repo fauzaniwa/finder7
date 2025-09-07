@@ -14,7 +14,8 @@ if (!isset($_SESSION['user_id'])) {
 include 'admin-one/dist/koneksi.php';
 // Ambil user_id dari session
 $user_id = $_SESSION['user_id'];
-$user_email = $_SESSION['user_data']['email'];
+// Baris ini akan dipindahkan ke bawah agar tidak terjadi error
+// $user_email = $_SESSION['user_data']['email'];
 
 // Persiapkan query untuk mengambil data user berdasarkan user_id
 $query_user = "SELECT nama, tgl_lahir, no_hp, instansi, email, kode_account FROM user WHERE id_user = ?";
@@ -33,7 +34,7 @@ $result_user = mysqli_stmt_get_result($stmt_user);
 
 // Periksa apakah data user ditemukan
 if ($row_user = mysqli_fetch_assoc($result_user)) {
-    // Simpan data user ke dalam session atau langsung gunakan
+    // Simpan data user ke dalam session
     $_SESSION['user_data'] = [
         'nama' => $row_user['nama'],
         'tgl_lahir' => $row_user['tgl_lahir'],
@@ -42,6 +43,8 @@ if ($row_user = mysqli_fetch_assoc($result_user)) {
         'email' => $row_user['email'],
         'kode_account' => $row_user['kode_account'] // Pastikan kode_account disimpan
     ];
+    // Ambil email dari data yang baru saja diambil
+    $user_email = $row_user['email'];
 } else {
     // Jika data user tidak ditemukan, logout dan kembali ke halaman login
     session_destroy();
