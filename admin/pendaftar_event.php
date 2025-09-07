@@ -291,7 +291,7 @@ unset($_SESSION['error_message']);
                 registrants.forEach((r, index) => {
                     const paymentProofBtn = r.path_file 
                         ? `<button data-image="../${r.path_file}" class="view-image-btn px-3 py-1 rounded-md bg-blue-500 text-white text-sm hover:bg-blue-600 transition-colors">Lihat Bukti</button>`
-                        : `<span class="text-mid-gray text-xs italic">—</span>`;
+                        : `<button disabled class="view-image-btn px-3 py-1 rounded-md bg-primary-green text-black text-sm hover:bg-primary-green-600 transition-colors">Event Gratis</button>`;
                     
                     const verificationButton = `<button
                                     data-id="${r.id_tiket}"
@@ -342,8 +342,8 @@ unset($_SESSION['error_message']);
                             <tr class="group-member-row border-b border-gray-700 hover:bg-dark-gray transition-colors hidden text-sm" data-group-id="${r.id_user}-${r.id_event}-${r.created_tiket}">
                                 <td class="p-4"></td>
                                 <td class="p-4 pl-8"><span class="material-symbols-outlined mr-2 text-xs">person</span>${formatData(member.nama_lengkap)}</td>
-                                <td class="p-4 italic text-mid-gray">${formatData(member.user_email)}</td>
-                                <td class="p-4 italic text-mid-gray">${formatData(member.user_no_hp)}</td>
+                                <td class="p-4 italic text-mid-gray">${formatData(member.email)}</td>
+                                <td class="p-4 italic text-mid-gray">${formatData(member.no_whatsapp)}</td>
                                 <td class="p-4"></td>
                                 <td class="p-4 font-mono text-mid-gray">${formatData(member.tiket_code)}</td>
                                 <td class="p-4"></td>

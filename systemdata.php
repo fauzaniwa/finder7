@@ -2,9 +2,10 @@
 // Koneksi ke database
 include 'admin-one/dist/koneksi.php';
 
+
 function generateKodeAccount() {
-    // Generate kode_account sesuai format yang diinginkan
-    return 'FD' . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT) .
+    // Mengurangi jumlah karakter yang digenerate menjadi 5, bukan 6
+    return 'FD' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT) .
            chr(rand(65, 90)) .
            rand(1, 9) .
            chr(rand(65, 90)) .

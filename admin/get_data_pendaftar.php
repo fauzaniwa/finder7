@@ -36,6 +36,8 @@ $sql_select = "SELECT
     t.payment_status,
     t.is_verified,
     t.nama_lengkap,
+    t.email,
+    t.no_whatsapp,
     t.id_user,
     t.id_event,
     t.created_tiket,
