@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <html lang="en" class="scroll-smooth">
@@ -29,8 +30,12 @@
           },
           keyframes: {
             'loop-scroll': {
-              from: { transform: 'translateX(0)' },
-              to: { transform: 'translateX(-100%)' },
+              from: {
+                transform: 'translateX(0)'
+              },
+              to: {
+                transform: 'translateX(-100%)'
+              },
             },
           },
         },
@@ -38,7 +43,7 @@
     };
   </script>
 
-  
+
 
   <!-- ----------- -->
 
@@ -72,83 +77,160 @@
   require '_navbar.php';
   ?>
   <div
-        class="w-2/3 h-3/4 blur-3xl absolute z-0 rounded-full bg-[radial-gradient(circle,_#515151_0%,_rgba(244,114,182,0)_70%)] top-px left-1/2 -translate-x-1/2 -translate-y-1/2">
-    </div>
+    class="w-2/3 h-3/4 blur-3xl absolute z-0 rounded-full bg-[radial-gradient(circle,_#515151_0%,_rgba(244,114,182,0)_70%)] top-px left-1/2 -translate-x-1/2 -translate-y-1/2">
+  </div>
   <section id="login" class="w-full h-screen flex lg:flex-row flex-col-reverse sm:p-8 sm:pt-24">
-    <div class="order-first lg:order-last relative z-10 lg:w-1/2 w-full h-1/2 md:h-2/3 lg:h-full text-start text-white space-y-4">
-    <form action="systemdata.php" method="POST" class="overflow-y-auto hide-scrollbar max-h-full items-center h-full w-full bg-white rounded-3xl rounded-b-none sm:rounded-b-3xl">
-      <div class="flex flex-col justify-start sm:justify-center items-center w-full min-h-full bg-white rounded-xl gap-6 px-10 py-10 md:px-24 md:py-24">
-        <h1 class="text-2xl md:text-3xl text-neutral-600 font-semibold">Login</h1>
-        <hr>
-        <hr>
-        <div class="relative gap-2 w-full">
-          <div class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24">
-              <path
-                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-            </svg>
+    <div class="order-first lg:order-last relative z-10 lg:w-1/2 w-full h-1/2 md:h-2/3 lg:h-full text-start space-y-4">
+      <form action="systemdata.php" method="POST"
+        class="overflow-y-auto hide-scrollbar max-h-full items-center h-full w-full bg-white rounded-3xl rounded-b-none sm:rounded-b-3xl">
+        <div
+          class="flex flex-col justify-start sm:justify-center items-center w-full min-h-full bg-white rounded-xl gap-6 px-10 py-10 md:px-24 md:py-24">
+          <h1 class="text-2xl md:text-3xl text-neutral-600 font-semibold">Login</h1>
+          <hr>
+          <hr>
+          <div class="relative gap-2 w-full">
+            <div class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-7">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24">
+                <path
+                  d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+              </svg>
+            </div>
+            <input type="email" name="email"
+              class="w-full h-14 rounded-2xl pl-16 font-work font-medium text-sm sm:text-base bg-neutral-200"
+              placeholder="Masukkan Email Anda" required>
           </div>
-          <input type="email" name="email"
-            class="w-full h-14 rounded-2xl pl-16 font-work font-medium text-sm sm:text-base bg-neutral-200"
-            placeholder="Masukkan Email Anda" required>
-        </div>
 
-        <div class="gap-2 w-full relative">
-          <div class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-8">
-            <svg fill="#000000" width="30px" height="30px" viewBox="0 0 36 36" version="1.1"
-              preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink">
-              <path class="clr-i-solid clr-i-solid-path-1"
-                d="M26,15V10.72a8.2,8.2,0,0,0-8-8.36,8.2,8.2,0,0,0-8,8.36V15H7V32a2,2,0,0,0,2,2H27a2,2,0,0,0,2-2V15ZM19,25.23V28H17V25.14a2.4,2.4,0,1,1,2,.09ZM24,15H12V10.72a6.2,6.2,0,0,1,6-6.36,6.2,6.2,0,0,1,6,6.36Z">
-              </path>
-              <rect x="0" y="0" width="36" height="36" fill-opacity="0" />
-            </svg>
+          <div class="gap-2 w-full relative">
+            <div class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-8">
+              <svg fill="#000000" width="30px" height="30px" viewBox="0 0 36 36" version="1.1"
+                preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
+                <path class="clr-i-solid clr-i-solid-path-1"
+                  d="M26,15V10.72a8.2,8.2,0,0,0-8-8.36,8.2,8.2,0,0,0-8,8.36V15H7V32a2,2,0,0,0,2,2H27a2,2,0,0,0,2-2V15ZM19,25.23V28H17V25.14a2.4,2.4,0,1,1,2,.09ZM24,15H12V10.72a6.2,6.2,0,0,1,6-6.36,6.2,6.2,0,0,1,6,6.36Z">
+                </path>
+                <rect x="0" y="0" width="36" height="36" fill-opacity="0" />
+              </svg>
+            </div>
+            <input type="password" name="password" id="passwordInput"
+              class="w-full h-14 rounded-2xl pl-16 font-work font-medium text-sm sm:text-base bg-neutral-200" required
+              placeholder="Masukkan Password Anda">
+            <span id="togglePassword"
+              class="absolute inset-y-0 right-0 flex items-center justify-center pr-6 cursor-pointer text-base text-emerald-700">
+              <svg id="eyeIcon" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18full.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z" />
+              </svg>
+            </span>
           </div>
-          <input type="password" name="password" id="passwordInput"
-            class="w-full h-14 rounded-2xl pl-16 font-work font-medium text-sm sm:text-base bg-neutral-200"
-            required placeholder="Masukkan Password Anda">
-          <span id="togglePassword"
-            class="absolute inset-y-0 right-0 flex items-center justify-center pr-6 cursor-pointer text-base text-emerald-700">
-            <svg id="eyeIcon" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18full.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z" />
-            </svg>
-          </span>
+
+
+          <div class="flex w-full items-end justify-end text-end">
+            <a href="forgotpassword.php" class="text-emerald-700 hover:text-emerald-500 font-medium italic">Lupa
+              password?
+            </a>
+          </div>
+
+          <button type="submit" name="login"
+            class="text-base w-full lg:text-xl text-black px-6 h-14 bg-neutral-300 rounded-2xl font-work hover:bg-neutral-500 duration-150 hover:drop-shadow-md">
+            Login
+          </button>
+          <hr>
+          <hr>
+
+          <p class="text-black">Belum memiliki akun? Register <span><a href="register.php"
+                class="font-bold text-emerald-700 hover:text-emerald-500">di sini.</a></span></p>
+
         </div>
-
-
-        <div class="flex w-full items-end justify-end text-end">
-          <a href="forgotpassword.php" class="text-emerald-700 hover:text-emerald-500 font-medium italic">Lupa password?
-          </a>
-        </div>
-
-        <button type="submit" name="login"
-          class="text-base w-full lg:text-xl text-black px-6 h-14 bg-neutral-300 rounded-2xl font-work hover:bg-neutral-500 duration-150 hover:drop-shadow-md">
-          Login
-        </button>
-        <hr>
-        <hr>
-
-        <p class="text-black">Belum memiliki akun? Register <span><a href="register.php"
-              class="font-bold text-emerald-700 hover:text-emerald-500">di sini.</a></span></p>
-
-      </div>
-    </form>
+      </form>
     </div>
-    <div class="order-last lg:order-first lg:w-1/2 md:h-1/3 w-full h-1/2 lg:h-full mt-20 lg:mt-0 flex justify-center items-center ">
-      <img src="./img/hero/char.png" alt="Mindspace Characters" class="max-w-full h-fit animate-pulse" />
+    <div
+      class="order-last lg:order-first lg:w-1/2 md:h-1/3 w-full h-1/2 lg:h-full mt-20 lg:mt-0 flex justify-center items-center ">
+      <img src="img/hero/cover.gif" alt="Mindspace Characters" class="max-w-full h-fit animate-pulse" />
     </div>
   </section>
 
+  <div id="notificationModal"
+    class="fixed inset-0 bg-black bg-opacity-80 z-[60] flex items-center justify-center p-4 hidden">
+    <div
+      class="bg-white rounded-2xl p-8 max-w-md w-full text-center relative transform transition-all scale-95 opacity-0">
+
+      <button type="button" id="closeNotificationModalBtn"
+        class="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl font-bold">&times;</button>
+
+      <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
+
+      <p id="modalMessage" class="text-gray-700 mb-6"></p>
+
+      <a id="modalButton" href="#"
+        class="inline-block bg-[#00E091] hover:bg-[#00c77e] text-black font-semibold px-8 py-3 rounded-2xl text-lg transition-all">
+        Lanjutkan
+      </a>
+
+    </div>
+  </div>
+
   <script>
-        const togglePassword = document.getElementById("togglePassword");
+    document.addEventListener('DOMContentLoaded', function () {
+      const modal = document.getElementById('notificationModal');
+      const closeModalBtn = document.getElementById('closeNotificationModalBtn');
+
+      function showModal(notification) {
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalButton = document.getElementById('modalButton');
+
+        // Isi konten modal
+        modalTitle.textContent = notification.title;
+        modalMessage.textContent = notification.message;
+        modalButton.textContent = notification.button_text;
+        modalButton.href = notification.button_url;
+
+        // Tampilkan modal dengan animasi
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+          modal.firstElementChild.classList.remove('scale-95', 'opacity-0');
+          modal.firstElementChild.classList.add('scale-100', 'opacity-100');
+        }, 10);
+      }
+
+      function hideModal() {
+        modal.firstElementChild.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+        }, 300); // Sesuaikan durasi dengan transisi CSS
+      }
+
+      // Cek apakah ada notifikasi dari PHP
+      <?php if (isset($_SESSION['notification'])): ?>
+        const notificationData = <?php echo json_encode($_SESSION['notification']); ?>;
+        showModal(notificationData);
+        <?php unset($_SESSION['notification']); ?>
+      <?php endif; ?>
+
+      // Event listener untuk tombol close
+      closeModalBtn.addEventListener('click', hideModal);
+
+      // Event listener untuk tombol aksi utama (jika hanya untuk menutup modal)
+      const mainModalButton = document.getElementById('modalButton');
+      mainModalButton.addEventListener('click', function (e) {
+        if (this.getAttribute('href') === '#') {
+          e.preventDefault(); // Mencegah pindah ke atas halaman
+          hideModal();
+        }
+      });
+    });
+  </script>
+
+
+  <script>
+    const togglePassword = document.getElementById("togglePassword");
     const passwordInput = document.getElementById("passwordInput");
     const eyeIcon = document.getElementById("eyeIcon");
 
     const eyeOpen = `<svg id="eyeIcon" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/>
-    </svg>` ;
+    </svg>`;
 
     const eyeClosed = `
     <svg id="eyeIcon" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -166,15 +248,6 @@
 
 </body>
 
-<!-- Cursor CDN -->
-<script src="https://unpkg.com/kursor"></script>
-<script>
-  new kursor({
-    type: 4,
-    removeDefaultCursor: true,
-    color: '#ffffff',
-  });
-</script>
-<!-- Cursor CDN -->
+
 
 </html>

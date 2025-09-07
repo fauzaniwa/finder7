@@ -580,9 +580,11 @@ include 'homepage_data.php';
             </div>
         </div>
     </section>
-    <!-- Profile Kolaborator -->
-    <section class="bg-black py-16">
-        <div class="container mx-auto px-4">
+
+
+    <!-- Guest Star -->
+    <section id="gueststar" class="container flex flex-col max-w-full items-center bg-[#0D0D0D] gap-6 py-14">
+        <div class="flex flex-col items-center gap-2 px-4">
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-100 text-center">Profil Kolaborator
             </h1>
             <p class="text-gray-100 text-center mb-12 max-w-3xl mx-auto">
@@ -590,219 +592,189 @@ include 'homepage_data.php';
                 accumsan congue diam. Nullam porta enim ut tristique fermentum. Sed vestibulum sit amet arcu eu sodales.
                 Duis sed facilisis quam, id rhoncus nisi.
             </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-                <div class="flex flex-col items-center">
-                    <img src="img/profil-kolab/dwita.png" alt="Dwita Alfiani" class=" object-cover  mb-4">
-                    <h3 class="text-xl font-semibold text-gray-100">Dwita Alfiani, M.Ds.</h3>
-                    <p class="text-gray-400 text-sm">Lorem ipsum dolor sit amet</p>
-                </div>
-
-                <div class="flex flex-col items-center">
-                    <img src="img/profil-kolab/reisha.png" alt="Reisha Herma Maurits" class="object-cover  mb-4">
-                    <h3 class="text-xl font-semibold text-gray-100">Reisha Herma Maurits, M.Psi.</h3>
-                    <p class="text-gray-400 text-sm">Psikolog Klinis</p>
-                </div>
-
-                <div class="flex flex-col items-center">
-                    <img src="img/profil-kolab/shinta.png" alt="Shinta Medianti" class=" object-cover mb-4">
-                    <h3 class="text-xl font-semibold text-gray-100">Shinta Medianti</h3>
-                    <p class="text-gray-400 text-sm">Psikolog Klinis</p>
-                </div>
-            </div>
         </div>
+
+        <div id="guest-grid"
+            class="grid container grid-cols-2 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-2">
+
+            <?php
+            $koneksi = mysqli_connect($host, $username, $password, $database);
+
+            if (mysqli_connect_errno()) {
+                die("Koneksi database gagal: " . mysqli_connect_error());
+            }
+
+            $query = "SELECT id_speaker, nama_speaker, instansi, foto_speaker, urutan FROM speakers ORDER BY urutan ASC";
+            $result = mysqli_query($koneksi, $query);
+
+            if ($result) {
+                $total_speakers = mysqli_num_rows($result);
+                $counter = 0;
+
+                if ($total_speakers > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $id_speaker = intval($row['id_speaker']);
+                        $nama = htmlspecialchars($row['nama_speaker']);
+                        $instansi = htmlspecialchars($row['instansi']);
+                        $foto = htmlspecialchars($row['foto_speaker']);
+
+                        $fotoPath = !empty($foto) ? 'img/speakers/' . $foto : 'img/narsum/segerahadir.png';
+
+                        // Tambahkan class 'hidden' jika item ke-7 atau lebih
+                        $hidden_class = ($counter >= 6) ? 'hidden' : '';
+
+                        // Menambahkan class 'guest-item' untuk target JavaScript
+                        echo '<div class="guest-item ' . $hidden_class . ' w-[340px] flex flex-col items-center scale-[54%] -m-12 md:scale-100 md:m-0 transition-all duration-300">';
+                        echo '<a href="detailspeakers.php?id_speaker=' . $id_speaker . '">';
+                        echo '<img class="w-[280px]" src="' . $fotoPath . '" alt="' . $nama . '" />';
+                        echo '<h1 class="font-work text-2xl text-white font-semibold">' . $nama . '</h1>';
+                        echo '</a>';
+                        echo '<h2 class="font-work font-light text-lg text-white">' . $instansi . '</h2>';
+                        echo '</div>';
+
+                        $counter++;
+                    }
+                } else {
+                    echo '<p class="font-work text-white text-lg col-span-full text-center">Belum ada data speaker tersedia.</p>';
+                }
+            }
+
+            mysqli_close($koneksi);
+            ?>
+
+        </div>
+
+        <?php if (isset($total_speakers) && $total_speakers > 6): ?>
+            <div id="show-more-container" class="text-center mt-10">
+                <button id="show-more-btn"
+                    class="bg-cyan-500 text-black font-bold py-3 px-8 rounded-full text-lg transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(34,211,238,0.5)]">
+                    Tampilkan Semua
+                </button>
+            </div>
+        <?php endif; ?>
+
     </section>
 
-    <!-- Guest Star -->
-  <section id="gueststar" class="container flex flex-col max-w-full items-center bg-[#0D0D0D] gap-6 py-14">
-    <div class="flex flex-col items-center gap-2">
-      <h1 style="font-family: 'Work Sans'" class="text-2xl md:text-3xl text-white font-semibold">Temui Kolaborator Kami
-      </h1>
-      <h2 style="font-family: 'Work Sans'" class="text-white text-center text-sm md:text-lg">Temui beberapa Tokoh
-        Terkenal</h2>
-    </div>
-    <!-- Grid -->
-    <div class="grid container grid-cols-2 md:grid-cols-2 md:scale-100 lg:grid-cols-3 justify-items-center gap-2">
+    <script>
+        const showMoreBtn = document.getElementById('show-more-btn');
+        const showMoreContainer = document.getElementById('show-more-container');
+        const guestGrid = document.getElementById('guest-grid');
 
-      <?php
-      $koneksi = mysqli_connect($host, $username, $password, $database);
+        if (showMoreBtn && guestGrid) {
+            showMoreBtn.addEventListener('click', () => {
+                // Cari semua item yang masih tersembunyi
+                const hiddenItems = guestGrid.querySelectorAll('.guest-item.hidden');
 
-      // Periksa koneksi
-      if (mysqli_connect_errno()) {
-        die("Koneksi database gagal: " . mysqli_connect_error());
-      }
+                hiddenItems.forEach(item => {
+                    // Hapus class 'hidden' untuk menampilkannya
+                    item.classList.remove('hidden');
+                });
 
-      // Query untuk mengambil data speakers
-      $query = "SELECT id_speaker, nama_speaker, instansi, deskripsi, kontak, foto_speaker, created_at, urutan FROM speakers ORDER BY urutan ASC";
-      $result = mysqli_query($koneksi, $query);
-
-      // Periksa apakah ada data
-      if (mysqli_num_rows($result) > 0) {
-        // Loop melalui hasil query dan tampilkan data
-        while ($row = mysqli_fetch_assoc($result)) {
-          $id_speaker = intval($row['id_speaker']);
-          $nama = htmlspecialchars($row['nama_speaker']);
-          $instansi = htmlspecialchars($row['instansi']);
-          $foto = htmlspecialchars($row['foto_speaker']); // Nama file foto
-      
-          // Tentukan path foto default jika foto tidak ada
-          $fotoPath = !empty($foto) ? 'img/speakers/' . $foto : 'img/narsum/segerahadir.png';
-
-          echo '<div class="w-[340px] flex flex-col items-center scale-[54%] -m-12 md:scale-100 md:m-0">';
-          echo '<a href="detailspeakers.php?id_speaker=' . $id_speaker . '">'; // Tambahkan tautan ke detail speaker
-          echo '<img class="w-[280px]" src="' . $fotoPath . '" alt="' . $nama . '" />';
-          echo '<h1 style="font-family: \'Work Sans\'" class="text-2xl text-white font-semibold">' . $nama . '</h1>';
-          echo '</a>'; // Tutup tag <a>
-          echo '<h2 style="font-family: \'Work Sans\'" class="font-light text-lg text-white">' . $instansi . '</h2>';
-          echo '</div>';
+                // Sembunyikan tombol setelah diklik
+                if (showMoreContainer) {
+                    showMoreContainer.style.display = 'none';
+                    s
+                }
+            });
         }
-      } else {
-        // Jika tidak ada data
-        echo '<div class="w-[340px] flex flex-col items-center scale-[54%] -m-12 md:scale-100 md:m-0">';
-        echo '<p style="font-family: \'Work Sans\'" class="text-white text-lg">Belum ada data speaker tersedia.</p>';
-        echo '</div>';
-      }
-
-      // Tutup koneksi
-      mysqli_close($koneksi);
-      ?>
-
-    </div>
-  </section>
+    </script>
 
     <!-- FAQ -->
     <section class="bg-black text-gray-100 py-16 sm:py-20">
         <div class="container mx-auto px-4 max-w-7xl lg:max-w-screen-xl 2xl:max-w-screen-2xl">
 
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-100 text-center">FAQ</h2>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-12 text-gray-100 text-center font-work">
+                FAQ (Frequently Asked Questions)
+            </h2>
 
-            <div id="faq-container" class="mx-auto space-y-3 text-base md:text-lg">
+            <div id="faq-container" class="mx-auto space-y-3">
 
-                <details class="group rounded-lg bg-transparent open:bg-[#1c1c1c] transition-colors duration-300">
-                    <summary class="flex cursor-pointer list-none items-center justify-between p-4 sm:p-5 font-medium">
-                        <span>Kapan Finder 7 dilaksanakan?</span>
-                        <span class="relative h-5 w-5 shrink-0">
-                            <img src="img/icon/chevron-down.svg" alt="Buka" class="group-open:hidden h-full w-full">
-                            <img src="img/icon/chevron-up.svg" alt="Tutup"
-                                class="hidden group-open:block h-full w-full">
-                        </span>
-                    </summary>
-                    <div class="px-4 sm:px-5 pb-5 text-gray-400">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi arcu, lobortis quis ligula
-                        vel, accumsan congue diam. Nullam porta enim ut tristique fermentum.
-                    </div>
-                </details>
+                <?php
+                // Koneksi ke database
+                // Pastikan variabel koneksi ($host, $username, dll.) sudah didefinisikan sebelum blok ini.
+                $koneksi = mysqli_connect($host, $username, $password, $database);
 
-                <details class="group rounded-lg bg-transparent open:bg-[#1c1c1c] transition-colors duration-300">
-                    <summary class="flex cursor-pointer list-none items-center justify-between p-4 sm:p-5 font-medium">
-                        <span>Lorem ipsum Dolor sit amet</span>
-                        <span class="relative h-5 w-5 shrink-0">
-                            <img src="img/icon/chevron-down.svg" alt="Buka" class="group-open:hidden h-full w-full">
-                            <img src="img/icon/chevron-up.svg" alt="Tutup"
-                                class="hidden group-open:block h-full w-full">
-                        </span>
-                    </summary>
-                    <div class="px-4 sm:px-5 pb-5 text-gray-400">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi arcu, lobortis quis ligula
-                        vel, accumsan congue diam. Nullam porta enim ut tristique fermentum.
-                    </div>
-                </details>
+                // Periksa koneksi
+                if (mysqli_connect_errno()) {
+                    die("Koneksi database gagal: " . mysqli_connect_error());
+                }
 
-                <details class="group rounded-lg bg-transparent open:bg-[#1c1c1c] transition-colors duration-300">
-                    <summary class="flex cursor-pointer list-none items-center justify-between p-4 sm:p-5 font-medium">
-                        <span>Lorem ipsum dolor sit amet</span>
-                        <span class="relative h-5 w-5 shrink-0">
-                            <img src="img/icon/chevron-down.svg" alt="Buka" class="group-open:hidden h-full w-full">
-                            <img src="img/icon/chevron-up.svg" alt="Tutup"
-                                class="hidden group-open:block h-full w-full">
-                        </span>
-                    </summary>
-                    <div class="px-4 sm:px-5 pb-5 text-gray-400">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi arcu, lobortis quis ligula
-                        vel, accumsan congue diam. Nullam porta enim ut tristique fermentum.
-                    </div>
-                </details>
+                // Query untuk mengambil data QnA
+                $query = "SELECT topik, jawaban FROM qna WHERE status = 'active' ORDER BY created_at DESC";
+                $result = mysqli_query($koneksi, $query);
+
+                // Periksa apakah ada data
+                if (mysqli_num_rows($result) > 0) {
+                    // Loop melalui hasil query dan tampilkan data
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $topik = htmlspecialchars($row['topik']);
+                        $jawaban = htmlspecialchars($row['jawaban']);
+
+                        // Mencetak HTML dengan style yang diinginkan
+                        echo '<details class="group rounded-lg bg-transparent open:bg-[#1c1c1c] transition-colors duration-300">';
+                        echo '<summary class="flex cursor-pointer list-none items-center justify-between p-4 sm:p-5 font-medium">';
+
+                        // Menampilkan Topik/Pertanyaan
+                        echo '<span class="font-work text-base md:text-lg">' . $topik . '</span>';
+
+                        // Ikon Chevron dengan 2 state (buka/tutup)
+                        echo '<span class="relative h-5 w-5 shrink-0">';
+                        echo '<img src="img/icon/chevron-down.svg" alt="Buka" class="group-open:hidden h-full w-full">';
+                        echo '<img src="img/icon/chevron-up.svg" alt="Tutup" class="hidden group-open:block h-full w-full">';
+                        echo '</span>';
+
+                        echo '</summary>';
+
+                        // Menampilkan Jawaban
+                        echo '<div class="px-4 sm:px-5 pb-5 text-gray-400">';
+                        echo '<p class="font-work font-light">' . nl2br($jawaban) . '</p>';
+                        echo '</div>';
+
+                        echo '</details>';
+                    }
+                } else {
+                    // Jika tidak ada data
+                    echo '<p class="font-work text-gray-400 text-center">Belum ada FAQ tersedia.</p>';
+                }
+
+                // Tutup koneksi
+                mysqli_close($koneksi);
+                ?>
 
             </div>
         </div>
     </section>
 
-    <!-- FAQ -->
-  <section class="flex flex-col container max-w-full bg-[#0D0D0D] px-6 md:px-16 py-10">
-    <h1 class="text-white px-6 md:px-16 text-2xl md:text-3xl font-semibold md:mx-auto font-work">FAQ (Frequently Ask
-      Question)</h1>
-
-    <!-- Pertanyaan  -->
-    <ul class="w-full mx-auto mt-2 divide-y py-4 border-b-[1px] border-white">
-
-      <?php
-      // Koneksi ke database
-      $koneksi = mysqli_connect($host, $username, $password, $database);
-
-      // Periksa koneksi
-      if (mysqli_connect_errno()) {
-        die("Koneksi database gagal: " . mysqli_connect_error());
-      }
-
-      // Query untuk mengambil data QnA
-      $query = "SELECT topik, jawaban FROM qna WHERE status = 'active' ORDER BY created_at DESC";
-      $result = mysqli_query($koneksi, $query);
-
-      // Periksa apakah ada data
-      if (mysqli_num_rows($result) > 0) {
-        // Loop melalui hasil query dan tampilkan data
-        while ($row = mysqli_fetch_assoc($result)) {
-          $topik = htmlspecialchars($row['topik']);
-          $jawaban = htmlspecialchars($row['jawaban']);
-
-          echo '<li>';
-          echo '<details class="group">';
-          echo '<summary class="flex items-center gap-3 px-4 py-3 font-medium marker:content-none hover:cursor-pointer">';
-          echo '<svg class="w-5 h-5 text-white transition group-open:rotate-90" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">';
-          echo '<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path>';
-          echo '</svg>';
-          echo '<span style="font-family: \'Work Sans\'" class="text-white text-lg md:text-xl font-normal">' . $topik . '</span>';
-          echo '</summary>';
-          echo '<!-- Jawaban -->';
-          echo '<article class="px-4 pb-4">';
-          echo '<p style="font-family: \'Work Sans\'" class="text-white text-base md:text-lg font-light">' . $jawaban . '</p>';
-          echo '</article>';
-          echo '</details>';
-          echo '</li>';
-        }
-      } else {
-        // Jika tidak ada data
-        echo '<li>';
-        echo '<p style="font-family: \'Work Sans\'" class="text-white text-base md:text-lg font-light px-4 py-4">Belum ada FAQ tersedia.</p>';
-        echo '</li>';
-      }
-
-      // Tutup koneksi
-      mysqli_close($koneksi);
-      ?>
-
-    </ul>
-  </section>
-
-
     <script>
         const faqContainer = document.getElementById('faq-container');
-        const detailsElements = faqContainer.querySelectorAll('details');
+        if (faqContainer) {
+            const detailsElements = faqContainer.querySelectorAll('details');
 
-        detailsElements.forEach(details => {
-            details.addEventListener('toggle', (event) => {
-                // Jika item saat ini dibuka
-                if (details.open) {
-                    // Tutup semua item lain
-                    detailsElements.forEach(otherDetails => {
-                        if (otherDetails !== details) {
-                            otherDetails.removeAttribute('open');
-                        }
-                    });
-                }
+            detailsElements.forEach(details => {
+                details.addEventListener('toggle', (event) => {
+                    // Jika item ini dibuka, tutup semua yang lain
+                    if (details.open) {
+                        detailsElements.forEach(otherDetails => {
+                            if (otherDetails !== details) {
+                                otherDetails.removeAttribute('open');
+                            }
+                        });
+                    }
+                });
             });
+        }
+    </script>
+
+    <!-- Cursor CDN -->
+    <script src="https://unpkg.com/kursor"></script>
+    <script>
+        new kursor({
+            type: 4,
+            removeDefaultCursor: true,
+            color: '#ffffff',
         });
     </script>
+    <!-- Cursor CDN -->
 
     <!-- Map -->
     <section class="py-16 px-6">

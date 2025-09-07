@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 
@@ -26,8 +27,12 @@
           },
           keyframes: {
             'loop-scroll': {
-              from: { transform: 'translateX(0)' },
-              to: { transform: 'translateX(-100%)' },
+              from: {
+                transform: 'translateX(0)'
+              },
+              to: {
+                transform: 'translateX(-100%)'
+              },
             },
           },
         },
@@ -84,12 +89,11 @@ body { /* the element was body */
   <?php
   require '_navbar.php';
   ?>
-   <div
-        class="w-2/3 h-3/4 blur-3xl absolute z-0 rounded-full bg-[radial-gradient(circle,_#515151_0%,_rgba(244,114,182,0)_70%)] top-px left-1/2 -translate-x-1/2 -translate-y-1/2">
-    </div>
-  <section id="register"
-    class="w-full h-screen flex lg:flex-row flex-col-reverse sm:p-8 sm:pt-24 ">
-    <div class="order-first lg:order-last relative z-10 lg:w-1/2 w-full h-1/2 md:h-2/3 lg:h-full text-start text-white space-y-4">
+  <div
+    class="w-2/3 h-3/4 blur-3xl absolute z-0 rounded-full bg-[radial-gradient(circle,_#515151_0%,_rgba(244,114,182,0)_70%)] top-px left-1/2 -translate-x-1/2 -translate-y-1/2">
+  </div>
+  <section id="register" class="w-full h-screen flex lg:flex-row flex-col-reverse sm:p-8 sm:pt-24 ">
+    <div class="order-first lg:order-last relative z-10 lg:w-1/2 w-full h-1/2 md:h-2/3 lg:h-full text-start space-y-4">
 
 
       <form action="systemdata.php" method="POST"
@@ -100,20 +104,23 @@ body { /* the element was body */
           <h1 class="text-2xl md:text-3xl text-black font-semibold">Daftar Akun</h1>
           <hr>
           <div class="flex-col gap-2 w-full">
-            <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Nama Lengkap</h1>
+            <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Nama Lengkap
+            </h1>
             <input type="text" name="nama" class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200"
               required placeholder="Masukkan Nama Lengkap">
           </div>
 
           <div class="flex-col gap-2 w-full">
-            <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Nomor Handphone</h1>
+            <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Nomor Handphone
+            </h1>
             <input type="number" name="no_hp"
               class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200" required
               placeholder="Masukkan Nomor Handphone">
           </div>
 
           <div class="flex-col gap-2 w-full">
-            <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Tanggal Lahir</h1>
+            <h1 class="text-base md:text-lg text-black font-semibold pb-1 italic font-work">Tanggal Lahir
+            </h1>
             <input type="date" name="tgl_lahir"
               class="w-full h-14 rounded-full px-8 font-work font-medium  bg-neutral-200" required>
           </div>
@@ -168,10 +175,83 @@ body { /* the element was body */
         </div>
       </form>
     </div>
-    <div class="order-last lg:order-first lg:w-1/2 md:h-1/3 w-full h-1/2 lg:h-full mt-20 lg:mt-0 flex justify-center items-end md:items-center ">
-      <img src="./img/hero/char.png" alt="Mindspace Characters" class="max-w-full h-fit animate-pulse" />
+    <div
+      class="order-last lg:order-first lg:w-1/2 md:h-1/3 w-full h-1/2 lg:h-full mt-20 lg:mt-0 flex justify-center items-end md:items-center ">
+      <img src="img/hero/cover.gif" alt="Mindspace Characters" class="max-w-full h-fit animate-pulse" />
     </div>
   </section>
+
+  <div id="notificationModal"
+    class="fixed inset-0 bg-black bg-opacity-80 z-[60] flex items-center justify-center p-4 hidden">
+    <div
+      class="bg-white rounded-2xl p-8 max-w-md w-full text-center relative transform transition-all scale-95 opacity-0">
+
+      <button type="button" id="closeNotificationModalBtn"
+        class="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl font-bold">&times;</button>
+
+      <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
+
+      <p id="modalMessage" class="text-gray-700 mb-6"></p>
+
+      <a id="modalButton" href="#"
+        class="inline-block bg-[#00E091] hover:bg-[#00c77e] text-black font-semibold px-8 py-3 rounded-2xl text-lg transition-all">
+        Lanjutkan
+      </a>
+
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const modal = document.getElementById('notificationModal');
+      const closeModalBtn = document.getElementById('closeNotificationModalBtn');
+
+      function showModal(notification) {
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalButton = document.getElementById('modalButton');
+
+        // Isi konten modal
+        modalTitle.textContent = notification.title;
+        modalMessage.textContent = notification.message;
+        modalButton.textContent = notification.button_text;
+        modalButton.href = notification.button_url;
+
+        // Tampilkan modal dengan animasi
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+          modal.firstElementChild.classList.remove('scale-95', 'opacity-0');
+          modal.firstElementChild.classList.add('scale-100', 'opacity-100');
+        }, 10);
+      }
+
+      function hideModal() {
+        modal.firstElementChild.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+        }, 300); // Sesuaikan durasi dengan transisi CSS
+      }
+
+      // Cek apakah ada notifikasi dari PHP
+      <?php if (isset($_SESSION['notification'])): ?>
+        const notificationData = <?php echo json_encode($_SESSION['notification']); ?>;
+        showModal(notificationData);
+        <?php unset($_SESSION['notification']); ?>
+      <?php endif; ?>
+
+      // Event listener untuk tombol close
+      closeModalBtn.addEventListener('click', hideModal);
+
+      // Event listener untuk tombol aksi utama (jika hanya untuk menutup modal)
+      const mainModalButton = document.getElementById('modalButton');
+      mainModalButton.addEventListener('click', function (e) {
+        if (this.getAttribute('href') === '#') {
+          e.preventDefault(); // Mencegah pindah ke atas halaman
+          hideModal();
+        }
+      });
+    });
+  </script>
 
   <!-- JavaScript untuk menampilkan pesan error -->
   <script>
@@ -182,16 +262,7 @@ body { /* the element was body */
   </script>
 </body>
 
-<!-- Cursor CDN -->
-<script src="https://unpkg.com/kursor"></script>
-<script>
-  new kursor({
-    type: 4,
-    removeDefaultCursor: true,
-    color: '#ffffff',
-  });
-</script>
-<!-- Cursor CDN -->
+
 
 <script>
   const togglePassword = document.getElementById("togglePassword");
@@ -200,7 +271,7 @@ body { /* the element was body */
 
   const eyeOpen = `<svg id="eyeIcon" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/>
-    </svg>` ;
+    </svg>`;
 
   const eyeClosed = `
     <svg id="eyeIcon" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
