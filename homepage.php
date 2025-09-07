@@ -613,6 +613,63 @@ include 'homepage_data.php';
         </div>
     </section>
 
+    <!-- Guest Star -->
+  <section id="gueststar" class="container flex flex-col max-w-full items-center bg-[#0D0D0D] gap-6 py-14">
+    <div class="flex flex-col items-center gap-2">
+      <h1 style="font-family: 'Work Sans'" class="text-2xl md:text-3xl text-white font-semibold">Temui Kolaborator Kami
+      </h1>
+      <h2 style="font-family: 'Work Sans'" class="text-white text-center text-sm md:text-lg">Temui beberapa Tokoh
+        Terkenal</h2>
+    </div>
+    <!-- Grid -->
+    <div class="grid container grid-cols-2 md:grid-cols-2 md:scale-100 lg:grid-cols-3 justify-items-center gap-2">
+
+      <?php
+      $koneksi = mysqli_connect($host, $username, $password, $database);
+
+      // Periksa koneksi
+      if (mysqli_connect_errno()) {
+        die("Koneksi database gagal: " . mysqli_connect_error());
+      }
+
+      // Query untuk mengambil data speakers
+      $query = "SELECT id_speaker, nama_speaker, instansi, deskripsi, kontak, foto_speaker, created_at, urutan FROM speakers ORDER BY urutan ASC";
+      $result = mysqli_query($koneksi, $query);
+
+      // Periksa apakah ada data
+      if (mysqli_num_rows($result) > 0) {
+        // Loop melalui hasil query dan tampilkan data
+        while ($row = mysqli_fetch_assoc($result)) {
+          $id_speaker = intval($row['id_speaker']);
+          $nama = htmlspecialchars($row['nama_speaker']);
+          $instansi = htmlspecialchars($row['instansi']);
+          $foto = htmlspecialchars($row['foto_speaker']); // Nama file foto
+      
+          // Tentukan path foto default jika foto tidak ada
+          $fotoPath = !empty($foto) ? 'img/speakers/' . $foto : 'img/narsum/segerahadir.png';
+
+          echo '<div class="w-[340px] flex flex-col items-center scale-[54%] -m-12 md:scale-100 md:m-0">';
+          echo '<a href="detailspeakers.php?id_speaker=' . $id_speaker . '">'; // Tambahkan tautan ke detail speaker
+          echo '<img class="w-[280px]" src="' . $fotoPath . '" alt="' . $nama . '" />';
+          echo '<h1 style="font-family: \'Work Sans\'" class="text-2xl text-white font-semibold">' . $nama . '</h1>';
+          echo '</a>'; // Tutup tag <a>
+          echo '<h2 style="font-family: \'Work Sans\'" class="font-light text-lg text-white">' . $instansi . '</h2>';
+          echo '</div>';
+        }
+      } else {
+        // Jika tidak ada data
+        echo '<div class="w-[340px] flex flex-col items-center scale-[54%] -m-12 md:scale-100 md:m-0">';
+        echo '<p style="font-family: \'Work Sans\'" class="text-white text-lg">Belum ada data speaker tersedia.</p>';
+        echo '</div>';
+      }
+
+      // Tutup koneksi
+      mysqli_close($koneksi);
+      ?>
+
+    </div>
+  </section>
+
     <!-- FAQ -->
     <section class="bg-black text-gray-100 py-16 sm:py-20">
         <div class="container mx-auto px-4 max-w-7xl lg:max-w-screen-xl 2xl:max-w-screen-2xl">
