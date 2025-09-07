@@ -293,7 +293,7 @@ include 'homepage_data.php';
                 <div class=" rounded-3xl p-8 border border-white/10 hover:border-yellow-400 duration-300 hover-radial-bg" style="--hover-color: #FEE139">
                     <div class="flex flex-col sm:flex-row items-center gap-8">
                         <div class="flex-shrink-0">
-                            <img src="./img/hero/5.png" alt="Intuitive Mascot" class="w-32 h-auto filter drop-shadow-[0_0_15px_rgba(234,179,8,0.6)] animate-pulse">
+                            <img src="./img/hero/intuiting2.gif" alt="Intuitive Mascot" class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(234,179,8,0.6)] animate-pulse">
                         </div>
                         <div>
                             <h2 class="text-3xl font-bold mb-3 text-yellow-300">Intuitive</h2>
@@ -306,7 +306,7 @@ include 'homepage_data.php';
                 <div class=" rounded-3xl p-8 border border-white/10 hover:border-green-400 duration-300 hover-radial-bg" style="--hover-color: #4ade80">
                     <div class="flex flex-col sm:flex-row items-center gap-8">
                         <div class="flex-shrink-0">
-                            <img src="./img/hero/6.png" alt="Sensing Mascot" class="w-32 h-auto filter drop-shadow-[0_0_15px_rgba(74,222,128,0.6)] animate-pulse">
+                            <img src="./img/hero/sensing1.gif" alt="Sensing Mascot" class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(74,222,128,0.6)] animate-pulse">
                         </div>
                         <div>
                             <h2 class="text-3xl font-bold mb-3 text-green-300">Sensing</h2>
@@ -326,7 +326,7 @@ include 'homepage_data.php';
                             </p>
                         </div>
                         <div class="flex-shrink-0">
-                            <img src="./img/hero/80.png" alt="Thinking Mascot" class="w-32 h-auto filter drop-shadow-[0_0_15px_rgba(96,155,250,0.6)] animate-pulse">
+                            <img src="./img/hero/thinking1.gif" alt="Thinking Mascot" class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(96,155,250,0.6)] animate-pulse">
                         </div>
                         
                     </div>
@@ -341,7 +341,7 @@ include 'homepage_data.php';
                             </p>
                         </div>
                         <div class="flex-shrink-0">
-                            <img src="./img/hero/70.png" alt="Feeling Mascot" class="w-36 h-auto filter drop-shadow-[0_0_15px_rgba(236,72,153,0.6)] animate-pulse">
+                            <img src="./img/hero/feeling1.gif" alt="Feeling Mascot" class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(236,72,153,0.6)] animate-pulse">
                         </div>  
                     </div>
                 </div>
