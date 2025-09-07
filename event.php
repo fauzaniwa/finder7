@@ -17,7 +17,7 @@ mysqli_set_charset($koneksi, 'utf8mb4');
 /* =========================
    AMBIL USER ID & EMAIL (JIKA LOGIN)
    ========================= */
-$user_id = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
+$user_id = isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
 $user_email = isset($_SESSION['user_data']['email']) ? $_SESSION['user_data']['email'] : null;
 
 /* =========================
@@ -73,7 +73,7 @@ while ($row_event = mysqli_fetch_assoc($result_event)) {
     }
     mysqli_stmt_close($stmt_speakers);
 
-    $row_event['sisa_kuota'] = max(0, (int)($row_event['sisa_kuota'] ?? 0));
+    $row_event['sisa_kuota'] = max(0, (int) ($row_event['sisa_kuota'] ?? 0));
     $row_event['speakers'] = $speakers_data;
     $events_data[] = $row_event;
 }
@@ -87,16 +87,16 @@ if ($user_id || $user_email) {
     // Gunakan OR untuk mencocokkan id_user atau email
     $query_check_tiket = "SELECT id_event, is_verified FROM tiket WHERE id_user = ? OR email = ?";
     $stmt_check_tiket = mysqli_prepare($koneksi, $query_check_tiket);
-    
+
     // Asumsi: jika $user_id null, kita gunakan 0 atau null. Dan jika $user_email null, kita gunakan string kosong.
     $id_param = $user_id ?? 0;
     $email_param = $user_email ?? '';
-    
+
     if ($stmt_check_tiket) {
         mysqli_stmt_bind_param($stmt_check_tiket, "is", $id_param, $email_param);
         mysqli_stmt_execute($stmt_check_tiket);
         $result_check_tiket = mysqli_stmt_get_result($stmt_check_tiket);
-        
+
         while ($row_check_tiket = mysqli_fetch_assoc($result_check_tiket)) {
             $events_with_tickets[$row_check_tiket['id_event']] = intval($row_check_tiket['is_verified']);
         }
@@ -108,7 +108,8 @@ if ($user_id || $user_email) {
 /* =========================
    FUNGSI KODE TIKET
    ========================= */
-function generateTicketCode($id_event, $user_id) {
+function generateTicketCode($id_event, $user_id)
+{
     $random_part = substr(str_shuffle(str_repeat('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 6)), 0, 6);
     $random_partt = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 2)), 0, 2);
     return $random_partt . $id_event . $user_id . $random_part;
@@ -121,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event'])) {
     if (!$user_id) {
         echo '<script>alert("Harap Login terlebih dahulu!");</script>';
     } else {
-        $id_event = (int)$_POST['id_event'];
+        $id_event = (int) $_POST['id_event'];
 
         // Menggunakan array yang diperbarui
         if (!array_key_exists($id_event, $events_with_tickets)) {
@@ -152,9 +153,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_event'])) {
 /* =========================
    GROUPING BY TANGGAL
    ========================= */
-function indoMonth($n) {
-    $bulan = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-    $n = (int)$n; 
+function indoMonth($n)
+{
+    $bulan = [1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    $n = (int) $n;
     return $bulan[$n] ?? '';
 }
 
@@ -180,7 +182,9 @@ $events_found = !empty($grouped_by_date);
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&family=Inter:wght@400;700&display=swap"
+        rel="stylesheet" />
 
     <title>Finder - Jadwal Acara</title>
     <link rel="icon" href="./img/FinderLogo.svg" type="image/x-icon" />
@@ -205,8 +209,12 @@ $events_found = !empty($grouped_by_date);
                     },
                     keyframes: {
                         'loop-scroll': {
-                            from: { transform: 'translateX(0)' },
-                            to: { transform: 'translateX(-100%)' },
+                            from: {
+                                transform: 'translateX(0)'
+                            },
+                            to: {
+                                transform: 'translateX(-100%)'
+                            },
                         },
                     },
                 },
@@ -220,121 +228,223 @@ $events_found = !empty($grouped_by_date);
     </style>
 </head>
 
-<body class="bg-black text-white">
+<body class="bg-black text-gray-100">
     <?php require '_navbar.php'; ?>
 
     <main class="container mx-auto px-6 py-20 pt-32">
-    <h1 class="text-4xl md:text-5xl font-bold text-center mb-16">Jadwal Acara</h1>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-12 text-gray-100 text-center mb-16">Jadwal Acara</h1>
 
-    <?php if ($events_found): ?>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 md:gap-x-8">
+        <?php if ($events_found): ?>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 md:gap-x-8">
 
-            <?php
-            $card_count = 0;
-            $total_cards = count($grouped_by_date);
-            foreach ($grouped_by_date as $tanggal => $events):
-                $card_count++;
-                $border_class = ($card_count < $total_cards) ? 'lg:border-r lg:border-neutral-800' : '';
-            ?>
-            <div class="flex flex-col space-y-8 px-4 <?php echo $border_class; ?>">
-                <div class="flex items-center space-x-4">
-                    <span class="text-6xl md:text-7xl font-bold"><?php echo date('d', strtotime($tanggal)); ?></span>
-                    <div class="flex flex-col">
-                        <span class="text-2xl md:text-3xl"><?php echo indoMonth(date('n', strtotime($tanggal))); ?></span>
-                        <span class="text-2xl md:text-3xl text-neutral-400"><?php echo date('Y', strtotime($tanggal)); ?></span>
-                    </div>
-                </div>
-
-                <div class="flex flex-col space-y-12">
-                    <?php foreach ($events as $event): ?>
-                    <div>
-                        <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?></h3>
-                        <?php if (!empty($event['speakers'])): ?>
-                            <p class="text-sm text-neutral-400 mt-1">
-                                Speakers:
-                                <?php
-                                $speaker_names = array_map(function($speaker) {
-                                    $instansi = !empty($speaker['instansi']) ? " ({$speaker['instansi']})" : "";
-                                    return htmlspecialchars($speaker['nama_speaker'] . $instansi);
-                                }, $event['speakers']);
-                                echo implode(', ', $speaker_names);
-                                ?>
-                            </p>
-                        <?php endif; ?>
-
-                        <div class="flex justify-between items-center mt-1 pr-3">
-                            <span class="text-neutral-400 text-sm">Waktu: <?php echo htmlspecialchars($event['waktu_event']); ?></span>
-                            <span class="font-semibold text-sm">
-                                <?php
-                                $status_bayar = htmlspecialchars($event['statusbayar']);
-                                echo ($status_bayar == 'yes') ? 'Berbayar' : 'Gratis';
-                                ?>
-                            </span>
-                        </div>
-                        <div class="flex justify-between items-center mt-1 pr-3">
-                            <span class="text-neutral-400 text-sm">Lokasi: <?php echo htmlspecialchars($event['lokasi_event']); ?></span>
-                            <span class="font-semibold text-sm">Kuota Tersedia: <?php echo htmlspecialchars($event['sisa_kuota']); ?></span>
+                <?php
+                $card_count = 0;
+                $total_cards = count($grouped_by_date);
+                foreach ($grouped_by_date as $tanggal => $events):
+                    $card_count++;
+                    $border_class = ($card_count < $total_cards) ? 'lg:border-r lg:border-neutral-800' : '';
+                    ?>
+                    <div class="flex flex-col space-y-8 px-4 <?php echo $border_class; ?>">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-6xl md:text-7xl font-bold"><?php echo date('d', strtotime($tanggal)); ?></span>
+                            <div class="flex flex-col">
+                                <span
+                                    class="text-2xl md:text-3xl"><?php echo indoMonth(date('n', strtotime($tanggal))); ?></span>
+                                <span
+                                    class="text-2xl md:text-3xl text-neutral-400"><?php echo date('Y', strtotime($tanggal)); ?></span>
+                            </div>
                         </div>
 
-                        <div class="flex space-x-4 mt-6">
-                            <?php
-                            $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug');
-                            $user_has_ticket = false;
-                            $is_verified_ticket = false;
-                            
-                            // Cek apakah user sudah mendaftar dan dapatkan status verifikasinya
-                            if (isset($events_with_tickets[$event['id_event']])) {
-                                $user_has_ticket = true;
-                                $is_verified_ticket = ($events_with_tickets[$event['id_event']] == 1);
-                            }
-                            ?>
-                            <a href="detailevent.php?slug=<?php echo $slug_event; ?>" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail Kegiatan</a>
-
-                            <?php if ($user_has_ticket): ?>
-                                <?php if ($is_verified_ticket): ?>
-                                    <span class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-sm">Tiket Diambil</span>
-                                <?php else: ?>
-                                    <span class="border border-yellow-800 bg-yellow-950 text-yellow-400 rounded-xl px-5 py-2 text-sm">Menunggu Verifikasi</span>
-                                <?php endif; ?>
-                            <?php else: ?>
-                                <?php
-                                $sisa_kuota = isset($event['sisa_kuota']) ? $event['sisa_kuota'] : 0;
-                                ?>
-                                <?php if ($event['event_status'] == 0): ?>
-                                    <?php if ($sisa_kuota > 0): ?>
-                                        <a href="detailevent.php?slug=<?php echo $slug_event; ?>" class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
-                                    <?php else: ?>
-                                        <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Kuota Penuh</button>
+                        <div class="flex flex-col space-y-12">
+                            <?php foreach ($events as $event): ?>
+                                <div>
+                                    <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?></h3>
+                                    <?php if (!empty($event['speakers'])): ?>
+                                        <p class="text-sm text-neutral-400 mt-1">
+                                            Speakers:
+                                            <?php
+                                            $speaker_names = array_map(function ($speaker) {
+                                                $instansi = !empty($speaker['instansi']) ? " ({$speaker['instansi']})" : "";
+                                                return htmlspecialchars($speaker['nama_speaker'] . $instansi);
+                                            }, $event['speakers']);
+                                            echo implode(', ', $speaker_names);
+                                            ?>
+                                        </p>
                                     <?php endif; ?>
-                                <?php elseif ($event['event_status'] == 1): ?>
-                                    <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Telah Berakhir</button>
-                                <?php elseif ($event['event_status'] == 2): ?>
-                                    <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Kuota Penuh</button>
-                                <?php elseif ($event['event_status'] == 4): ?>
-                                    <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Segera Hadir</button>
-                                <?php endif; ?>
-                            <?php endif; ?>
+
+                                    <div class="flex justify-between items-center mt-1 pr-3">
+                                        <span class="text-neutral-400 text-sm">Waktu:
+                                            <?php echo htmlspecialchars($event['waktu_event']); ?></span>
+                                        <span class="font-semibold text-sm">
+                                            <?php
+                                            $status_bayar = htmlspecialchars($event['statusbayar']);
+                                            echo ($status_bayar == 'yes') ? 'Berbayar' : 'Gratis';
+                                            ?>
+                                        </span>
+                                    </div>
+                                    <div class="flex justify-between items-center mt-1 pr-3">
+                                        <span class="text-neutral-400 text-sm">Lokasi:
+                                            <?php echo htmlspecialchars($event['lokasi_event']); ?></span>
+                                        <span class="font-semibold text-sm">Kuota Tersedia:
+                                            <?php echo htmlspecialchars($event['sisa_kuota']); ?></span>
+                                    </div>
+
+                                    <div class="flex space-x-4 mt-6">
+                                        <?php
+                                        $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug');
+                                        $user_has_ticket = false;
+                                        $is_verified_ticket = false;
+
+                                        // Cek apakah user sudah mendaftar dan dapatkan status verifikasinya
+                                        if (isset($events_with_tickets[$event['id_event']])) {
+                                            $user_has_ticket = true;
+                                            $is_verified_ticket = ($events_with_tickets[$event['id_event']] == 1);
+                                        }
+                                        ?>
+                                        <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
+                                            class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail
+                                            Kegiatan</a>
+
+                                        <?php if ($user_has_ticket): ?>
+                                            <?php if ($is_verified_ticket): ?>
+                                                <span
+                                                    class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-sm">Tiket
+                                                    Diambil</span>
+                                            <?php else: ?>
+                                                <span
+                                                    class="border border-yellow-800 bg-yellow-950 text-yellow-400 rounded-xl px-5 py-2 text-sm">Menunggu
+                                                    Verifikasi</span>
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <?php
+                                            $sisa_kuota = isset($event['sisa_kuota']) ? $event['sisa_kuota'] : 0;
+                                            ?>
+                                            <?php if ($event['event_status'] == 0): ?>
+                                                <?php if ($sisa_kuota > 0): ?>
+                                                    <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
+                                                        class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
+                                                <?php else: ?>
+                                                    <button
+                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
+                                                        disabled>Kuota Penuh</button>
+                                                <?php endif; ?>
+                                            <?php elseif ($event['event_status'] == 1): ?>
+                                                <button
+                                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
+                                                    disabled>Telah Berakhir</button>
+                                            <?php elseif ($event['event_status'] == 2): ?>
+                                                <button
+                                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
+                                                    disabled>Kuota Penuh</button>
+                                            <?php elseif ($event['event_status'] == 4): ?>
+                                                <button
+                                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
+                                                    disabled>Segera Hadir</button>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
+                <?php endforeach; ?>
+            </div>
+
+
+        <?php else: ?>
+            <p class="text-center text-neutral-400 text-xl">Saat ini belum ada jadwal acara yang tersedia.</p>
+        <?php endif; ?>
+    </main>
+    <!-- Performances -->
+    <?php
+    // ==================================================
+// BAGIAN DATA (HANYA EDIT BAGIAN INI)
+// ==================================================
+// 'image_url' bisa diisi dengan path ke gambar, atau biarkan kosong ('') untuk menampilkan placeholder abu-abu.
+    
+    $performances = [
+        [
+            'band_name' => 'The Weekend Project',
+            'image_url' => '', // Biarkan kosong untuk placeholder
+            'date' => '08 September 2025',
+            'time' => '19:00 - 20:00',
+            'location' => 'Main Stage, FPMIPA UPI'
+        ],
+        [
+            'band_name' => 'Coldplay Tribute',
+            'image_url' => '', // Ganti dengan path gambar jika ada, misal: 'img/band/coldplay.jpg'
+            'date' => '08 September 2025',
+            'time' => '20:00 - 21:00',
+            'location' => 'Main Stage, FPMIPA UPI'
+        ],
+        [
+            'band_name' => 'Acoustic Night Session',
+            'image_url' => '',
+            'date' => '08 September 2025',
+            'time' => '21:00 - 22:00',
+            'location' => 'Rooftop, Isola Building'
+        ],
+    ];
+    ?>
+
+    <div>
+        <section
+            class="relative bg-black text-white w-full min-h-screen overflow-hidden py-20 px-4 sm:px-8 md:px-16 lg:px-24">
+
+            <div class="container mx-auto relative z-10">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-12 text-gray-100 text-start mb-16">
+                    Performance</h1>
+
+                <div class="space-y-12">
+
+                    <?php foreach ($performances as $performance): ?>
+                        <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+
+                            <?php if (!empty($performance['image_url'])): ?>
+                                <img src="<?php echo htmlspecialchars($performance['image_url']); ?>"
+                                    alt="<?php echo htmlspecialchars($performance['band_name']); ?>"
+                                    class="w-full md:w-1/3 lg:w-1/4 h-48 object-cover rounded-2xl flex-shrink-0">
+                            <?php else: ?>
+                                <div class="w-full md:w-1/3 lg:w-1/4 h-48 bg-neutral-800 rounded-2xl flex-shrink-0"></div>
+                            <?php endif; ?>
+
+                            <div>
+                                <h2 class="text-lg md:text-2xl font-bold mb-4">
+                                    <?php echo htmlspecialchars($performance['band_name']); ?>
+                                </h2>
+                                <div class="space-y-3 text-gray-300 text-md">
+                                    <div class="flex items-center gap-3">
+                                        <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span><?php echo htmlspecialchars($performance['date']); ?> |
+                                            <?php echo htmlspecialchars($performance['time']); ?></span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                        </svg>
+                                        <span><?php echo htmlspecialchars($performance['location']); ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <?php endforeach; ?>
+
                 </div>
             </div>
-            <?php endforeach; ?>
-        </div>
+        </section>
+    </div>
 
-        <div class="text-center mt-20">
-            <button class="bg-[#26d0a5] text-black font-bold py-3 px-16 rounded-full hover:bg-[#21b38f] transition-colors duration-300 text-lg">
-                See More
-            </button>
-        </div>
-
-    <?php else: ?>
-        <p class="text-center text-neutral-400 text-xl">Saat ini belum ada jadwal acara yang tersedia.</p>
-    <?php endif; ?>
-</main>
 
     <?php require '_footer.php'; ?>
-    
+
     <script>
         const navEL = document.querySelector('.navbar');
         window.addEventListener('scroll', () => {
@@ -347,9 +457,14 @@ $events_found = !empty($grouped_by_date);
     </script>
     <script src="https://unpkg.com/kursor"></script>
     <script>
-        new kursor({ type: 4, removeDefaultCursor: true, color: '#ffffff' });
+        new kursor({
+            type: 4,
+            removeDefaultCursor: true,
+            color: '#ffffff'
+        });
     </script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="system.js"></script>
 </body>
+
 </html>

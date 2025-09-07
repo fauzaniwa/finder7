@@ -16,35 +16,35 @@ include 'homepage_data.php';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
     <script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                fontFamily: {
-                    work: ['Work Sans'],
-                },
-                animation: {
-                    'spin-slow': 'spin 4s linear infinite',
-                    'loop-scroll': 'loop-scroll 10s linear infinite',
-                },
-                keyframes: {
-                    'loop-scroll': {
-                        from: {
-                            transform: 'translateX(0)'
-                        },
-                        to: {
-                            transform: 'translateX(-100%)'
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        work: ['Work Sans'],
+                    },
+                    animation: {
+                        'spin-slow': 'spin 4s linear infinite',
+                        'loop-scroll': 'loop-scroll 10s linear infinite',
+                    },
+                    keyframes: {
+                        'loop-scroll': {
+                            from: {
+                                transform: 'translateX(0)'
+                            },
+                            to: {
+                                transform: 'translateX(-100%)'
+                            },
                         },
                     },
                 },
             },
-        },
-    };
+        };
     </script>
     <style>
-    .filter-button.active {
-        background-color: #FFFFFF;
-        color: #000000;
-    }
+        .filter-button.active {
+            background-color: #FFFFFF;
+            color: #000000;
+        }
     </style>
     <style type="text/tailwindcss">
         .navbar-scrolled {
@@ -107,55 +107,104 @@ include 'homepage_data.php';
         }
     </style>
     <style>
-    .button-container {
-        display: flex;
-        gap: 10px;
-        margin: 20px;
-    }
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin: 20px;
+        }
 
-    .hidden {
-        display: none;
-    }
+        .hidden {
+            display: none;
+        }
 
-    .button {
-        font-family: 'Work Sans';
-        border: 1px solid white;
-        padding: 10px 20px;
-        color: white;
-        background: transparent;
-        border-radius: 50px;
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
-    }
+        .button {
+            font-family: 'Work Sans';
+            border: 1px solid white;
+            padding: 10px 20px;
+            color: white;
+            background: transparent;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
 
-    .button:hover {
-        background: rgba(255, 255, 255, 0.25);
-    }
+        .button:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
     </style>
 
     <style>
-    @layer components {
-        .hover-radial-bg {
-            position: relative;
-            overflow: hidden;
+        @layer components {
+            .hover-radial-bg {
+                position: relative;
+                overflow: hidden;
+            }
+
+            .hover-radial-bg::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-image: radial-gradient(circle at center, transparent 40%, var(--hover-color) 100%);
+                opacity: 0;
+                transition: opacity 300ms ease;
+                z-index: -1;
+            }
+
+            .hover-radial-bg:hover::before {
+                opacity: 1;
+            }
+
+            .radial-bg {
+                background-image: radial-gradient(circle, var(--hover-color) 0%, transparent 70%);
+            }
+        }
+    </style>
+    <style>
+        @keyframes loop-scroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
         }
 
-        .hover-radial-bg::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(circle at center, transparent 40%, var(--hover-color) 100%);
-            opacity: 0;
-            transition: opacity 300ms ease;
-            z-index: -1;
+        .animate-loop-scroll {
+            animation: loop-scroll 40s linear infinite;
+        }
+    </style>
+
+    <style>
+        @keyframes scroll-up {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-100%);
+            }
         }
 
-        .hover-radial-bg:hover::before {
-            opacity: 1;
+        @keyframes scroll-down {
+            from {
+                transform: translateY(-100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
         }
-    }
+
+        .animate-scroll-up {
+            animation: scroll-up 40s linear infinite;
+        }
+
+        .animate-scroll-down {
+            animation: scroll-down 40s linear infinite;
+        }
     </style>
 
     <title>Finder 7 - Homepage</title>
@@ -380,7 +429,124 @@ include 'homepage_data.php';
             </div>
         </div>
     </section>
+    <!-- CTA Pameran -->
+    <?php
+    // =================================================================
+// BAGIAN DATA PHP - AMBIL GAMBAR DARI DATABASE
+// =================================================================
+    
+    // Sertakan file koneksi database Anda
+// include 'koneksi.php'; 
+    
+    /*
+    // Contoh koneksi (hapus komentar jika belum ada)
+    $host = "localhost";
+    $username = "root";
+    $password = "";
+    $database = "nama_database_anda";
+    $koneksi = mysqli_connect($host, $username, $password, $database);
+    */
 
+    $karya_images = []; // Inisialisasi array kosong
+    
+    // Ganti 'karya' dengan nama tabel Anda dan 'path_gambar' dengan nama kolom Anda
+    $query = "SELECT path_gambar FROM karya ORDER BY RAND() LIMIT 5";
+    // $result = mysqli_query($koneksi, $query);
+    
+    // if ($result && mysqli_num_rows($result) > 0) {
+//     while ($row = mysqli_fetch_assoc($result)) {
+//         // Asumsikan path_gambar menyimpan nama file, misal: 'karya1.jpg'
+//         // dan gambar ada di folder 'img/karya/'
+//         $karya_images[] = 'img/karya/' . $row['path_gambar'];
+//     }
+// } else {
+    // Data fallback jika database kosong atau gagal konek
+    $karya_images = [
+        'https://via.placeholder.com/400x600/262626/808080?text=Karya+1',
+        'https://via.placeholder.com/400x600/262626/808080?text=Karya+2',
+        'https://via.placeholder.com/400x600/262626/808080?text=Karya+3',
+        'https://via.placeholder.com/400x600/262626/808080?text=Karya+4',
+        'https://via.placeholder.com/400x600/262626/808080?text=Karya+5',
+    ];
+    // }
+    ?>
+
+    <section class="bg-black text-white py-20 sm:py-24 relative overflow-hidden">
+        <div class="container mx-auto px-4">
+
+            <div class="relative flex flex-col lg:flex-row justify-between items-center gap-12">
+
+                <div class="absolute inset-y-0 right-0 w-full lg:w-3/5 z-0">
+                    <div class="relative w-full h-full overflow-hidden">
+                        <div
+                            class="absolute top-0 bottom-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10">
+                        </div>
+
+                        <div class="absolute top-0 bottom-0 flex items-center">
+                            <div class="flex animate-loop-scroll">
+                                <?php foreach ($karya_images as $image_src): ?>
+                                    <img src="<?php echo htmlspecialchars($image_src); ?>" alt="Karya Finder"
+                                        class="h-[450px] w-auto max-w-none rounded-2xl mx-4 shrink-0 object-cover">
+                                <?php endforeach; ?>
+                                <?php foreach ($karya_images as $image_src): ?>
+                                    <img src="<?php echo htmlspecialchars($image_src); ?>" alt="Karya Finder"
+                                        class="h-[450px] w-auto max-w-none rounded-2xl mx-4 shrink-0 object-cover">
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <div
+                            class="absolute top-0 bottom-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10 w-full lg:w-2/5 text-center lg:text-left">
+                    <h2 class="text-xl md:text-4xl font-bold">
+                        Cari Tahu Karya-Karya Keren yang Ada di Finder 7 yuk!
+                    </h2>
+                    <p class="mt-4 text-lg text-gray-100">
+                        Bisa dimulai dari pilih section favoritemu dulu
+                    </p>
+
+                    <div class="mt-12 grid grid-cols-2 gap-4 sm:gap-6 max-w-md mx-auto lg:mx-0">
+                        <div class="feeling flex-col border border-opacity-50 border-pink-600 rounded-3xl px-7 py-4 radial-bg duration-300"
+                            style="--hover-color: #db2777">
+                            <img src="./img/icon program/feeling.svg" alt="">
+                            <p>Feeling</p>
+                        </div>
+
+                        <div class="thinking flex-col border border-opacity-50 border-blue-600 rounded-3xl px-7 py-4 radial-bg duration-300"
+                            style="--hover-color: #618BFF">
+                            <img src="./img/icon program/thinking.svg" alt="">
+                            <p>Thinking</p>
+                        </div>
+
+                        <div class="intuitive flex-col border border-opacity-50 border-yellow-400 rounded-3xl px-7 py-4 radial-bg duration-300"
+                            style="--hover-color: #FEE139">
+                            <img src="./img/icon program/intuitive.svg" alt="">
+                            <p>intuitive</p>
+                        </div>
+
+                        <div class="sensing flex-col border border-opacity-50 border-emerald-600 rounded-3xl px-7 py-4 radial-bg duration-300"
+                            style="--hover-color: #00D294">
+                            <img src="./img/icon program/sensing.svg" alt="">
+                            <p>sensing</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-16">
+                        <a href="#"
+                            class="inline-block rounded-2xl font-semibold text-center tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black whitespace-nowrap px-9 py-3 md:px-16 text-base md:text-lg bg-emerald-400 text-emerald-950 hover:bg-emerald-500 focus:ring-emerald-400">
+                            See More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jadawl -->
     <section id="jadwal" class="bg-neutral-950 text-gray-100 min-h-screen">
         <main class="container mx-auto px-6 py-20 pt-32">
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-16">
@@ -403,9 +569,9 @@ include 'homepage_data.php';
             ?>
 
             <?php if ($events_found): ?>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 md:gap-x-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 md:gap-x-8">
 
-                <?php
+                    <?php
                     // Logika untuk menambahkan border di antara kolom
                     $card_count = 0;
                     // Gunakan array yang sudah dibatasi untuk menghitung total kartu
@@ -416,47 +582,47 @@ include 'homepage_data.php';
                         // Menambahkan border kanan hanya jika bukan kartu terakhir di tampilan desktop
                         $border_class = ($card_count < $total_cards && $total_cards > 1) ? 'lg:border-r lg:border-neutral-800' : '';
                         ?>
-                <div class="flex flex-col space-y-8 px-4 <?php echo $border_class; ?>">
-                    <div class="flex items-center space-x-4">
-                        <span
-                            class="text-6xl md:text-7xl font-bold"><?php echo date('d', strtotime($tanggal)); ?></span>
-                        <div class="flex flex-col">
-                            <span class="text-2xl md:text-3xl"><?php echo date('F', strtotime($tanggal)); ?></span>
-                            <span
-                                class="text-2xl md:text-3xl text-neutral-400"><?php echo date('Y', strtotime($tanggal)); ?></span>
-                        </div>
-                    </div>
+                        <div class="flex flex-col space-y-8 px-4 <?php echo $border_class; ?>">
+                            <div class="flex items-center space-x-4">
+                                <span
+                                    class="text-6xl md:text-7xl font-bold"><?php echo date('d', strtotime($tanggal)); ?></span>
+                                <div class="flex flex-col">
+                                    <span class="text-2xl md:text-3xl"><?php echo date('F', strtotime($tanggal)); ?></span>
+                                    <span
+                                        class="text-2xl md:text-3xl text-neutral-400"><?php echo date('Y', strtotime($tanggal)); ?></span>
+                                </div>
+                            </div>
 
-                    <div class="flex flex-col space-y-12">
-                        <?php
+                            <div class="flex flex-col space-y-12">
+                                <?php
                                 // Ambil hanya 3 event pertama untuk tanggal ini
                                 $limited_events = array_slice($events, 0, 3);
                                 // Lakukan perulangan pada array event yang sudah dibatasi
                                 foreach ($limited_events as $event):
                                     ?>
-                        <div>
-                            <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?></h3>
-                            <?php if (!empty($event['speakers'])): ?>
-                            <p class="text-base text-neutral-400 mt-1">
-                                Speakers:
-                                <?php
+                                    <div>
+                                        <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?></h3>
+                                        <?php if (!empty($event['speakers'])): ?>
+                                            <p class="text-base text-neutral-400 mt-1">
+                                                Speakers:
+                                                <?php
                                                 $speaker_names = array_map(function ($speaker) {
                                                     $instansi = !empty($speaker['instansi']) ? " ({$speaker['instansi']})" : "";
                                                     return htmlspecialchars($speaker['nama_speaker'] . $instansi);
                                                 }, $event['speakers']);
                                                 echo implode(', ', $speaker_names);
                                                 ?>
-                            </p>
-                            <?php endif; ?>
+                                            </p>
+                                        <?php endif; ?>
 
-                            <div class="flex justify-between items-center mt-1 pr-3">
-                                <span class="text-neutral-400 text-base">Waktu:
-                                    <?php echo htmlspecialchars($event['waktu_event']); ?></span>
-                                <span class="font-semibold text-base">Kuota:
-                                    <?php echo htmlspecialchars($event['kuota']); ?></span>
-                            </div>
-                            <div class="flex space-x-4 mt-6">
-                                <?php
+                                        <div class="flex justify-between items-center mt-1 pr-3">
+                                            <span class="text-neutral-400 text-base">Waktu:
+                                                <?php echo htmlspecialchars($event['waktu_event']); ?></span>
+                                            <span class="font-semibold text-base">Kuota:
+                                                <?php echo htmlspecialchars($event['kuota']); ?></span>
+                                        </div>
+                                        <div class="flex space-x-4 mt-6">
+                                            <?php
                                             $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug');
 
                                             // --- LOGIKA PERBAIKAN DI SINI ---
@@ -469,64 +635,64 @@ include 'homepage_data.php';
                                                 $is_verified_ticket = ($events_with_tickets[$event['id_event']] == 1);
                                             }
                                             ?>
-                                <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
-                                    class="border border-neutral-600 rounded-xl px-5 py-2 text-base hover:bg-white hover:text-black transition-colors duration-300">Detail
-                                    Kegiatan</a>
+                                            <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
+                                                class="border border-neutral-600 rounded-xl px-5 py-2 text-base hover:bg-white hover:text-black transition-colors duration-300">Detail
+                                                Kegiatan</a>
 
-                                <?php if ($user_has_ticket): ?>
-                                <?php if ($is_verified_ticket): ?>
-                                <span
-                                    class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-base">Kamu
-                                    Memiliki Tiket</span>
-                                <?php else: ?>
-                                <span
-                                    class="border border-yellow-800 bg-yellow-950 text-yellow-400 rounded-xl px-5 py-2 text-base">Menunggu
-                                    Verifikasi</span>
-                                <?php endif; ?>
-                                <?php else: ?>
-                                <?php
+                                            <?php if ($user_has_ticket): ?>
+                                                <?php if ($is_verified_ticket): ?>
+                                                    <span
+                                                        class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-base">Kamu
+                                                        Memiliki Tiket</span>
+                                                <?php else: ?>
+                                                    <span
+                                                        class="border border-yellow-800 bg-yellow-950 text-yellow-400 rounded-xl px-5 py-2 text-base">Menunggu
+                                                        Verifikasi</span>
+                                                <?php endif; ?>
+                                            <?php else: ?>
+                                                <?php
                                                 $sisa_kuota = isset($event['sisa_kuota']) ? $event['sisa_kuota'] : 0;
                                                 ?>
-                                <?php if ($event['event_status'] == 0): ?>
-                                <?php if ($sisa_kuota > 0): ?>
-                                <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
-                                    class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
-                                <?php else: ?>
-                                <button
-                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
-                                    disabled>Kuota Penuh</button>
-                                <?php endif; ?>
-                                <?php elseif ($event['event_status'] == 1): ?>
-                                <button
-                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
-                                    disabled>Telah Berakhir</button>
-                                <?php elseif ($event['event_status'] == 2): ?>
-                                <button
-                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
-                                    disabled>Kuota Penuh</button>
-                                <?php elseif ($event['event_status'] == 4): ?>
-                                <button
-                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
-                                    disabled>Segera Hadir</button>
-                                <?php endif; ?>
-                                <?php endif; ?>
+                                                <?php if ($event['event_status'] == 0): ?>
+                                                    <?php if ($sisa_kuota > 0): ?>
+                                                        <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
+                                                            class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
+                                                    <?php else: ?>
+                                                        <button
+                                                            class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
+                                                            disabled>Kuota Penuh</button>
+                                                    <?php endif; ?>
+                                                <?php elseif ($event['event_status'] == 1): ?>
+                                                    <button
+                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
+                                                        disabled>Telah Berakhir</button>
+                                                <?php elseif ($event['event_status'] == 2): ?>
+                                                    <button
+                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
+                                                        disabled>Kuota Penuh</button>
+                                                <?php elseif ($event['event_status'] == 4): ?>
+                                                    <button
+                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
+                                                        disabled>Segera Hadir</button>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
                         </div>
-                        <?php endforeach; ?>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
-                <?php endforeach; ?>
-            </div>
 
-            <div class="text-center mt-20">
-                <a href="event.php"
-                    class="inline-block rounded-2xl font-semibold text-center tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black whitespace-nowrap px-9 py-3 md:px-16 text-base md:text-lg bg-emerald-400 text-emerald-950 hover:bg-emerald-500 focus:ring-emerald-400">
-                    Lihat Semua
-                </a>
-            </div>
+                <div class="text-center mt-20">
+                    <a href="event.php"
+                        class="inline-block rounded-2xl font-semibold text-center tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black whitespace-nowrap px-9 py-3 md:px-16 text-base md:text-lg bg-emerald-400 text-emerald-950 hover:bg-emerald-500 focus:ring-emerald-400">
+                        Lihat Semua
+                    </a>
+                </div>
 
             <?php else: ?>
-            <p class="text-center text-neutral-400 text-xl">Saat ini belum ada jadwal acara yang tersedia.</p>
+                <p class="text-center text-neutral-400 text-xl">Saat ini belum ada jadwal acara yang tersedia.</p>
             <?php endif; ?>
 
         </main>
@@ -645,38 +811,38 @@ include 'homepage_data.php';
         </div>
 
         <?php if (isset($total_speakers) && $total_speakers > 6): ?>
-        <div id="show-more-container" class="text-center mt-10">
-            <button id="show-more-btn"
-                class="inline-block rounded-2xl font-semibold text-center tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black whitespace-nowrap px-9 py-3 md:px-16 text-base md:text-lg bg-emerald-400 text-emerald-950 hover:bg-emerald-500 focus:ring-emerald-400">
-                Tampilkan Semua
-            </button>
-        </div>
+            <div id="show-more-container" class="text-center mt-10">
+                <button id="show-more-btn"
+                    class="inline-block rounded-2xl font-semibold text-center tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black whitespace-nowrap px-9 py-3 md:px-16 text-base md:text-lg bg-emerald-400 text-emerald-950 hover:bg-emerald-500 focus:ring-emerald-400">
+                    Tampilkan Semua
+                </button>
+            </div>
         <?php endif; ?>
 
     </section>
 
     <script>
-    const showMoreBtn = document.getElementById('show-more-btn');
-    const showMoreContainer = document.getElementById('show-more-container');
-    const guestGrid = document.getElementById('guest-grid');
+        const showMoreBtn = document.getElementById('show-more-btn');
+        const showMoreContainer = document.getElementById('show-more-container');
+        const guestGrid = document.getElementById('guest-grid');
 
-    if (showMoreBtn && guestGrid) {
-        showMoreBtn.addEventListener('click', () => {
-            // Cari semua item yang masih tersembunyi
-            const hiddenItems = guestGrid.querySelectorAll('.guest-item.hidden');
+        if (showMoreBtn && guestGrid) {
+            showMoreBtn.addEventListener('click', () => {
+                // Cari semua item yang masih tersembunyi
+                const hiddenItems = guestGrid.querySelectorAll('.guest-item.hidden');
 
-            hiddenItems.forEach(item => {
-                // Hapus class 'hidden' untuk menampilkannya
-                item.classList.remove('hidden');
+                hiddenItems.forEach(item => {
+                    // Hapus class 'hidden' untuk menampilkannya
+                    item.classList.remove('hidden');
+                });
+
+                // Sembunyikan tombol setelah diklik
+                if (showMoreContainer) {
+                    showMoreContainer.style.display = 'none';
+                    s
+                }
             });
-
-            // Sembunyikan tombol setelah diklik
-            if (showMoreContainer) {
-                showMoreContainer.style.display = 'none';
-                s
-            }
-        });
-    }
+        }
     </script>
 
     <!-- FAQ -->
@@ -746,35 +912,84 @@ include 'homepage_data.php';
     </section>
 
     <script>
-    const faqContainer = document.getElementById('faq-container');
-    if (faqContainer) {
-        const detailsElements = faqContainer.querySelectorAll('details');
+        const faqContainer = document.getElementById('faq-container');
+        if (faqContainer) {
+            const detailsElements = faqContainer.querySelectorAll('details');
 
-        detailsElements.forEach(details => {
-            details.addEventListener('toggle', (event) => {
-                // Jika item ini dibuka, tutup semua yang lain
-                if (details.open) {
-                    detailsElements.forEach(otherDetails => {
-                        if (otherDetails !== details) {
-                            otherDetails.removeAttribute('open');
-                        }
-                    });
-                }
+            detailsElements.forEach(details => {
+                details.addEventListener('toggle', (event) => {
+                    // Jika item ini dibuka, tutup semua yang lain
+                    if (details.open) {
+                        detailsElements.forEach(otherDetails => {
+                            if (otherDetails !== details) {
+                                otherDetails.removeAttribute('open');
+                            }
+                        });
+                    }
+                });
             });
-        });
-    }
+        }
     </script>
+    <!-- partnership -->
+    <section class="bg-black text-white w-full py-20 lg:py-32">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
 
-    <!-- Cursor CDN -->
-    <script src="https://unpkg.com/kursor"></script>
-    <script>
-    new kursor({
-        type: 4,
-        removeDefaultCursor: true,
-        color: '#ffffff',
-    });
-    </script>
-    <!-- Cursor CDN -->
+                <div class="lg:w-1/3">
+                    <p class="text-neutral-400 mb-4">Partnership</p>
+                    <div class="relative">
+                        <img src="img/Finder 7 Logopack_Lockup Full White small.png" alt="Logo Finder7"
+                            class="w-64 transform -rotate-3">
+                    </div>
+                </div>
+
+                <div class="text-5xl font-light text-neutral-600 hidden lg:block">
+                    X
+                </div>
+
+                <div class="w-full lg:w-1/2 h-96 overflow-hidden">
+                    <div class="flex gap-4 h-full">
+
+                        <div class="w-1/2">
+                            <div class="animate-scroll-up">
+                                <img src="https://images.unsplash.com/photo-1528740561666-dc2479703592?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                    alt="Partnership image 1" class="w-full h-64 object-cover mb-4">
+                                <img src="https://images.unsplash.com/photo-1541892332-207357593836?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                    alt="Partnership image 2" class="w-full h-48 object-cover mb-4">
+                                <img src="https://images.unsplash.com/photo-1524234103433-2427bcc5571e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                    alt="Partnership image 3" class="w-full h-80 object-cover mb-4">
+                                <img src="https://images.unsplash.com/photo-1528740561666-dc2479703592?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                    alt="Partnership image 1" class="w-full h-64 object-cover mb-4">
+                                <img src="https://images.unsplash.com/photo-1541892332-207357593836?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                    alt="Partnership image 2" class="w-full h-48 object-cover mb-4">
+                                <img src="https://images.unsplash.com/photo-1524234103433-2427bcc5571e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                    alt="Partnership image 3" class="w-full h-80 object-cover mb-4">
+                            </div>
+                        </div>
+
+                        <div class="w-1/2">
+                            <div class="animate-scroll-down">
+                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                    alt="Partnership image 4" class="w-full h-80 object-cover mb-4">
+                                <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                    alt="Partnership image 5" class="w-full h-56 object-cover mb-4">
+                                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                    alt="Partnership image 6" class="w-full h-72 object-cover mb-4">
+                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                    alt="Partnership image 4" class="w-full h-80 object-cover mb-4">
+                                <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                    alt="Partnership image 5" class="w-full h-56 object-cover mb-4">
+                                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                    alt="Partnership image 6" class="w-full h-72 object-cover mb-4">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
     <!-- Map -->
     <section class="py-16 px-6">
@@ -798,6 +1013,16 @@ include 'homepage_data.php';
         class="w-[1046px] h-0 outline outline-1 outline-offset-[-0.25px] outline-zinc-600 justify-center items-center mx-auto">
     </div>
     <br /><br />
+    <!-- Cursor CDN -->
+    <script src="https://unpkg.com/kursor"></script>
+    <script>
+        new kursor({
+            type: 4,
+            removeDefaultCursor: true,
+            color: '#ffffff',
+        });
+    </script>
+    <!-- Cursor CDN -->
     <?php
     require '_footer.php';
     ?>
