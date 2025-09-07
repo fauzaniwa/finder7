@@ -15,13 +15,12 @@ include 'admin-one/dist/koneksi.php';
 // Ambil user_id dari session
 $user_id = $_SESSION['user_id'];
 
-// Persiapkan query untuk mengambil data user berdasarkan user_id
-$query_user = "SELECT nama, tgl_lahir, no_hp, instansi, email, kode_account FROM user WHERE id_user = ?";
+// Persiapkan query untuk mengambil nama dan instansi
+$query_user = "SELECT nama, instansi FROM user WHERE id_user = ?";
 
 // Persiapkan statement untuk data user
 $stmt_user = mysqli_prepare($koneksi, $query_user);
 if (!$stmt_user) {
-    // Handle error jika prepare statement gagal
     die('Prepare statement user failed: ' . mysqli_error($koneksi));
 }
 mysqli_stmt_bind_param($stmt_user, "i", $user_id);
@@ -32,15 +31,9 @@ $result_user = mysqli_stmt_get_result($stmt_user);
 
 // Periksa apakah data user ditemukan
 if ($row_user = mysqli_fetch_assoc($result_user)) {
-    // Simpan data user ke dalam session atau langsung gunakan
-    $_SESSION['user_data'] = [
-        'nama' => $row_user['nama'],
-        'tgl_lahir' => $row_user['tgl_lahir'],
-        'no_hp' => $row_user['no_hp'],
-        'instansi' => $row_user['instansi'],
-        'email' => $row_user['email'],
-        'kode_account' => $row_user['kode_account'] // Pastikan kode_account disimpan
-    ];
+    // Simpan data user ke dalam session
+    $_SESSION['user_data']['nama'] = $row_user['nama'];
+    $_SESSION['user_data']['instansi'] = $row_user['instansi'];
 } else {
     // Jika data user tidak ditemukan, logout dan kembali ke halaman login
     session_destroy();
@@ -50,10 +43,8 @@ if ($row_user = mysqli_fetch_assoc($result_user)) {
 
 // Tutup statement data user
 mysqli_stmt_close($stmt_user);
-
+mysqli_close($koneksi);
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
@@ -97,7 +88,6 @@ mysqli_stmt_close($stmt_user);
             transition: all 0.3s ease-in-out;
         }
     </style>
-
     <style>
         /* Mengatur agar gambar dan elemen inner lainnya proporsional (1:1) */
         .aspect-square-container::before {
@@ -116,9 +106,7 @@ mysqli_stmt_close($stmt_user);
             /* Zoom-in sebesar 10% */
         }
     </style>
-
-
-    <title>Profile - Finder 7 Mindspace</title>
+    <title>Logout - Finder 7 Mindspace</title>
     <link rel="icon" href="./img/FinderLogo.svg" type="image/x-icon" />
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -146,19 +134,18 @@ mysqli_stmt_close($stmt_user);
                         <span class="hidden md:flex text-base">Liked Post</span>
                     </a>
                     <a href="setting.php"
-                    class="flex  md:w-full items-center space-x-3 p-3 md:rounded-lg text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors duration-300">
-                    <ion-icon name="settings-outline" class="md:text-2xl text-4xl"></ion-icon>
-                    <span class="hidden md:flex text-base">Setting</span>
-                </a>
-                <a href=""
-                class="flex  md:w-full items-center space-x-3 p-3 md:rounded-lg md:bg-neutral-800 text-emerald-500 transition-colors font-semibold duration-300 border-b-2 border-emerald-500">
+                        class="flex  md:w-full items-center space-x-3 p-3 md:rounded-lg text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors duration-300">
+                        <ion-icon name="settings-outline" class="md:text-2xl text-4xl"></ion-icon>
+                        <span class="hidden md:flex text-base">Setting</span>
+                    </a>
+                    <a href="logout-reminder.php"
+                        class="flex  md:w-full items-center space-x-3 p-3 md:rounded-lg md:bg-neutral-800 text-emerald-500 transition-colors font-semibold duration-300 border-b-2 border-emerald-500">
                         <ion-icon name="log-out-outline" class="md:text-2xl text-4xl"></ion-icon>
                         <span class="hidden md:flex text-base">Logout</span>
                     </a>
                 </div>
 
                 <div class="w-full md:w-3/4 lg:w-4/5">
-
                     <div class="bg-neutral-900 p-6 md:p-8 rounded-3xl mb-8 text-white">
                         <div class="flex items-center space-x-6">
                             <img src="img/profill.png" alt="Poster Event"
@@ -176,38 +163,28 @@ mysqli_stmt_close($stmt_user);
 
                     <div class="w-full mx-auto p-6 rounded-2xl shadow-lg bg-neutral-900 text-center text-white">
                         <h2 class="text-xl md:text-4xl font-bold mb-2">Yakin ingin meninggalkan Finder7 Mindspace?</h2>
-
+                        
                         <div class="flex justify-center mb-6">
                             <img src="./img/hero/feeling-1.svg" alt="Illustration" class="w-3/4 md:w-1/2 h-auto py-10 md:py-20">
                         </div>
-
                         <p class="text-sm md:text-lg text-neutral-400 mb-8">Jangan ragu untuk kembali ya..</p>
-
                         <hr class="border-t border-neutral-700 mb-6">
 
                         <div class="space-y-4">
-                            <button
-                                class="w-full py-3 px-4 rounded-2xl font-semibold text-neutral-900 bg-emerald-500 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-200">
+                            <a href="logout.php"
+                                class="w-full block py-3 px-4 rounded-2xl font-semibold text-neutral-900 bg-emerald-500 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-200">
                                 Logout
-                            </button>
-                            <button
-                                class="w-full py-3 px-4 rounded-2xl font-semibold text-neutral-400 bg-neutral-800 hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-600 transition-colors duration-200">
+                            </a>
+                            <a href="setting.php"
+                                class="w-full block py-3 px-4 rounded-2xl font-semibold text-neutral-400 bg-neutral-800 hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-600 transition-colors duration-200">
                                 Kembali
-                            </button>
+                            </a>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
-
-
-
-
         </div>
     </div>
-
     <?php require '_footer.php'; ?>
 </body>
 

@@ -14,6 +14,45 @@ if (!isset($_SESSION['user_id'])) {
 include 'admin-one/dist/koneksi.php';
 // Ambil user_id dari session
 $user_id = $_SESSION['user_id'];
+$message = '';
+$message_type = '';
+
+// Handle form submission untuk update data
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Ambil data dari form
+    $nama = $_POST['nama'];
+    $tgl_lahir = $_POST['tgl_lahir'];
+    $no_hp = $_POST['no_telepon'];
+    $instansi = $_POST['universitas'];
+    $email = $_POST['email'];
+
+    // Persiapkan query UPDATE
+    $update_query = "UPDATE user SET nama = ?, tgl_lahir = ?, no_hp = ?, instansi = ?, email = ? WHERE id_user = ?";
+
+    // Persiapkan statement
+    $stmt_update = mysqli_prepare($koneksi, $update_query);
+    if ($stmt_update) {
+        mysqli_stmt_bind_param($stmt_update, "sssssi", $nama, $tgl_lahir, $no_hp, $instansi, $email, $user_id);
+        if (mysqli_stmt_execute($stmt_update)) {
+            // Update data di session setelah berhasil
+            $_SESSION['user_data']['nama'] = $nama;
+            $_SESSION['user_data']['tgl_lahir'] = $tgl_lahir;
+            $_SESSION['user_data']['no_hp'] = $no_hp;
+            $_SESSION['user_data']['instansi'] = $instansi;
+            $_SESSION['user_data']['email'] = $email;
+            
+            $message = 'Data profil berhasil diperbarui!';
+            $message_type = 'success';
+        } else {
+            $message = 'Gagal memperbarui data: ' . mysqli_error($koneksi);
+            $message_type = 'error';
+        }
+        mysqli_stmt_close($stmt_update);
+    } else {
+        $message = 'Gagal mempersiapkan statement: ' . mysqli_error($koneksi);
+        $message_type = 'error';
+    }
+}
 
 // Persiapkan query untuk mengambil data user berdasarkan user_id
 $query_user = "SELECT nama, tgl_lahir, no_hp, instansi, email, kode_account FROM user WHERE id_user = ?";
@@ -51,8 +90,10 @@ if ($row_user = mysqli_fetch_assoc($result_user)) {
 // Tutup statement data user
 mysqli_stmt_close($stmt_user);
 
-?>
+// Tutup koneksi database
+mysqli_close($koneksi);
 
+?>
 
 
 <!DOCTYPE html>
@@ -158,7 +199,11 @@ mysqli_stmt_close($stmt_user);
                 </div>
 
                 <div class="w-full md:w-3/4 lg:w-4/5">
-
+                    <?php if ($message): ?>
+                        <div class="mb-4 p-4 text-sm rounded-xl <?php echo $message_type === 'success' ? 'bg-emerald-900 text-emerald-300' : 'bg-red-900 text-red-300'; ?>">
+                            <?php echo $message; ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="bg-neutral-900 p-6 md:p-8 rounded-3xl mb-8 text-white">
                         <div class="flex items-center space-x-6">
                             <img src="img/profill.png" alt="Poster Event"
@@ -177,31 +222,33 @@ mysqli_stmt_close($stmt_user);
                     <div class="w-full mx-auto p-8 rounded-3xl shadow-lg bg-neutral-900 text-white">
                         <h2 class="text-3xl font-bold text-center mb-8">Edit Profil</h2>
 
-                        <form action="#" method="POST" class="space-y-6">
+                        <form action="#" method="POST" class="space-y-6 text-white">
                             <div>
-                                <label for="username"
-                                    class="block text-sm font-medium text-neutral-400">Username</label>
-                                <input type="text" id="username" name="username"
+                                <label for="nama"
+                                    class="block text-sm font-medium text-neutral-400">Nama</label>
+                                <input type="text" id="nama" name="nama"
+                                    value="<?php echo htmlspecialchars($_SESSION['user_data']['nama']); ?>"
                                     class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-2xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                             </div>
-
-                            <div>
-                                <label for="tgl_lahir" class="block text-sm font-medium text-neutral-400">Tempat Tanggal
-                                    Lahir</label>
-                                <input type="text" id="tgl_lahir" name="tgl_lahir"
-                                    class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-2xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
-                            </div>
-
+<div>
+    <label for="tgl_lahir" class="block text-sm font-medium text-neutral-400">Tempat Tanggal Lahir</label>
+    <input type="date" id="tgl_lahir" name="tgl_lahir"
+        value="<?php echo htmlspecialchars($_SESSION['user_data']['tgl_lahir']); ?>"
+        class=" mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-2xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+</div>
                             <div>
                                 <label for="email" class="block text-sm font-medium text-neutral-400">Email</label>
                                 <input type="email" id="email" name="email"
-                                    class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-2xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                                    value="<?php echo htmlspecialchars($_SESSION['user_data']['email']); ?>"
+                                    class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-2xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" readonly>
+                                <p class="mt-1 text-sm text-neutral-500">Email tidak dapat diubah.</p>
                             </div>
 
                             <div>
                                 <label for="universitas"
-                                    class="block text-sm font-medium text-neutral-400">Universitas</label>
+                                    class="block text-sm font-medium text-neutral-400">Instansi / Universitas</label>
                                 <input type="text" id="universitas" name="universitas"
+                                    value="<?php echo htmlspecialchars($_SESSION['user_data']['instansi']); ?>"
                                     class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-2xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                             </div>
 
@@ -209,6 +256,7 @@ mysqli_stmt_close($stmt_user);
                                 <label for="no_telepon" class="block text-sm font-medium text-neutral-400">No.
                                     Telepon</label>
                                 <input type="tel" id="no_telepon" name="no_telepon"
+                                    value="<?php echo htmlspecialchars($_SESSION['user_data']['no_hp']); ?>"
                                     class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-2xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                             </div>
 
@@ -219,12 +267,10 @@ mysqli_stmt_close($stmt_user);
                                     Simpan
                                 </button>
                                 <a href="change-password.php" class="w-full sm:w-1/2 flex justify-center py-3 px-4 focus:border transition-colors duration-300 rounded-2xl shadow-sm text-sm font-semibold text-emerald-500 bg-neutral-800 hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-600">
-
-                                    <button type="button"
-                                    class="">
-                                    Ubah Kata Sandi
-                                </button>
-                            </a>
+                                    <button type="button" class="">
+                                        Ubah Kata Sandi
+                                    </button>
+                                </a>
                             </div>
                         </form>
                         
@@ -233,11 +279,6 @@ mysqli_stmt_close($stmt_user);
                 </div>
 
             </div>
-
-
-
-
-
         </div>
     </div>
 
