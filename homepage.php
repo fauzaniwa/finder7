@@ -670,6 +670,64 @@ include 'homepage_data.php';
         </div>
     </section>
 
+    <!-- FAQ -->
+  <section class="flex flex-col container max-w-full bg-[#0D0D0D] px-6 md:px-16 py-10">
+    <h1 class="text-white px-6 md:px-16 text-2xl md:text-3xl font-semibold md:mx-auto font-work">FAQ (Frequently Ask
+      Question)</h1>
+
+    <!-- Pertanyaan  -->
+    <ul class="w-full mx-auto mt-2 divide-y py-4 border-b-[1px] border-white">
+
+      <?php
+      // Koneksi ke database
+      $koneksi = mysqli_connect($host, $username, $password, $database);
+
+      // Periksa koneksi
+      if (mysqli_connect_errno()) {
+        die("Koneksi database gagal: " . mysqli_connect_error());
+      }
+
+      // Query untuk mengambil data QnA
+      $query = "SELECT topik, jawaban FROM qna WHERE status = 'active' ORDER BY created_at DESC";
+      $result = mysqli_query($koneksi, $query);
+
+      // Periksa apakah ada data
+      if (mysqli_num_rows($result) > 0) {
+        // Loop melalui hasil query dan tampilkan data
+        while ($row = mysqli_fetch_assoc($result)) {
+          $topik = htmlspecialchars($row['topik']);
+          $jawaban = htmlspecialchars($row['jawaban']);
+
+          echo '<li>';
+          echo '<details class="group">';
+          echo '<summary class="flex items-center gap-3 px-4 py-3 font-medium marker:content-none hover:cursor-pointer">';
+          echo '<svg class="w-5 h-5 text-white transition group-open:rotate-90" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">';
+          echo '<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path>';
+          echo '</svg>';
+          echo '<span style="font-family: \'Work Sans\'" class="text-white text-lg md:text-xl font-normal">' . $topik . '</span>';
+          echo '</summary>';
+          echo '<!-- Jawaban -->';
+          echo '<article class="px-4 pb-4">';
+          echo '<p style="font-family: \'Work Sans\'" class="text-white text-base md:text-lg font-light">' . $jawaban . '</p>';
+          echo '</article>';
+          echo '</details>';
+          echo '</li>';
+        }
+      } else {
+        // Jika tidak ada data
+        echo '<li>';
+        echo '<p style="font-family: \'Work Sans\'" class="text-white text-base md:text-lg font-light px-4 py-4">Belum ada FAQ tersedia.</p>';
+        echo '</li>';
+      }
+
+      // Tutup koneksi
+      mysqli_close($koneksi);
+      ?>
+
+    </ul>
+  </section>
+
+
     <script>
         const faqContainer = document.getElementById('faq-container');
         const detailsElements = faqContainer.querySelectorAll('details');
