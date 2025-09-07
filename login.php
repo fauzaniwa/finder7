@@ -89,7 +89,7 @@
             </svg>
           </div>
           <input type="email" name="email"
-            class="w-full h-14 rounded-full pl-16 font-work font-medium text-sm sm:text-base bg-neutral-200"
+            class="w-full h-14 rounded-2xl pl-16 font-work font-medium text-sm sm:text-base bg-neutral-200"
             placeholder="Masukkan Email Anda" required>
         </div>
 
@@ -105,7 +105,7 @@
             </svg>
           </div>
           <input type="password" name="password" id="passwordInput"
-            class="w-full h-14 rounded-full pl-16 font-work font-medium text-sm sm:text-base bg-neutral-200"
+            class="w-full h-14 rounded-2xl pl-16 font-work font-medium text-sm sm:text-base bg-neutral-200"
             required placeholder="Masukkan Password Anda">
           <span id="togglePassword"
             class="absolute inset-y-0 right-0 flex items-center justify-center pr-6 cursor-pointer text-base text-emerald-700">
@@ -124,7 +124,7 @@
         </div>
 
         <button type="submit" name="login"
-          class="text-base w-full lg:text-xl text-black px-6 h-14 bg-neutral-300 rounded-xl font-work hover:bg-neutral-500 duration-150 hover:drop-shadow-md">
+          class="text-base w-full lg:text-xl text-black px-6 h-14 bg-neutral-300 rounded-2xl font-work hover:bg-neutral-500 duration-150 hover:drop-shadow-md">
           Login
         </button>
         <hr>

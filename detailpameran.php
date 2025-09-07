@@ -383,7 +383,7 @@
           <div class="flex w-full justify-center md:justify-start">
 
             <button
-              class=" text-white bg-emerald-600 hover:bg-emerald-800 hover:scale-110 transition duration-300 md:p-5 md:px-8 p-3 px-5 text-sm md:text-base rounded-2xl">
+              class=" text-black hover:text-white bg-emerald-500 hover:bg-emerald-600 hover:scale-110 transition duration-300 md:p-5 md:px-8 p-3 px-5 text-sm md:text-base rounded-2xl font-semibold">
               See the artist!
             </button>
           </div>

@@ -182,24 +182,24 @@ mysqli_stmt_close($stmt_user);
                                 <label for="current-password"
                                     class="block text-sm font-medium text-neutral-400">Kata Sandi Sebelumnya</label>
                                 <input type="text" id="username" name="username"
-                                    class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                                    class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-2xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                             </div>
 
                             <div>
                                 <label for="new-password" class="block text-sm font-medium text-neutral-400">Kata Sandi Baru</label>
                                 <input type="text" id="tgl_lahir" name="tgl_lahir"
-                                    class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                                    class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-2xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                             </div>
 
                             <div>
                                 <label for="confirm-password" class="block text-sm font-medium text-neutral-400">Konfirmasi Kata Sandi Baru</label>
                                 <input type="email" id="email" name="email"
-                                    class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                                    class="mt-1 block w-full px-4 py-3 bg-neutral-800 focus:border transition-colors duration-300 rounded-2xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                             </div>
 
                             <div
                                 class="flex flex-col sm:flex-row justify-between pt-4 space-y-4 sm:space-y-0 sm:space-x-4">
-                                <a href="setting.php" class="w-full flex justify-center py-3 px-4 border border-transparent transition-colors duration-300 rounded-md shadow-sm text-sm font-medium text-neutral-900 bg-emerald-500 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                                <a href="setting.php" class="w-full flex justify-center py-3 px-4 border border-transparent transition-colors duration-300 rounded-2xl shadow-sm text-sm font-semibold text-neutral-900 bg-emerald-500 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
 
                                     <button type="submit"
                                     class="">

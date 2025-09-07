@@ -187,11 +187,11 @@ mysqli_stmt_close($stmt_user);
 
                         <div class="space-y-4">
                             <button
-                                class="w-full py-3 px-4 rounded-md font-semibold text-neutral-900 bg-emerald-500 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-200">
+                                class="w-full py-3 px-4 rounded-2xl font-semibold text-neutral-900 bg-emerald-500 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-200">
                                 Logout
                             </button>
                             <button
-                                class="w-full py-3 px-4 rounded-md font-semibold text-neutral-400 bg-neutral-800 hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-600 transition-colors duration-200">
+                                class="w-full py-3 px-4 rounded-2xl font-semibold text-neutral-400 bg-neutral-800 hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-600 transition-colors duration-200">
                                 Kembali
                             </button>
                         </div>
