@@ -27,7 +27,7 @@ $result_event = mysqli_stmt_get_result($stmt_event);
 $events_data = [];
 while ($row_event = mysqli_fetch_assoc($result_event)) {
     $id_event = $row_event['id_event'];
-    $slug_event = $row_event['slug']; 
+    $slug_event = $row_event['slug'];
     // Query untuk menghitung jumlah pengguna yang mendaftar untuk event ini
     $query_count_users = "SELECT COUNT(*) as total FROM tiket WHERE id_event = ?";
     $stmt_count_users = mysqli_prepare($koneksi, $query_count_users);
