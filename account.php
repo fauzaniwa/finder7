@@ -121,6 +121,7 @@ mysqli_close($koneksi);
                 margin-bottom: 4rem;
             }
         }
+
         .modal {
             transition: all 0.3s ease-in-out;
         }
@@ -136,64 +137,59 @@ mysqli_close($koneksi);
     <div class="w-full min-h-screen pt-32 pb-32 bg-neutral-950 font-work px-4 md:px-8 lg:px-16">
         <div class="container mx-auto">
             <div class="flex flex-col md:flex-row md:items-start md:space-x-8 lg:space-x-12">
-                <div class="hidden md:flex md:flex-col md:w-1/4 lg:w-1/5 bg-neutral-900 rounded-2xl p-4 md:p-6 space-y-2">
-                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg bg-neutral-800 text-white font-semibold">
-                        <ion-icon name="person-circle-outline" class="text-2xl"></ion-icon>
-                        <span class="text-base">Profile</span>
+                <div
+                    class="flex flex-row md:flex-col md:w-1/4 lg:w-1/5 bg-neutral-900 rounded-2xl md:p-6 md:space-y-2 justify-around mb-6 md:mb-0 items-center md:items-start">
+                    <a href=""
+                        class="flex  md:w-full items-center space-x-3 p-3 md:rounded-lg md:bg-neutral-800 text-emerald-500 transition-colors font-semibold duration-300 border-b-2 border-emerald-500
+                         ">
+                        <ion-icon name="person-circle-outline" class="md:text-2xl text-4xl"></ion-icon>
+                        <span class="hidden md:flex text-base">Profile</span>
                     </a>
-                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors duration-300">
-                        <ion-icon name="heart-outline" class="text-2xl"></ion-icon>
-                        <span class="text-base">Liked Post</span>
+                    <a href="liked-post.php"
+                        class="flex md:w-full items-center space-x-3 p-3 md:rounded-lg text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors duration-300 ">
+                        <ion-icon name="heart-outline" class="md:text-2xl text-4xl"></ion-icon>
+                        <span class="hidden md:flex text-base">Liked Post</span>
                     </a>
-                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors duration-300">
-                        <ion-icon name="settings-outline" class="text-2xl"></ion-icon>
-                        <span class="text-base">Setting</span>
+                    <a href="setting.php"
+                        class="flex  md:w-full items-center space-x-3 p-3 md:rounded-lg text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors duration-300">
+                        <ion-icon name="settings-outline" class="md:text-2xl text-4xl"></ion-icon>
+                        <span class="hidden md:flex text-base">Setting</span>
                     </a>
-                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors duration-300">
-                        <ion-icon name="log-out-outline" class="text-2xl"></ion-icon>
-                        <span class="text-base">Logout</span>
+                    <a href="logout-reminder.php"
+                        class="flex  md:w-full items-center space-x-3 p-3 md:rounded-lg text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors duration-300">
+                        <ion-icon name="log-out-outline" class="md:text-2xl text-4xl"></ion-icon>
+                        <span class="hidden md:flex text-base">Logout</span>
                     </a>
                 </div>
 
                 <div class="w-full md:w-3/4 lg:w-4/5">
-                    <div class="flex md:hidden justify-around items-center bg-neutral-900 rounded-xl p-3 mb-6">
-                        <a href="#" class="flex flex-col items-center text-white">
-                            <ion-icon name="person-circle-outline" class="text-2xl mb-1"></ion-icon>
-                            <span class="text-xs">Profile</span>
-                        </a>
-                        <a href="#" class="flex flex-col items-center text-neutral-400">
-                            <ion-icon name="heart-outline" class="text-2xl mb-1"></ion-icon>
-                            <span class="text-xs">Liked Post</span>
-                        </a>
-                        <a href="#" class="flex flex-col items-center text-neutral-400">
-                            <ion-icon name="settings-outline" class="text-2xl mb-1"></ion-icon>
-                            <span class="text-xs">Setting</span>
-                        </a>
-                        <a href="#" class="flex flex-col items-center text-neutral-400">
-                            <ion-icon name="log-out-outline" class="text-2xl mb-1"></ion-icon>
-                            <span class="text-xs">Logout</span>
-                        </a>
-                    </div>
 
                     <div class="bg-neutral-900 p-6 md:p-8 rounded-3xl mb-8">
                         <div class="flex items-center space-x-6">
-                            <img src="img/profill.png" alt="Poster Event" class="w-20 h-20 md:w-24 md:h-24 rounded-full flex-shrink-0 mx-auto md:mx-0">
+                            <img src="img/profill.png" alt="Poster Event"
+                                class="w-20 h-20 md:w-24 md:h-24 rounded-full flex-shrink-0 mx-auto md:mx-0">
                             <div>
-                                <h2 class="text-2xl md:text-3xl font-bold"><?php echo htmlspecialchars($_SESSION['user_data']['nama']); ?></h2>
-                                <p class="text-lg md:text-xl text-neutral-400"><?php echo htmlspecialchars($_SESSION['user_data']['instansi']); ?></p>
+                                <h2 class="text-2xl md:text-3xl font-bold">
+                                    <?php echo htmlspecialchars($_SESSION['user_data']['nama']); ?></h2>
+                                <p class="text-lg md:text-xl text-neutral-400">
+                                    <?php echo htmlspecialchars($_SESSION['user_data']['instansi']); ?></p>
                             </div>
                         </div>
                     </div>
 
                     <div class="bg-neutral-900 p-6 md:p-8 rounded-3xl mb-8">
                         <h2 class="text-2xl md:text-3xl font-bold mb-6">Tiket Pameran</h2>
-                        <div class="bg-neutral-800 rounded-2xl p-6 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-                            <div class="w-32 h-32 md:w-40 md:h-40 rounded-xl flex-shrink-0 p-2 bg-white flex justify-center items-center">
+                        <div
+                            class="bg-neutral-800 rounded-2xl p-6 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                            <div
+                                class="w-32 h-32 md:w-40 md:h-40 rounded-xl flex-shrink-0 p-2 bg-white flex justify-center items-center">
                                 <div id="qr-exhibition-ticket"></div>
                             </div>
                             <div class="text-center md:text-left">
-                                <p class="text-base md:text-lg text-neutral-300 leading-relaxed mb-2">Gunakan tiket ini untuk masuk pada area pameran.</p>
-                                <p class="text-sm font-semibold text-neutral-400">Ticket Code: <?php echo htmlspecialchars($_SESSION['user_data']['kode_account']); ?></p>
+                                <p class="text-base md:text-lg text-neutral-300 leading-relaxed mb-2">Gunakan tiket ini
+                                    untuk masuk pada area pameran.</p>
+                                <p class="text-sm font-semibold text-neutral-400">Ticket Code:
+                                    <?php echo htmlspecialchars($_SESSION['user_data']['kode_account']); ?></p>
                             </div>
                         </div>
                     </div>
@@ -203,20 +199,34 @@ mysqli_close($koneksi);
                         <div class="space-y-8 md:space-y-12">
                             <?php if (!empty($tiket_data)): ?>
                                 <?php foreach ($tiket_data as $tiket): ?>
-                                    <div class="ticket-card cursor-pointer" 
-                                         data-title="<?php echo htmlspecialchars($tiket['judul_event']); ?>"
-                                         data-code="<?php echo htmlspecialchars($tiket['tiket_code']); ?>">
-                                        <div class="flex flex-col md:flex-row md:items-start space-y-4 md:space-y-0 md:space-x-6">
-                                            <img src="img/thumbnail/<?php echo htmlspecialchars($tiket['thumbnail_event']); ?>" alt="Poster Event" class="w-24 h-24 md:w-36 md:h-36 rounded-xl object-cover flex-shrink-0 mx-auto md:mx-0">
+                                    <div class="ticket-card cursor-pointer"
+                                        data-title="<?php echo htmlspecialchars($tiket['judul_event']); ?>"
+                                        data-code="<?php echo htmlspecialchars($tiket['tiket_code']); ?>">
+                                        <div
+                                            class="flex flex-col md:flex-row md:items-start space-y-4 md:space-y-0 md:space-x-6">
+                                            <img src="img/thumbnail/<?php echo htmlspecialchars($tiket['thumbnail_event']); ?>"
+                                                alt="Poster Event"
+                                                class="w-24 h-24 md:w-36 md:h-36 rounded-xl object-cover flex-shrink-0 mx-auto md:mx-0">
                                             <div class="flex-grow text-center md:text-left">
-                                                <h3 class="text-xl md:text-2xl font-bold mb-2"><?php echo htmlspecialchars($tiket['judul_event']); ?></h3>
+                                                <h3 class="text-xl md:text-2xl font-bold mb-2">
+                                                    <?php echo htmlspecialchars($tiket['judul_event']); ?></h3>
                                                 <div class="space-y-1 text-sm md:text-base text-neutral-300">
-                                                    <p>Tanggal: <span class="text-neutral-400"><?php echo htmlspecialchars($tiket['jadwal_event']); ?></span></p>
-                                                    <p>Waktu: <span class="text-neutral-400"><?php echo htmlspecialchars($tiket['waktu_event']); ?></span></p>
-                                                    <p>Lokasi: <span class="text-neutral-400"><?php echo htmlspecialchars($tiket['lokasi_event']); ?></span></p>
-                                                    <p>Ticket Code: <span class="text-neutral-400"><?php echo htmlspecialchars($tiket['tiket_code']); ?></span></p>
+                                                    <p>Tanggal: <span
+                                                            class="text-neutral-400"><?php echo htmlspecialchars($tiket['jadwal_event']); ?></span>
+                                                    </p>
+                                                    <p>Waktu: <span
+                                                            class="text-neutral-400"><?php echo htmlspecialchars($tiket['waktu_event']); ?></span>
+                                                    </p>
+                                                    <p>Lokasi: <span
+                                                            class="text-neutral-400"><?php echo htmlspecialchars($tiket['lokasi_event']); ?></span>
+                                                    </p>
+                                                    <p>Ticket Code: <span
+                                                            class="text-neutral-400"><?php echo htmlspecialchars($tiket['tiket_code']); ?></span>
+                                                    </p>
                                                 </div>
-                                                <a href="<?php echo htmlspecialchars($tiket['link_grup']); ?>" target="_blank" class="mt-4 md:mt-6 inline-block bg-[#008C62] text-white font-medium py-2 px-6 rounded-full hover:bg-[#007b56] transition-colors duration-300">Group Whatsapp</a>
+                                                <a href="<?php echo htmlspecialchars($tiket['link_grup']); ?>" target="_blank"
+                                                    class="mt-4 md:mt-6 inline-block bg-[#008C62] text-white font-medium py-2 px-6 rounded-full hover:bg-[#007b56] transition-colors duration-300">Group
+                                                    Whatsapp</a>
                                             </div>
                                         </div>
                                     </div>
@@ -231,8 +241,9 @@ mysqli_close($koneksi);
             </div>
         </div>
     </div>
-    
-    <div id="modal-tiket" class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50 hidden modal">
+
+    <div id="modal-tiket"
+        class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50 hidden modal">
         <div class="bg-neutral-900 p-8 rounded-2xl w-11/12 max-w-lg relative">
             <button id="close-modal" class="absolute top-4 right-4 text-white hover:text-neutral-400">
                 <ion-icon name="close-circle-outline" class="text-3xl"></ion-icon>
@@ -245,39 +256,44 @@ mysqli_close($koneksi);
             <p id="modal-ticket-code" class="text-center text-base md:text-lg font-semibold text-neutral-300"></p>
         </div>
     </div>
-    
+
     <script>
         // Function to generate and display QR code
         function generateQRCode(elementId, data) {
             const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(data)}`;
             document.getElementById(elementId).innerHTML = `<img src="${qrCodeUrl}" alt="QR Code">`;
         }
-    
+
         // Generate QR code for Exhibition Ticket
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const exhibitionCode = "<?php echo htmlspecialchars($_SESSION['user_data']['kode_account']); ?>";
             generateQRCode('qr-exhibition-ticket', exhibitionCode);
         });
-    
+
         // Event listener for Seminar and Workshop ticket cards
         document.querySelectorAll('.ticket-card').forEach(card => {
-            card.addEventListener('click', function() {
+            card.addEventListener('click', function () {
                 const title = this.getAttribute('data-title');
                 const code = this.getAttribute('data-code');
-    
+
                 document.getElementById('modal-title').innerText = title;
                 document.getElementById('modal-ticket-code').innerText = `Ticket Code: ${code}`;
-                
+
                 generateQRCode('modal-qr-code', code);
-    
+
                 document.getElementById('modal-tiket').classList.remove('hidden');
             });
         });
-    
+
         // Event listener for close modal button
-        document.getElementById('close-modal').addEventListener('click', function() {
+        document.getElementById('close-modal').addEventListener('click', function () {
             document.getElementById('modal-tiket').classList.add('hidden');
         });
     </script>
+
+    <?php require '_footer.php'; ?>
 </body>
+
+
+
 </html>
