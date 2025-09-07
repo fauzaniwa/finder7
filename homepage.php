@@ -28,8 +28,12 @@ include 'homepage_data.php';
                     },
                     keyframes: {
                         'loop-scroll': {
-                            from: { transform: 'translateX(0)' },
-                            to: { transform: 'translateX(-100%)' },
+                            from: {
+                                transform: 'translateX(0)'
+                            },
+                            to: {
+                                transform: 'translateX(-100%)'
+                            },
                         },
                     },
                 },
@@ -176,7 +180,8 @@ include 'homepage_data.php';
         class="w-2/3 h-3/4 blur-3xl absolute z-0 rounded-full bg-[radial-gradient(circle,_#515151_0%,_rgba(244,114,182,0)_70%)] top-px left-1/2 -translate-x-1/2 -translate-y-1/2">
     </div>
 
-    <section data-section-bg="dark" class="relative min-h-screen flex flex-col lg:flex-row items-center justify-center overflow-hidden px-4 mx-auto">
+    <section data-section-bg="dark"
+        class="relative min-h-screen flex flex-col lg:flex-row items-center justify-center overflow-hidden px-4 mx-auto">
         <div class="order-last lg:order-first relative z-10 max-w-md text-center text-white space-y-4">
             <h2 class="text-4xl md:text-5xl font-bold text-center md:text-left leading-tight max-w-xs sm:max-w-md">
                 Welcome <br />Finder 7 Mindspace
@@ -184,7 +189,8 @@ include 'homepage_data.php';
             <p class="sm:text-xl md:text-2xl text-gray-300 text-center md:text-left">
                 think the unthinkable
             </p>
-            <div class="flex flex-col gap-4 md:items-left">
+
+            <div class="flex flex-col gap-4 items-center md:items-start">
                 <a href="https://www.instagram.com/finder_dkv/"
                     class="w-48 sm:w-64 h-12 sm:h-16 flex items-center justify-center bg-[#008C62] text-white text-lg sm:text-xl font-medium rounded-xl sm:rounded-[20px] shadow-md hover:scale-105 transition-transform duration-300">
                     Instagram
@@ -194,9 +200,10 @@ include 'homepage_data.php';
                     See More
                 </a>
             </div>
+
         </div>
         <div class="order-first lg:order-last mb-8 md:mb-0 flex justify-center">
-            <img src="./img/hero/char.png" alt="Mindspace Characters" class="sm:max-w-md lg:max-w-full animate-pulse" />
+            <img src="./img/hero/cover.gif" alt="Mindspace Characters" class="sm:max-w-md lg:max-w-xl animate-pulse" />
         </div>
     </section>
 
@@ -228,10 +235,12 @@ include 'homepage_data.php';
                         Finder
                     </h2>
 
-                    <div class="inline-flex flex-col md:flex-row justify-center items-center gap-10 md:gap-20 mb-8 md:mb-12">
-                        <img class="w-60 md:w-72 h-auto md:h-24 object-contain" src="img/Finder 7 Logo Title Tagline Full White.png"
-                            alt="Logo Finder 7 Mindspace" />
-                        <img class="w-44 md:w-52 h-auto md:h-24 object-contain" src="img/DKVUPI WHITE 1.png" alt="Logo DKV UPI" />
+                    <div
+                        class="inline-flex flex-col md:flex-row justify-center items-center gap-10 md:gap-20 mb-8 md:mb-12">
+                        <img class="w-60 md:w-72 h-auto md:h-24 object-contain"
+                            src="img/Finder 7 Logo Title Tagline Full White.png" alt="Logo Finder 7 Mindspace" />
+                        <img class="w-44 md:w-52 h-auto md:h-24 object-contain" src="img/DKVUPI WHITE 1.png"
+                            alt="Logo DKV UPI" />
                     </div>
 
                     <p class="w-full max-w-[824px] text-center text-white text-base md:text-lg
@@ -282,7 +291,7 @@ include 'homepage_data.php';
             </div>
         </div>
     </section>
-<section class=" text-white py-20 px-4">
+    <section class=" text-white py-20 px-4">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-bold mb-2">Get to Know About Them!</h2>
@@ -290,205 +299,248 @@ include 'homepage_data.php';
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class=" rounded-3xl p-8 border border-white/10 hover:border-yellow-400 duration-300 hover-radial-bg" style="--hover-color: #FEE139">
+                <div class=" rounded-3xl p-8 border border-white/10 hover:border-yellow-400 duration-300 hover-radial-bg"
+                    style="--hover-color: #FEE139">
                     <div class="flex flex-col sm:flex-row items-center gap-8">
                         <div class="flex-shrink-0">
-                            <img src="./img/hero/intuiting2.gif" alt="Intuitive Mascot" class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(234,179,8,0.6)] animate-pulse">
+                            <img src="./img/hero/intuiting2.gif" alt="Intuitive Mascot"
+                                class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(234,179,8,0.6)] animate-pulse">
                         </div>
                         <div>
                             <h2 class="text-3xl font-bold mb-3 text-yellow-300">Intuitive</h2>
                             <p class="text-gray-300 text-base leading-relaxed">
-                                Intuitive ditandai oleh kemampuan untuk mendeteksi pola dan makna tersembunyi, yang didorong oleh rasa ingin tahu yang tinggi. Individu dengan kepribadian intuitif cenderung lebih kreatif, mengandalkan imajinasi, dan sering kali menghasilkan ide-ide baru yang inovatif.
+                                Intuitive ditandai oleh kemampuan untuk mendeteksi pola dan makna tersembunyi, yang
+                                didorong oleh rasa ingin tahu yang tinggi. Individu dengan kepribadian intuitif
+                                cenderung lebih kreatif, mengandalkan imajinasi, dan sering kali menghasilkan ide-ide
+                                baru yang inovatif.
                             </p>
                         </div>
                     </div>
                 </div>
-                <div class=" rounded-3xl p-8 border border-white/10 hover:border-green-400 duration-300 hover-radial-bg" style="--hover-color: #4ade80">
+                <div class=" rounded-3xl p-8 border border-white/10 hover:border-green-400 duration-300 hover-radial-bg"
+                    style="--hover-color: #4ade80">
                     <div class="flex flex-col sm:flex-row items-center gap-8">
                         <div class="flex-shrink-0">
-                            <img src="./img/hero/sensing1.gif" alt="Sensing Mascot" class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(74,222,128,0.6)] animate-pulse">
+                            <img src="./img/hero/sensing1.gif" alt="Sensing Mascot"
+                                class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(74,222,128,0.6)] animate-pulse">
                         </div>
                         <div>
                             <h2 class="text-3xl font-bold mb-3 text-green-300">Sensing</h2>
                             <p class="text-gray-300 leading-relaxed">
-                                Sensing merupakan kepribadian yang sangat mengandalkan panca indra untuk mengambil suatu informasi atau keputusan dalam berbagai aspek, sensing juga memiliki memori yang cukup kuat. Seseorang dengan kepribadian sensing cenderung detail, realistis dan logis, ia harus melihat atau merasakan sendiri suatu hal atau fenomena.
+                                Sensing merupakan kepribadian yang sangat mengandalkan panca indra untuk mengambil suatu
+                                informasi atau keputusan dalam berbagai aspek, sensing juga memiliki memori yang cukup
+                                kuat. Seseorang dengan kepribadian sensing cenderung detail, realistis dan logis, ia
+                                harus melihat atau merasakan sendiri suatu hal atau fenomena.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div class=" rounded-3xl p-8 border border-white/10 hover:border-blue-400 duration-300 hover-radial-bg" style="--hover-color: #60a5fa">
+                <div class=" rounded-3xl p-8 border border-white/10 hover:border-blue-400 duration-300 hover-radial-bg"
+                    style="--hover-color: #60a5fa">
                     <div class="flex flex-col sm:flex-row items-center gap-8">
                         <div>
                             <h2 class="text-3xl font-bold mb-3 text-blue-300">Thinking</h2>
                             <p class="text-gray-300 leading-relaxed">
-                                Thinking adalah salah satu dari dua cara utama orang membuat suatu keputusan (pasangannya feeling). Thinking cenderung menggunakan logika, analisis objektif dan rasional saat menentukan pilihan atau menilai sesuatu. Untuk Thinking semua hal itu kayak puzzle, haruslah ada bukti, dipikirin baik-baik, terus disusun baru sampai ketemu jawaban yang paling masuk akal.
+                                Thinking adalah salah satu dari dua cara utama orang membuat suatu keputusan
+                                (pasangannya feeling). Thinking cenderung menggunakan logika, analisis objektif dan
+                                rasional saat menentukan pilihan atau menilai sesuatu. Untuk Thinking semua hal itu
+                                kayak puzzle, haruslah ada bukti, dipikirin baik-baik, terus disusun baru sampai ketemu
+                                jawaban yang paling masuk akal.
                             </p>
                         </div>
                         <div class="flex-shrink-0">
-                            <img src="./img/hero/thinking1.gif" alt="Thinking Mascot" class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(96,155,250,0.6)] animate-pulse">
+                            <img src="./img/hero/thinking1.gif" alt="Thinking Mascot"
+                                class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(96,155,250,0.6)] animate-pulse">
                         </div>
-                        
+
                     </div>
                 </div>
 
-                <div class="rounded-3xl p-8 border border-white/10 hover:border-pink-400 duration-300 hover-radial-bg" style="--hover-color: #f472b6">
+                <div class="rounded-3xl p-8 border border-white/10 hover:border-pink-400 duration-300 hover-radial-bg"
+                    style="--hover-color: #f472b6">
                     <div class="flex flex-col sm:flex-row items-center gap-8">
                         <div>
                             <h2 class="text-3xl font-bold mb-3 text-pink-400">Feeling</h2>
                             <p class="text-gray-300 leading-relaxed">
-                                Seorang feeling sering kali mengambil keputusan berdasarkan emosi, empati, dan keyakinan pribadi. saat mengambil keputusan, feeling akan sangat mempertimbangkan bagaimana perasaan orang lain terhadap hasil dari keputusan tersebut. Sehingga, tipe feeling akan sangat mendengarkan dan berusaha memahami bagaimana perasaan orang lain.
+                                Seorang feeling sering kali mengambil keputusan berdasarkan emosi, empati, dan keyakinan
+                                pribadi. saat mengambil keputusan, feeling akan sangat mempertimbangkan bagaimana
+                                perasaan orang lain terhadap hasil dari keputusan tersebut. Sehingga, tipe feeling akan
+                                sangat mendengarkan dan berusaha memahami bagaimana perasaan orang lain.
                             </p>
                         </div>
                         <div class="flex-shrink-0">
-                            <img src="./img/hero/feeling1.gif" alt="Feeling Mascot" class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(236,72,153,0.6)] animate-pulse">
-                        </div>  
+                            <img src="./img/hero/feeling1.gif" alt="Feeling Mascot"
+                                class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(236,72,153,0.6)] animate-pulse">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-</section>
+    </section>
 
     <br /><br />
 
     <section id="jadwal" class="bg-neutral-950 text-white min-h-screen">
         <main class="container mx-auto px-6 py-20 pt-32">
-    <h1 class="text-4xl md:text-5xl font-bold text-center mb-16">
-        Jadwal Acara
-    </h1>
-
-    <?php
-    // Mengelompokkan semua event berdasarkan tanggal dari $events_data
-    $grouped_by_date = [];
-    foreach ($events_data as $event) {
-        $tanggal = $event['jadwal_event']; // Menggunakan 'jadwal_event' sebagai kunci
-        $grouped_by_date[$tanggal][] = $event;
-    }
-
-    // Ambil hanya 3 tanggal pertama dari array yang sudah dikelompokkan
-    $limited_grouped_by_date = array_slice($grouped_by_date, 0, 3, true);
-
-    // Cek apakah ada event yang ditemukan setelah pengelompokan dan pembatasan
-    $events_found = !empty($limited_grouped_by_date);
-    ?>
-
-    <?php if ($events_found): ?>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 md:gap-x-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-center mb-16">
+                Jadwal Acara
+            </h1>
 
             <?php
-            // Logika untuk menambahkan border di antara kolom
-            $card_count = 0;
-            // Gunakan array yang sudah dibatasi untuk menghitung total kartu
-            $total_cards = count($limited_grouped_by_date);
-            // Lakukan perulangan pada array tanggal yang sudah dibatasi
-            foreach ($limited_grouped_by_date as $tanggal => $events):
-                $card_count++;
-                // Menambahkan border kanan hanya jika bukan kartu terakhir di tampilan desktop
-                $border_class = ($card_count < $total_cards && $total_cards > 1) ? 'lg:border-r lg:border-neutral-800' : '';
+            // Mengelompokkan semua event berdasarkan tanggal dari $events_data
+            $grouped_by_date = [];
+            foreach ($events_data as $event) {
+                $tanggal = $event['jadwal_event']; // Menggunakan 'jadwal_event' sebagai kunci
+                $grouped_by_date[$tanggal][] = $event;
+            }
+
+            // Ambil hanya 3 tanggal pertama dari array yang sudah dikelompokkan
+            $limited_grouped_by_date = array_slice($grouped_by_date, 0, 3, true);
+
+            // Cek apakah ada event yang ditemukan setelah pengelompokan dan pembatasan
+            $events_found = !empty($limited_grouped_by_date);
             ?>
-            <div class="flex flex-col space-y-8 px-4 <?php echo $border_class; ?>">
-                <div class="flex items-center space-x-4">
-                    <span class="text-6xl md:text-7xl font-bold"><?php echo date('d', strtotime($tanggal)); ?></span>
-                    <div class="flex flex-col">
-                        <span class="text-2xl md:text-3xl"><?php echo date('F', strtotime($tanggal)); ?></span>
-                        <span class="text-2xl md:text-3xl text-neutral-400"><?php echo date('Y', strtotime($tanggal)); ?></span>
-                    </div>
-                </div>
 
-                <div class="flex flex-col space-y-12">
+            <?php if ($events_found): ?>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 md:gap-x-8">
+
                     <?php
-                    // Ambil hanya 3 event pertama untuk tanggal ini
-                    $limited_events = array_slice($events, 0, 3);
-                    // Lakukan perulangan pada array event yang sudah dibatasi
-                    foreach ($limited_events as $event):
-                    ?>
-                    <div>
-                        <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?></h3>
-                        <?php if (!empty($event['speakers'])): ?>
-                            <p class="text-sm text-neutral-400 mt-1">
-                                Speakers:
+                    // Logika untuk menambahkan border di antara kolom
+                    $card_count = 0;
+                    // Gunakan array yang sudah dibatasi untuk menghitung total kartu
+                    $total_cards = count($limited_grouped_by_date);
+                    // Lakukan perulangan pada array tanggal yang sudah dibatasi
+                    foreach ($limited_grouped_by_date as $tanggal => $events):
+                        $card_count++;
+                        // Menambahkan border kanan hanya jika bukan kartu terakhir di tampilan desktop
+                        $border_class = ($card_count < $total_cards && $total_cards > 1) ? 'lg:border-r lg:border-neutral-800' : '';
+                        ?>
+                        <div class="flex flex-col space-y-8 px-4 <?php echo $border_class; ?>">
+                            <div class="flex items-center space-x-4">
+                                <span
+                                    class="text-6xl md:text-7xl font-bold"><?php echo date('d', strtotime($tanggal)); ?></span>
+                                <div class="flex flex-col">
+                                    <span class="text-2xl md:text-3xl"><?php echo date('F', strtotime($tanggal)); ?></span>
+                                    <span
+                                        class="text-2xl md:text-3xl text-neutral-400"><?php echo date('Y', strtotime($tanggal)); ?></span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col space-y-12">
                                 <?php
-                                $speaker_names = array_map(function($speaker) {
-                                    $instansi = !empty($speaker['instansi']) ? " ({$speaker['instansi']})" : "";
-                                    return htmlspecialchars($speaker['nama_speaker'] . $instansi);
-                                }, $event['speakers']);
-                                echo implode(', ', $speaker_names);
-                                ?>
-                            </p>
-                        <?php endif; ?>
+                                // Ambil hanya 3 event pertama untuk tanggal ini
+                                $limited_events = array_slice($events, 0, 3);
+                                // Lakukan perulangan pada array event yang sudah dibatasi
+                                foreach ($limited_events as $event):
+                                    ?>
+                                    <div>
+                                        <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?></h3>
+                                        <?php if (!empty($event['speakers'])): ?>
+                                            <p class="text-sm text-neutral-400 mt-1">
+                                                Speakers:
+                                                <?php
+                                                $speaker_names = array_map(function ($speaker) {
+                                                    $instansi = !empty($speaker['instansi']) ? " ({$speaker['instansi']})" : "";
+                                                    return htmlspecialchars($speaker['nama_speaker'] . $instansi);
+                                                }, $event['speakers']);
+                                                echo implode(', ', $speaker_names);
+                                                ?>
+                                            </p>
+                                        <?php endif; ?>
 
-                        <div class="flex justify-between items-center mt-1 pr-3">
-                            <span class="text-neutral-400 text-sm">Waktu: <?php echo htmlspecialchars($event['waktu_event']); ?></span>
-                            <span class="font-semibold text-sm">Kuota: <?php echo htmlspecialchars($event['kuota']); ?></span>
+                                        <div class="flex justify-between items-center mt-1 pr-3">
+                                            <span class="text-neutral-400 text-sm">Waktu:
+                                                <?php echo htmlspecialchars($event['waktu_event']); ?></span>
+                                            <span class="font-semibold text-sm">Kuota:
+                                                <?php echo htmlspecialchars($event['kuota']); ?></span>
+                                        </div>
+                                        <div class="flex space-x-4 mt-6">
+                                            <?php
+                                            $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug');
+
+                                            // --- LOGIKA PERBAIKAN DI SINI ---
+                                            $user_has_ticket = false;
+                                            $is_verified_ticket = false;
+
+                                            // Cek apakah user sudah mendaftar dan dapatkan status verifikasinya
+                                            if (isset($events_with_tickets[$event['id_event']])) {
+                                                $user_has_ticket = true;
+                                                $is_verified_ticket = ($events_with_tickets[$event['id_event']] == 1);
+                                            }
+                                            ?>
+                                            <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
+                                                class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail
+                                                Kegiatan</a>
+
+                                            <?php if ($user_has_ticket): ?>
+                                                <?php if ($is_verified_ticket): ?>
+                                                    <span
+                                                        class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-sm">Kamu
+                                                        Memiliki Tiket</span>
+                                                <?php else: ?>
+                                                    <span
+                                                        class="border border-yellow-800 bg-yellow-950 text-yellow-400 rounded-xl px-5 py-2 text-sm">Menunggu
+                                                        Verifikasi</span>
+                                                <?php endif; ?>
+                                            <?php else: ?>
+                                                <?php
+                                                $sisa_kuota = isset($event['sisa_kuota']) ? $event['sisa_kuota'] : 0;
+                                                ?>
+                                                <?php if ($event['event_status'] == 0): ?>
+                                                    <?php if ($sisa_kuota > 0): ?>
+                                                        <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
+                                                            class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
+                                                    <?php else: ?>
+                                                        <button
+                                                            class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
+                                                            disabled>Kuota Penuh</button>
+                                                    <?php endif; ?>
+                                                <?php elseif ($event['event_status'] == 1): ?>
+                                                    <button
+                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
+                                                        disabled>Telah Berakhir</button>
+                                                <?php elseif ($event['event_status'] == 2): ?>
+                                                    <button
+                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
+                                                        disabled>Kuota Penuh</button>
+                                                <?php elseif ($event['event_status'] == 4): ?>
+                                                    <button
+                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
+                                                        disabled>Segera Hadir</button>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
-                        <div class="flex space-x-4 mt-6">
-                            <?php
-                            $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug');
-
-                            // --- LOGIKA PERBAIKAN DI SINI ---
-                            $user_has_ticket = false;
-                            $is_verified_ticket = false;
-
-                            // Cek apakah user sudah mendaftar dan dapatkan status verifikasinya
-                            if (isset($events_with_tickets[$event['id_event']])) {
-                                $user_has_ticket = true;
-                                $is_verified_ticket = ($events_with_tickets[$event['id_event']] == 1);
-                            }
-                            ?>
-                            <a href="detailevent.php?slug=<?php echo $slug_event; ?>" class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail Kegiatan</a>
-
-                            <?php if ($user_has_ticket): ?>
-                                <?php if ($is_verified_ticket): ?>
-                                    <span class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-sm">Kamu Memiliki Tiket</span>
-                                <?php else: ?>
-                                    <span class="border border-yellow-800 bg-yellow-950 text-yellow-400 rounded-xl px-5 py-2 text-sm">Menunggu Verifikasi</span>
-                                <?php endif; ?>
-                            <?php else: ?>
-                                <?php
-                                $sisa_kuota = isset($event['sisa_kuota']) ? $event['sisa_kuota'] : 0;
-                                ?>
-                                <?php if ($event['event_status'] == 0): ?>
-                                    <?php if ($sisa_kuota > 0): ?>
-                                        <a href="detailevent.php?slug=<?php echo $slug_event; ?>" class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
-                                    <?php else: ?>
-                                        <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Kuota Penuh</button>
-                                    <?php endif; ?>
-                                <?php elseif ($event['event_status'] == 1): ?>
-                                    <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Telah Berakhir</button>
-                                <?php elseif ($event['event_status'] == 2): ?>
-                                    <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Kuota Penuh</button>
-                                <?php elseif ($event['event_status'] == 4): ?>
-                                    <button class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed" disabled>Segera Hadir</button>
-                                <?php endif; ?>
-                            <?php endif; ?>
-                        </div>
-                    </div>
                     <?php endforeach; ?>
                 </div>
-            </div>
-            <?php endforeach; ?>
-        </div>
 
-        <div class="text-center mt-20">
-            <a href="event.php" class="bg-[#26d0a5] text-black font-bold py-3 px-16 rounded-full hover:bg-[#21b38f] transition-colors duration-300 text-lg">
-                Lihat Semua
-            </a>
-        </div>
+                <div class="text-center mt-20">
+                    <a href="event.php"
+                        class="bg-[#26d0a5] text-black font-bold py-3 px-16 rounded-full hover:bg-[#21b38f] transition-colors duration-300 text-lg">
+                        Lihat Semua
+                    </a>
+                </div>
 
-    <?php else: ?>
-        <p class="text-center text-neutral-400 text-xl">Saat ini belum ada jadwal acara yang tersedia.</p>
-    <?php endif; ?>
+            <?php else: ?>
+                <p class="text-center text-neutral-400 text-xl">Saat ini belum ada jadwal acara yang tersedia.</p>
+            <?php endif; ?>
 
-</main>
+        </main>
     </section>
 
-    <section id="pameran" class="bg-[#FDFDF6]">
+    <section id="lomba">
         <div class="max-w-7xl mx-auto px-6 py-16 space-y-8">
             <div class="text-center space-y-2">
                 <h2 class="text-3xl font-semibold text-neutral-900">Lomba</h2>
                 <p class="max-w-3xl mx-auto text-base md:text-lg text-gray-600">
-                    panggung kreatif bagi kamu yang ingin menguji dan memamerkan kemampuan desain visual. Tahun ini kami membuka
-                    dua kategori: Poster Ilustrasi, di mana kamu dapat mengekspresikan ide atau pesan sosial melalui karya
+                    panggung kreatif bagi kamu yang ingin menguji dan memamerkan kemampuan desain visual. Tahun ini kami
+                    membuka
+                    dua kategori: Poster Ilustrasi, di mana kamu dapat mengekspresikan ide atau pesan sosial melalui
+                    karya
                     ilustratif, serta Character Design, untuk merancang karakter orisinal yang kuat dan berkarakter.
                 </p>
             </div>
@@ -536,7 +588,8 @@ include 'homepage_data.php';
             <div class="w-full max-w-full md:max-w-4xl mx-auto bg-gray-300 rounded-2xl overflow-hidden">
                 <iframe class="w-full h-64 sm:h-96"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.2348973267035!2d107.59106691057444!3d-6.862428093107444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6b943c2c5ff%3A0xee36226510a79e76!2sUniversitas%20Pendidikan%20Indonesia!5e0!3m2!1sid!2sid!4v1710655960109!5m2!1sid!2sid"
-                    style="border: 0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    style="border: 0" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
 
             <a href="https://maps.app.goo.gl/w12NySVz2bjC6X527" target="_blank"
