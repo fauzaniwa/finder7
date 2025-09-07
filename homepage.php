@@ -16,35 +16,35 @@ include 'homepage_data.php';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        work: ['Work Sans'],
-                    },
-                    animation: {
-                        'spin-slow': 'spin 4s linear infinite',
-                        'loop-scroll': 'loop-scroll 10s linear infinite',
-                    },
-                    keyframes: {
-                        'loop-scroll': {
-                            from: {
-                                transform: 'translateX(0)'
-                            },
-                            to: {
-                                transform: 'translateX(-100%)'
-                            },
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: {
+                    work: ['Work Sans'],
+                },
+                animation: {
+                    'spin-slow': 'spin 4s linear infinite',
+                    'loop-scroll': 'loop-scroll 10s linear infinite',
+                },
+                keyframes: {
+                    'loop-scroll': {
+                        from: {
+                            transform: 'translateX(0)'
+                        },
+                        to: {
+                            transform: 'translateX(-100%)'
                         },
                     },
                 },
             },
-        };
+        },
+    };
     </script>
     <style>
-        .filter-button.active {
-            background-color: #FFFFFF;
-            color: #000000;
-        }
+    .filter-button.active {
+        background-color: #FFFFFF;
+        color: #000000;
+    }
     </style>
     <style type="text/tailwindcss">
         .navbar-scrolled {
@@ -107,55 +107,55 @@ include 'homepage_data.php';
         }
     </style>
     <style>
-        .button-container {
-            display: flex;
-            gap: 10px;
-            margin: 20px;
-        }
+    .button-container {
+        display: flex;
+        gap: 10px;
+        margin: 20px;
+    }
 
-        .hidden {
-            display: none;
-        }
+    .hidden {
+        display: none;
+    }
 
-        .button {
-            font-family: 'Work Sans';
-            border: 1px solid white;
-            padding: 10px 20px;
-            color: white;
-            background: transparent;
-            border-radius: 50px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
+    .button {
+        font-family: 'Work Sans';
+        border: 1px solid white;
+        padding: 10px 20px;
+        color: white;
+        background: transparent;
+        border-radius: 50px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
 
-        .button:hover {
-            background: rgba(255, 255, 255, 0.25);
-        }
+    .button:hover {
+        background: rgba(255, 255, 255, 0.25);
+    }
     </style>
 
     <style>
-        @layer components {
-            .hover-radial-bg {
-                position: relative;
-                overflow: hidden;
-            }
-
-            .hover-radial-bg::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background-image: radial-gradient(circle at center, transparent 40%, var(--hover-color) 100%);
-                opacity: 0;
-                transition: opacity 300ms ease;
-                z-index: -1;
-            }
-
-            .hover-radial-bg:hover::before {
-                opacity: 1;
-            }
+    @layer components {
+        .hover-radial-bg {
+            position: relative;
+            overflow: hidden;
         }
+
+        .hover-radial-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at center, transparent 40%, var(--hover-color) 100%);
+            opacity: 0;
+            transition: opacity 300ms ease;
+            z-index: -1;
+        }
+
+        .hover-radial-bg:hover::before {
+            opacity: 1;
+        }
+    }
     </style>
 
     <title>Finder 7 - Homepage</title>
@@ -192,11 +192,11 @@ include 'homepage_data.php';
 
             <div class="flex flex-col gap-4 items-center md:items-start">
                 <a href="https://www.instagram.com/finder_dkv/"
-                    class="w-48 sm:w-64 h-12 sm:h-16 flex items-center justify-center bg-[#008C62] text-white text-lg sm:text-xl font-medium rounded-xl sm:rounded-[20px] shadow-md hover:scale-105 transition-transform duration-300">
+                    class="w-48 sm:w-64 h-12 sm:h-14 flex items-center justify-center bg-[#008C62] text-white text-lg sm:text-xl font-medium rounded-2xl sm:rounded-2xl shadow-md hover:scale-105 transition-transform duration-300">
                     Instagram
                 </a>
                 <a href="#finderdesc"
-                    class="scroll-button w-48 sm:w-64 h-12 sm:h-16 flex items-center justify-center bg-neutral-700 text-gray-300 text-lg sm:text-xl font-medium rounded-xl sm:rounded-[20px] shadow-md hover:scale-105 transition-transform duration-300">
+                    class="w-48 sm:w-64 h-12 sm:h-14 flex items-center justify-center bg-neutral-700 text-gray-300 text-lg sm:text-xl font-medium rounded-2xl sm:rounded-2xl shadow-md hover:scale-105 transition-transform duration-300">
                     See More
                 </a>
             </div>
@@ -403,9 +403,9 @@ include 'homepage_data.php';
             ?>
 
             <?php if ($events_found): ?>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 md:gap-x-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 md:gap-x-8">
 
-                    <?php
+                <?php
                     // Logika untuk menambahkan border di antara kolom
                     $card_count = 0;
                     // Gunakan array yang sudah dibatasi untuk menghitung total kartu
@@ -416,47 +416,47 @@ include 'homepage_data.php';
                         // Menambahkan border kanan hanya jika bukan kartu terakhir di tampilan desktop
                         $border_class = ($card_count < $total_cards && $total_cards > 1) ? 'lg:border-r lg:border-neutral-800' : '';
                         ?>
-                        <div class="flex flex-col space-y-8 px-4 <?php echo $border_class; ?>">
-                            <div class="flex items-center space-x-4">
-                                <span
-                                    class="text-6xl md:text-7xl font-bold"><?php echo date('d', strtotime($tanggal)); ?></span>
-                                <div class="flex flex-col">
-                                    <span class="text-2xl md:text-3xl"><?php echo date('F', strtotime($tanggal)); ?></span>
-                                    <span
-                                        class="text-2xl md:text-3xl text-neutral-400"><?php echo date('Y', strtotime($tanggal)); ?></span>
-                                </div>
-                            </div>
+                <div class="flex flex-col space-y-8 px-4 <?php echo $border_class; ?>">
+                    <div class="flex items-center space-x-4">
+                        <span
+                            class="text-6xl md:text-7xl font-bold"><?php echo date('d', strtotime($tanggal)); ?></span>
+                        <div class="flex flex-col">
+                            <span class="text-2xl md:text-3xl"><?php echo date('F', strtotime($tanggal)); ?></span>
+                            <span
+                                class="text-2xl md:text-3xl text-neutral-400"><?php echo date('Y', strtotime($tanggal)); ?></span>
+                        </div>
+                    </div>
 
-                            <div class="flex flex-col space-y-12">
-                                <?php
+                    <div class="flex flex-col space-y-12">
+                        <?php
                                 // Ambil hanya 3 event pertama untuk tanggal ini
                                 $limited_events = array_slice($events, 0, 3);
                                 // Lakukan perulangan pada array event yang sudah dibatasi
                                 foreach ($limited_events as $event):
                                     ?>
-                                    <div>
-                                        <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?></h3>
-                                        <?php if (!empty($event['speakers'])): ?>
-                                            <p class="text-base text-neutral-400 mt-1">
-                                                Speakers:
-                                                <?php
+                        <div>
+                            <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?></h3>
+                            <?php if (!empty($event['speakers'])): ?>
+                            <p class="text-base text-neutral-400 mt-1">
+                                Speakers:
+                                <?php
                                                 $speaker_names = array_map(function ($speaker) {
                                                     $instansi = !empty($speaker['instansi']) ? " ({$speaker['instansi']})" : "";
                                                     return htmlspecialchars($speaker['nama_speaker'] . $instansi);
                                                 }, $event['speakers']);
                                                 echo implode(', ', $speaker_names);
                                                 ?>
-                                            </p>
-                                        <?php endif; ?>
+                            </p>
+                            <?php endif; ?>
 
-                                        <div class="flex justify-between items-center mt-1 pr-3">
-                                            <span class="text-neutral-400 text-base">Waktu:
-                                                <?php echo htmlspecialchars($event['waktu_event']); ?></span>
-                                            <span class="font-semibold text-base">Kuota:
-                                                <?php echo htmlspecialchars($event['kuota']); ?></span>
-                                        </div>
-                                        <div class="flex space-x-4 mt-6">
-                                            <?php
+                            <div class="flex justify-between items-center mt-1 pr-3">
+                                <span class="text-neutral-400 text-base">Waktu:
+                                    <?php echo htmlspecialchars($event['waktu_event']); ?></span>
+                                <span class="font-semibold text-base">Kuota:
+                                    <?php echo htmlspecialchars($event['kuota']); ?></span>
+                            </div>
+                            <div class="flex space-x-4 mt-6">
+                                <?php
                                             $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug');
 
                                             // --- LOGIKA PERBAIKAN DI SINI ---
@@ -469,64 +469,64 @@ include 'homepage_data.php';
                                                 $is_verified_ticket = ($events_with_tickets[$event['id_event']] == 1);
                                             }
                                             ?>
-                                            <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
-                                                class="border border-neutral-600 rounded-xl px-5 py-2 text-base hover:bg-white hover:text-black transition-colors duration-300">Detail
-                                                Kegiatan</a>
+                                <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
+                                    class="border border-neutral-600 rounded-xl px-5 py-2 text-base hover:bg-white hover:text-black transition-colors duration-300">Detail
+                                    Kegiatan</a>
 
-                                            <?php if ($user_has_ticket): ?>
-                                                <?php if ($is_verified_ticket): ?>
-                                                    <span
-                                                        class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-base">Kamu
-                                                        Memiliki Tiket</span>
-                                                <?php else: ?>
-                                                    <span
-                                                        class="border border-yellow-800 bg-yellow-950 text-yellow-400 rounded-xl px-5 py-2 text-base">Menunggu
-                                                        Verifikasi</span>
-                                                <?php endif; ?>
-                                            <?php else: ?>
-                                                <?php
+                                <?php if ($user_has_ticket): ?>
+                                <?php if ($is_verified_ticket): ?>
+                                <span
+                                    class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-base">Kamu
+                                    Memiliki Tiket</span>
+                                <?php else: ?>
+                                <span
+                                    class="border border-yellow-800 bg-yellow-950 text-yellow-400 rounded-xl px-5 py-2 text-base">Menunggu
+                                    Verifikasi</span>
+                                <?php endif; ?>
+                                <?php else: ?>
+                                <?php
                                                 $sisa_kuota = isset($event['sisa_kuota']) ? $event['sisa_kuota'] : 0;
                                                 ?>
-                                                <?php if ($event['event_status'] == 0): ?>
-                                                    <?php if ($sisa_kuota > 0): ?>
-                                                        <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
-                                                            class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
-                                                    <?php else: ?>
-                                                        <button
-                                                            class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
-                                                            disabled>Kuota Penuh</button>
-                                                    <?php endif; ?>
-                                                <?php elseif ($event['event_status'] == 1): ?>
-                                                    <button
-                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
-                                                        disabled>Telah Berakhir</button>
-                                                <?php elseif ($event['event_status'] == 2): ?>
-                                                    <button
-                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
-                                                        disabled>Kuota Penuh</button>
-                                                <?php elseif ($event['event_status'] == 4): ?>
-                                                    <button
-                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
-                                                        disabled>Segera Hadir</button>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
+                                <?php if ($event['event_status'] == 0): ?>
+                                <?php if ($sisa_kuota > 0): ?>
+                                <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
+                                    class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
+                                <?php else: ?>
+                                <button
+                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
+                                    disabled>Kuota Penuh</button>
+                                <?php endif; ?>
+                                <?php elseif ($event['event_status'] == 1): ?>
+                                <button
+                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
+                                    disabled>Telah Berakhir</button>
+                                <?php elseif ($event['event_status'] == 2): ?>
+                                <button
+                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
+                                    disabled>Kuota Penuh</button>
+                                <?php elseif ($event['event_status'] == 4): ?>
+                                <button
+                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
+                                    disabled>Segera Hadir</button>
+                                <?php endif; ?>
+                                <?php endif; ?>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
+                <?php endforeach; ?>
+            </div>
 
-                <div class="text-center mt-20">
-                    <a href="event.php"
-                        class="inline-block rounded-2xl font-semibold text-center tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black whitespace-nowrap px-16 py-3 text-base md:text-lg bg-emerald-400 text-emerald-950 hover:bg-emerald-500 focus:ring-emerald-400">
-                        Lihat Semua
-                    </a>
-                </div>
+            <div class="text-center mt-20">
+                <a href="event.php"
+                    class="inline-block rounded-2xl font-semibold text-center tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black whitespace-nowrap px-9 py-3 md:px-16 text-base md:text-lg bg-emerald-400 text-emerald-950 hover:bg-emerald-500 focus:ring-emerald-400">
+                    Lihat Semua
+                </a>
+            </div>
 
             <?php else: ?>
-                <p class="text-center text-neutral-400 text-xl">Saat ini belum ada jadwal acara yang tersedia.</p>
+            <p class="text-center text-neutral-400 text-xl">Saat ini belum ada jadwal acara yang tersedia.</p>
             <?php endif; ?>
 
         </main>
@@ -546,9 +546,9 @@ include 'homepage_data.php';
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-[60px] justify-items-center">
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center gap-6">
                     <div
-                        class="relative w-[300px] h-[400px] /* default mobile */ sm:w-[450px] sm:h-[600px] /* tablet ke atas */ md:w-[600px] md:h-[800px] /* desktop ke atas */ max-w-full rounded-2xl overflow-hidden shadow-lg">
+                        class=" relative w-[300px] h-[400px] /* default mobile */ sm:w-[450px] sm:h-[600px] /* tablet ke atas */ md:w-[600px] md:h-[800px] /* desktop ke atas */ max-w-full rounded-2xl overflow-hidden shadow-lg">
                         <img src="img/BANNER LOMBA POSTER 1 (OPSI 2).png" alt="Poster Ilustrasi"
                             class="absolute inset-0 w-full h-full object-cover" />
                         <div class="absolute inset-0 bg-gradient-to-tr from-pink-600/60 to-transparent"></div>
@@ -557,12 +557,12 @@ include 'homepage_data.php';
                         </h3>
                     </div>
                     <a href="pengumuman_lomba.php"
-                        class="mt-6 inline-block bg-[#008C62] text-gray-200 text-base font-semibold py-3 px-6 rounded-lg shadow hover:opacity-90 transition">
+                        class="inline-block rounded-2xl font-semibold text-center tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black whitespace-nowrap px-9 py-3 md:px-16 text-base md:text-lg bg-emerald-400 text-emerald-950 hover:bg-emerald-500 focus:ring-emerald-400">
                         Lihat Pemenang
                     </a>
                 </div>
 
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center gap-6">
                     <div
                         class="relative w-[300px] h-[400px] sm:w-[450px] sm:h-[600px] md:w-[600px] md:h-[800px] max-w-full rounded-2xl overflow-hidden shadow-lg">
                         <img src="img/BANNER CHARACTER 2.png" alt="Character Design"
@@ -573,7 +573,7 @@ include 'homepage_data.php';
                         </h3>
                     </div>
                     <a href="pengumuman_lomba.php"
-                        class="mt-6 inline-block bg-[#008C62] text-gray-200 text-base font-semibold py-3 px-6 rounded-lg shadow hover:opacity-90 transition">
+                        class="inline-block rounded-2xl font-semibold text-center tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black whitespace-nowrap px-9 py-3 md:px-16 text-base md:text-lg bg-emerald-400 text-emerald-950 hover:bg-emerald-500 focus:ring-emerald-400">
                         Lihat Pemenang
                     </a>
                 </div>
@@ -645,38 +645,38 @@ include 'homepage_data.php';
         </div>
 
         <?php if (isset($total_speakers) && $total_speakers > 6): ?>
-            <div id="show-more-container" class="text-center mt-10">
-                <button id="show-more-btn"
-                    class="bg-cyan-500 text-black font-bold py-3 px-8 rounded-full text-lg transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(34,211,238,0.5)]">
-                    Tampilkan Semua
-                </button>
-            </div>
+        <div id="show-more-container" class="text-center mt-10">
+            <button id="show-more-btn"
+                class="inline-block rounded-2xl font-semibold text-center tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black whitespace-nowrap px-9 py-3 md:px-16 text-base md:text-lg bg-emerald-400 text-emerald-950 hover:bg-emerald-500 focus:ring-emerald-400">
+                Tampilkan Semua
+            </button>
+        </div>
         <?php endif; ?>
 
     </section>
 
     <script>
-        const showMoreBtn = document.getElementById('show-more-btn');
-        const showMoreContainer = document.getElementById('show-more-container');
-        const guestGrid = document.getElementById('guest-grid');
+    const showMoreBtn = document.getElementById('show-more-btn');
+    const showMoreContainer = document.getElementById('show-more-container');
+    const guestGrid = document.getElementById('guest-grid');
 
-        if (showMoreBtn && guestGrid) {
-            showMoreBtn.addEventListener('click', () => {
-                // Cari semua item yang masih tersembunyi
-                const hiddenItems = guestGrid.querySelectorAll('.guest-item.hidden');
+    if (showMoreBtn && guestGrid) {
+        showMoreBtn.addEventListener('click', () => {
+            // Cari semua item yang masih tersembunyi
+            const hiddenItems = guestGrid.querySelectorAll('.guest-item.hidden');
 
-                hiddenItems.forEach(item => {
-                    // Hapus class 'hidden' untuk menampilkannya
-                    item.classList.remove('hidden');
-                });
-
-                // Sembunyikan tombol setelah diklik
-                if (showMoreContainer) {
-                    showMoreContainer.style.display = 'none';
-                    s
-                }
+            hiddenItems.forEach(item => {
+                // Hapus class 'hidden' untuk menampilkannya
+                item.classList.remove('hidden');
             });
-        }
+
+            // Sembunyikan tombol setelah diklik
+            if (showMoreContainer) {
+                showMoreContainer.style.display = 'none';
+                s
+            }
+        });
+    }
     </script>
 
     <!-- FAQ -->
@@ -746,33 +746,33 @@ include 'homepage_data.php';
     </section>
 
     <script>
-        const faqContainer = document.getElementById('faq-container');
-        if (faqContainer) {
-            const detailsElements = faqContainer.querySelectorAll('details');
+    const faqContainer = document.getElementById('faq-container');
+    if (faqContainer) {
+        const detailsElements = faqContainer.querySelectorAll('details');
 
-            detailsElements.forEach(details => {
-                details.addEventListener('toggle', (event) => {
-                    // Jika item ini dibuka, tutup semua yang lain
-                    if (details.open) {
-                        detailsElements.forEach(otherDetails => {
-                            if (otherDetails !== details) {
-                                otherDetails.removeAttribute('open');
-                            }
-                        });
-                    }
-                });
+        detailsElements.forEach(details => {
+            details.addEventListener('toggle', (event) => {
+                // Jika item ini dibuka, tutup semua yang lain
+                if (details.open) {
+                    detailsElements.forEach(otherDetails => {
+                        if (otherDetails !== details) {
+                            otherDetails.removeAttribute('open');
+                        }
+                    });
+                }
             });
-        }
+        });
+    }
     </script>
 
     <!-- Cursor CDN -->
     <script src="https://unpkg.com/kursor"></script>
     <script>
-        new kursor({
-            type: 4,
-            removeDefaultCursor: true,
-            color: '#ffffff',
-        });
+    new kursor({
+        type: 4,
+        removeDefaultCursor: true,
+        color: '#ffffff',
+    });
     </script>
     <!-- Cursor CDN -->
 
