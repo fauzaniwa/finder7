@@ -196,7 +196,7 @@ include 'homepage_data.php';
                     Instagram
                 </a>
                 <a href="#finderdesc"
-                    class="scroll-button w-48 sm:w-64 h-12 sm:h-16 flex items-center justify-center bg-neutral-500 text-black text-lg sm:text-xl font-medium rounded-xl sm:rounded-[20px] shadow-md hover:scale-105 transition-transform duration-300">
+                    class="scroll-button w-48 sm:w-64 h-12 sm:h-16 flex items-center justify-center bg-neutral-700 text-gray-300 text-lg sm:text-xl font-medium rounded-xl sm:rounded-[20px] shadow-md hover:scale-105 transition-transform duration-300">
                     See More
                 </a>
             </div>
@@ -229,7 +229,7 @@ include 'homepage_data.php';
                 h-auto md:h-[516px]
                 relative rounded-3xl p-8 md:p-12">
                 <div class="relative z-10 flex flex-col items-center justify-center h-full">
-                    <h2 class="w-full md:w-96 text-center text-white text-4xl md:text-5xl
+                    <h2 class="w-full md:w-96 text-center text-white text-2xl sm:text-3xl md:text-4xl 
                         font-semibold font-['Work_Sans'] leading-[56px] md:leading-[64px]
                         mb-8 md:mb-12">
                         Finder
@@ -243,7 +243,7 @@ include 'homepage_data.php';
                             alt="Logo DKV UPI" />
                     </div>
 
-                    <p class="w-full max-w-[824px] text-center text-white text-base md:text-lg
+                    <p class="w-full max-w-[824px] text-center text-gray-100 text-base md:text-lg
                         font-normal font-['Work_Sans'] leading-7">
                         Finder adalah sebuah annual event tahunan yang diadakan oleh prodi
                         DKV UPI sebagai bentuk eksistensi diri terhadap dunia. Dalam event
@@ -280,7 +280,7 @@ include 'homepage_data.php';
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
                     Finder 7
                 </h2>
-                <p class="text-base md:text-lg text-gray-300 leading-relaxed">
+                <p class="text-base md:text-lg text-gray-100 leading-relaxed">
                     Finder 7 Mindspace adalah ruang memahami diri yang dimulai dari
                     insight, di mana pikiran, emosi, dan cara berpikir membentuk
                     persepsi kita. Dari kesadaran ini, lahir inisiatif untuk merespons
@@ -291,24 +291,25 @@ include 'homepage_data.php';
             </div>
         </div>
     </section>
-    <section class=" text-white py-20 px-4">
-        <div class="max-w-6xl mx-auto">
+    <section class="py-20 px-4">
+        <div class="max-w-7xl lg:max-w-screen-xl 2xl:max-w-screen-2xl mx-auto">
             <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold mb-2">Get to Know About Them!</h2>
-                <p class="text-xl text-gray-400">Maskot Finder 7 yang lucu-lucu!</p>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl text-gray-100 font-bold mb-2">Get to Know About Them!</h2>
+                <p class="text-base md:text-lg italic text-gray-100">Maskot Finder 7 yang lucu-lucu!</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class=" rounded-3xl p-8 border border-white/10 hover:border-yellow-400 duration-300 hover-radial-bg"
+
+                <div class="rounded-3xl p-8 border border-white/10 hover:border-yellow-400 duration-300 hover-radial-bg"
                     style="--hover-color: #FEE139">
-                    <div class="flex flex-col sm:flex-row items-center gap-8">
+                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-8">
                         <div class="flex-shrink-0">
-                            <img src="./img/hero/intuiting2.gif" alt="Intuitive Mascot"
+                            <img src="img/hero/intuiting2.gif" alt="Intuitive Mascot"
                                 class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(234,179,8,0.6)] animate-pulse">
                         </div>
-                        <div>
-                            <h2 class="text-3xl font-bold mb-3 text-yellow-300">Intuitive</h2>
-                            <p class="text-gray-300 text-base leading-relaxed">
+                        <div class="text-center sm:text-left">
+                            <h2 class="text-2xl md:text-3xl font-bold mb-3 text-yellow-300">Intuitive</h2>
+                            <p class="text-gray-100 text-base md:text-lg leading-relaxed">
                                 Intuitive ditandai oleh kemampuan untuk mendeteksi pola dan makna tersembunyi, yang
                                 didorong oleh rasa ingin tahu yang tinggi. Individu dengan kepribadian intuitif
                                 cenderung lebih kreatif, mengandalkan imajinasi, dan sering kali menghasilkan ide-ide
@@ -317,16 +318,17 @@ include 'homepage_data.php';
                         </div>
                     </div>
                 </div>
-                <div class=" rounded-3xl p-8 border border-white/10 hover:border-green-400 duration-300 hover-radial-bg"
+
+                <div class="rounded-3xl p-8 border border-white/10 hover:border-green-400 duration-300 hover-radial-bg"
                     style="--hover-color: #4ade80">
-                    <div class="flex flex-col sm:flex-row items-center gap-8">
+                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-8">
                         <div class="flex-shrink-0">
-                            <img src="./img/hero/sensing1.gif" alt="Sensing Mascot"
+                            <img src="img/hero/sensing1.gif" alt="Sensing Mascot"
                                 class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(74,222,128,0.6)] animate-pulse">
                         </div>
-                        <div>
-                            <h2 class="text-3xl font-bold mb-3 text-green-300">Sensing</h2>
-                            <p class="text-gray-300 leading-relaxed">
+                        <div class="text-center sm:text-left">
+                            <h2 class="text-2xl md:text-3xl font-bold mb-3 text-green-300">Sensing</h2>
+                            <p class="text-gray-100 text-base md:text-lg leading-relaxed">
                                 Sensing merupakan kepribadian yang sangat mengandalkan panca indra untuk mengambil suatu
                                 informasi atau keputusan dalam berbagai aspek, sensing juga memiliki memori yang cukup
                                 kuat. Seseorang dengan kepribadian sensing cenderung detail, realistis dan logis, ia
@@ -336,12 +338,12 @@ include 'homepage_data.php';
                     </div>
                 </div>
 
-                <div class=" rounded-3xl p-8 border border-white/10 hover:border-blue-400 duration-300 hover-radial-bg"
+                <div class="rounded-3xl p-8 border border-white/10 hover:border-blue-400 duration-300 hover-radial-bg"
                     style="--hover-color: #60a5fa">
-                    <div class="flex flex-col sm:flex-row items-center gap-8">
-                        <div>
-                            <h2 class="text-3xl font-bold mb-3 text-blue-300">Thinking</h2>
-                            <p class="text-gray-300 leading-relaxed">
+                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-8">
+                        <div class="text-center sm:text-left">
+                            <h2 class="text-2xl md:text-3xl font-bold mb-3 text-blue-300">Thinking</h2>
+                            <p class="text-gray-100 text-base md:text-lg leading-relaxed">
                                 Thinking adalah salah satu dari dua cara utama orang membuat suatu keputusan
                                 (pasangannya feeling). Thinking cenderung menggunakan logika, analisis objektif dan
                                 rasional saat menentukan pilihan atau menilai sesuatu. Untuk Thinking semua hal itu
@@ -350,19 +352,18 @@ include 'homepage_data.php';
                             </p>
                         </div>
                         <div class="flex-shrink-0">
-                            <img src="./img/hero/thinking1.gif" alt="Thinking Mascot"
+                            <img src="img/hero/thinking1.gif" alt="Thinking Mascot"
                                 class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(96,155,250,0.6)] animate-pulse">
                         </div>
-
                     </div>
                 </div>
 
                 <div class="rounded-3xl p-8 border border-white/10 hover:border-pink-400 duration-300 hover-radial-bg"
                     style="--hover-color: #f472b6">
-                    <div class="flex flex-col sm:flex-row items-center gap-8">
-                        <div>
-                            <h2 class="text-3xl font-bold mb-3 text-pink-400">Feeling</h2>
-                            <p class="text-gray-300 leading-relaxed">
+                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-8">
+                        <div class="text-center sm:text-left">
+                            <h2 class="text-2xl md:text-3xl font-bold mb-3 text-pink-400">Feeling</h2>
+                            <p class="text-gray-100 text-base md:text-lg leading-relaxed">
                                 Seorang feeling sering kali mengambil keputusan berdasarkan emosi, empati, dan keyakinan
                                 pribadi. saat mengambil keputusan, feeling akan sangat mempertimbangkan bagaimana
                                 perasaan orang lain terhadap hasil dari keputusan tersebut. Sehingga, tipe feeling akan
@@ -370,20 +371,19 @@ include 'homepage_data.php';
                             </p>
                         </div>
                         <div class="flex-shrink-0">
-                            <img src="./img/hero/feeling1.gif" alt="Feeling Mascot"
+                            <img src="img/hero/feeling1.gif" alt="Feeling Mascot"
                                 class="w-52 h-auto filter drop-shadow-[0_0_15px_rgba(236,72,153,0.6)] animate-pulse">
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <br /><br />
-
-    <section id="jadwal" class="bg-neutral-950 text-white min-h-screen">
+    <section id="jadwal" class="bg-neutral-950 text-gray-100 min-h-screen">
         <main class="container mx-auto px-6 py-20 pt-32">
-            <h1 class="text-4xl md:text-5xl font-bold text-center mb-16">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-16">
                 Jadwal Acara
             </h1>
 
@@ -437,7 +437,7 @@ include 'homepage_data.php';
                                     <div>
                                         <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?></h3>
                                         <?php if (!empty($event['speakers'])): ?>
-                                            <p class="text-sm text-neutral-400 mt-1">
+                                            <p class="text-base text-neutral-400 mt-1">
                                                 Speakers:
                                                 <?php
                                                 $speaker_names = array_map(function ($speaker) {
@@ -450,9 +450,9 @@ include 'homepage_data.php';
                                         <?php endif; ?>
 
                                         <div class="flex justify-between items-center mt-1 pr-3">
-                                            <span class="text-neutral-400 text-sm">Waktu:
+                                            <span class="text-neutral-400 text-base">Waktu:
                                                 <?php echo htmlspecialchars($event['waktu_event']); ?></span>
-                                            <span class="font-semibold text-sm">Kuota:
+                                            <span class="font-semibold text-base">Kuota:
                                                 <?php echo htmlspecialchars($event['kuota']); ?></span>
                                         </div>
                                         <div class="flex space-x-4 mt-6">
@@ -470,17 +470,17 @@ include 'homepage_data.php';
                                             }
                                             ?>
                                             <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
-                                                class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail
+                                                class="border border-neutral-600 rounded-xl px-5 py-2 text-base hover:bg-white hover:text-black transition-colors duration-300">Detail
                                                 Kegiatan</a>
 
                                             <?php if ($user_has_ticket): ?>
                                                 <?php if ($is_verified_ticket): ?>
                                                     <span
-                                                        class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-sm">Kamu
+                                                        class="border border-emerald-800 bg-emerald-950 text-emerald-400 rounded-xl px-5 py-2 text-base">Kamu
                                                         Memiliki Tiket</span>
                                                 <?php else: ?>
                                                     <span
-                                                        class="border border-yellow-800 bg-yellow-950 text-yellow-400 rounded-xl px-5 py-2 text-sm">Menunggu
+                                                        class="border border-yellow-800 bg-yellow-950 text-yellow-400 rounded-xl px-5 py-2 text-base">Menunggu
                                                         Verifikasi</span>
                                                 <?php endif; ?>
                                             <?php else: ?>
@@ -493,20 +493,20 @@ include 'homepage_data.php';
                                                             class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
                                                     <?php else: ?>
                                                         <button
-                                                            class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
+                                                            class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
                                                             disabled>Kuota Penuh</button>
                                                     <?php endif; ?>
                                                 <?php elseif ($event['event_status'] == 1): ?>
                                                     <button
-                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
+                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
                                                         disabled>Telah Berakhir</button>
                                                 <?php elseif ($event['event_status'] == 2): ?>
                                                     <button
-                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
+                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
                                                         disabled>Kuota Penuh</button>
                                                 <?php elseif ($event['event_status'] == 4): ?>
                                                     <button
-                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
+                                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
                                                         disabled>Segera Hadir</button>
                                                 <?php endif; ?>
                                             <?php endif; ?>
@@ -534,9 +534,9 @@ include 'homepage_data.php';
 
     <section id="lomba">
         <div class="max-w-7xl mx-auto px-6 py-16 space-y-8">
-            <div class="text-center space-y-2">
-                <h2 class="text-3xl font-semibold text-neutral-900">Lomba</h2>
-                <p class="max-w-3xl mx-auto text-base md:text-lg text-gray-600">
+            <div class="text-center space-y-2 mb-12">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-100">Lomba</h2>
+                <p class="max-w-3xl mx-auto text-base md:text-lg text-gray-200">
                     panggung kreatif bagi kamu yang ingin menguji dan memamerkan kemampuan desain visual. Tahun ini kami
                     membuka
                     dua kategori: Poster Ilustrasi, di mana kamu dapat mengekspresikan ide atau pesan sosial melalui
@@ -556,9 +556,9 @@ include 'homepage_data.php';
                             Poster Ilustrasi
                         </h3>
                     </div>
-                    <a href="submission.php"
-                        class="mt-6 inline-block bg-black text-white text-base font-semibold py-3 px-6 rounded-lg shadow hover:opacity-90 transition">
-                        Lihat Ketentuan
+                    <a href="pengumuman_lomba.php"
+                        class="mt-6 inline-block bg-[#008C62] text-gray-200 text-base font-semibold py-3 px-6 rounded-lg shadow hover:opacity-90 transition">
+                        Lihat Pemenang
                     </a>
                 </div>
 
@@ -572,18 +572,127 @@ include 'homepage_data.php';
                             Character Design
                         </h3>
                     </div>
-                    <a href="submitkarya.php"
-                        class="mt-6 inline-block bg-emerald-400 text-black text-base font-semibold py-3 px-6 rounded-lg shadow hover:opacity-90 transition">
-                        Submit Karya
+                    <a href="pengumuman_lomba.php"
+                        class="mt-6 inline-block bg-[#008C62] text-gray-200 text-base font-semibold py-3 px-6 rounded-lg shadow hover:opacity-90 transition">
+                        Lihat Pemenang
                     </a>
                 </div>
             </div>
         </div>
     </section>
+    <!-- Profile Kolaborator -->
+    <section class="bg-black py-16">
+        <div class="container mx-auto px-4">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-100 text-center">Profil Kolaborator
+            </h1>
+            <p class="text-gray-100 text-center mb-12 max-w-3xl mx-auto">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi arcu, lobortis quis ligula vel,
+                accumsan congue diam. Nullam porta enim ut tristique fermentum. Sed vestibulum sit amet arcu eu sodales.
+                Duis sed facilisis quam, id rhoncus nisi.
+            </p>
 
-    <section class="bg-[#FDFDF6] py-16 px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <div class="flex flex-col items-center">
+                    <img src="img/profil-kolab/dwita.png" alt="Dwita Alfiani" class=" object-cover  mb-4">
+                    <h3 class="text-xl font-semibold text-gray-100">Dwita Alfiani, M.Ds.</h3>
+                    <p class="text-gray-400 text-sm">Lorem ipsum dolor sit amet</p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <img src="img/profil-kolab/reisha.png" alt="Reisha Herma Maurits" class="object-cover  mb-4">
+                    <h3 class="text-xl font-semibold text-gray-100">Reisha Herma Maurits, M.Psi.</h3>
+                    <p class="text-gray-400 text-sm">Psikolog Klinis</p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <img src="img/profil-kolab/shinta.png" alt="Shinta Medianti" class=" object-cover mb-4">
+                    <h3 class="text-xl font-semibold text-gray-100">Shinta Medianti</h3>
+                    <p class="text-gray-400 text-sm">Psikolog Klinis</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="bg-black text-gray-100 py-16 sm:py-20">
+        <div class="container mx-auto px-4 max-w-7xl lg:max-w-screen-xl 2xl:max-w-screen-2xl">
+
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-100 text-center">FAQ</h2>
+
+            <div id="faq-container" class="mx-auto space-y-3 text-base md:text-lg">
+
+                <details class="group rounded-lg bg-transparent open:bg-[#1c1c1c] transition-colors duration-300">
+                    <summary class="flex cursor-pointer list-none items-center justify-between p-4 sm:p-5 font-medium">
+                        <span>Kapan Finder 7 dilaksanakan?</span>
+                        <span class="relative h-5 w-5 shrink-0">
+                            <img src="img/icon/chevron-down.svg" alt="Buka" class="group-open:hidden h-full w-full">
+                            <img src="img/icon/chevron-up.svg" alt="Tutup"
+                                class="hidden group-open:block h-full w-full">
+                        </span>
+                    </summary>
+                    <div class="px-4 sm:px-5 pb-5 text-gray-400">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi arcu, lobortis quis ligula
+                        vel, accumsan congue diam. Nullam porta enim ut tristique fermentum.
+                    </div>
+                </details>
+
+                <details class="group rounded-lg bg-transparent open:bg-[#1c1c1c] transition-colors duration-300">
+                    <summary class="flex cursor-pointer list-none items-center justify-between p-4 sm:p-5 font-medium">
+                        <span>Lorem ipsum Dolor sit amet</span>
+                        <span class="relative h-5 w-5 shrink-0">
+                            <img src="img/icon/chevron-down.svg" alt="Buka" class="group-open:hidden h-full w-full">
+                            <img src="img/icon/chevron-up.svg" alt="Tutup"
+                                class="hidden group-open:block h-full w-full">
+                        </span>
+                    </summary>
+                    <div class="px-4 sm:px-5 pb-5 text-gray-400">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi arcu, lobortis quis ligula
+                        vel, accumsan congue diam. Nullam porta enim ut tristique fermentum.
+                    </div>
+                </details>
+
+                <details class="group rounded-lg bg-transparent open:bg-[#1c1c1c] transition-colors duration-300">
+                    <summary class="flex cursor-pointer list-none items-center justify-between p-4 sm:p-5 font-medium">
+                        <span>Lorem ipsum dolor sit amet</span>
+                        <span class="relative h-5 w-5 shrink-0">
+                            <img src="img/icon/chevron-down.svg" alt="Buka" class="group-open:hidden h-full w-full">
+                            <img src="img/icon/chevron-up.svg" alt="Tutup"
+                                class="hidden group-open:block h-full w-full">
+                        </span>
+                    </summary>
+                    <div class="px-4 sm:px-5 pb-5 text-gray-400">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi arcu, lobortis quis ligula
+                        vel, accumsan congue diam. Nullam porta enim ut tristique fermentum.
+                    </div>
+                </details>
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const faqContainer = document.getElementById('faq-container');
+        const detailsElements = faqContainer.querySelectorAll('details');
+
+        detailsElements.forEach(details => {
+            details.addEventListener('toggle', (event) => {
+                // Jika item saat ini dibuka
+                if (details.open) {
+                    // Tutup semua item lain
+                    detailsElements.forEach(otherDetails => {
+                        if (otherDetails !== details) {
+                            otherDetails.removeAttribute('open');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+    <!-- Map -->
+    <section class="py-16 px-6">
         <div class="max-w-5xl mx-auto text-center space-y-8">
-            <h2 class="text-3xl font-semibold text-neutral-900">Lokasi Finder 7</h2>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-100">Lokasi Finder 7</h2>
 
             <div class="w-full max-w-full md:max-w-4xl mx-auto bg-gray-300 rounded-2xl overflow-hidden">
                 <iframe class="w-full h-64 sm:h-96"
