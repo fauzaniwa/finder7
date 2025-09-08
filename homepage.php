@@ -462,11 +462,11 @@ include 'homepage_data.php';
 // } else {
     // Data fallback jika database kosong atau gagal konek
     $karya_images = [
-        'https://via.placeholder.com/400x600/262626/808080?text=Karya+1',
-        'https://via.placeholder.com/400x600/262626/808080?text=Karya+2',
-        'https://via.placeholder.com/400x600/262626/808080?text=Karya+3',
-        'https://via.placeholder.com/400x600/262626/808080?text=Karya+4',
-        'https://via.placeholder.com/400x600/262626/808080?text=Karya+5',
+        './img/Lomba/Juara2resize.jpg',
+        './img/Lomba/deschar1resize.jpg',
+        './img/Lomba/Juara3resize.jpg',
+        './img/Lomba/Juara1resize.jpg',
+        './img/Lomba/deschar2resize.jpg',
     ];
     // }
     ?>
@@ -536,7 +536,7 @@ include 'homepage_data.php';
                     </div>
 
                     <div class="mt-16">
-                        <a href="#"
+                        <a href="pameran.php"
                             class="inline-block rounded-2xl font-semibold text-center tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black whitespace-nowrap px-9 py-3 md:px-16 text-base md:text-lg bg-emerald-400 text-emerald-950 hover:bg-emerald-500 focus:ring-emerald-400">
                             See More
                         </a>
@@ -952,34 +952,34 @@ include 'homepage_data.php';
 
                         <div class="w-1/2">
                             <div class="animate-scroll-up">
-                                <img src="https://images.unsplash.com/photo-1528740561666-dc2479703592?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                <img src="img/logo_support/FPSD.png"
                                     alt="Partnership image 1" class="w-full h-64 object-cover mb-4">
-                                <img src="https://images.unsplash.com/photo-1541892332-207357593836?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                <img src="img/logo_support/FPSD.png"
                                     alt="Partnership image 2" class="w-full h-48 object-cover mb-4">
-                                <img src="https://images.unsplash.com/photo-1524234103433-2427bcc5571e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                <img src="img/logo_support/FPSD.png"
                                     alt="Partnership image 3" class="w-full h-80 object-cover mb-4">
-                                <img src="https://images.unsplash.com/photo-1528740561666-dc2479703592?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                <img src="img/logo_support/FPSD.png"
                                     alt="Partnership image 1" class="w-full h-64 object-cover mb-4">
-                                <img src="https://images.unsplash.com/photo-1541892332-207357593836?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                <img src="img/logo_support/FPSD.png"
                                     alt="Partnership image 2" class="w-full h-48 object-cover mb-4">
-                                <img src="https://images.unsplash.com/photo-1524234103433-2427bcc5571e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                <img src="img/logo_support/FPSD.png"
                                     alt="Partnership image 3" class="w-full h-80 object-cover mb-4">
                             </div>
                         </div>
 
                         <div class="w-1/2">
                             <div class="animate-scroll-down">
-                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                <img src="img/logo_support/FPSD.png"
                                     alt="Partnership image 4" class="w-full h-80 object-cover mb-4">
-                                <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                <img src="img/logo_support/FPSD.png"
                                     alt="Partnership image 5" class="w-full h-56 object-cover mb-4">
-                                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                <img src="img/logo_support/FPSD.png"
                                     alt="Partnership image 6" class="w-full h-72 object-cover mb-4">
-                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                <img src="img/logo_support/FPSD.png"
                                     alt="Partnership image 4" class="w-full h-80 object-cover mb-4">
-                                <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                <img src="img/logo_support/FPSD.png"
                                     alt="Partnership image 5" class="w-full h-56 object-cover mb-4">
-                                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                                <img src="img/logo_support/FPSD.png"
                                     alt="Partnership image 6" class="w-full h-72 object-cover mb-4">
                             </div>
                         </div>

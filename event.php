@@ -24,7 +24,7 @@ $user_email = isset($_SESSION['user_data']['email']) ? $_SESSION['user_data']['e
    AMBIL DATA EVENT + SISA KUOTA + SPEAKERS
    ========================= */
 $query_event = "
-    SELECT 
+    SELECT
         e.id_event,
         e.judul_event,
         e.jadwal_event,
@@ -58,10 +58,10 @@ while ($row_event = mysqli_fetch_assoc($result_event)) {
     $id_event = $row_event['id_event'];
 
     // Ambil speakers untuk event ini
-    $query_speakers = "SELECT s.nama_speaker, s.instansi 
-                        FROM event_speakers es
-                        JOIN speakers s ON es.id_speaker = s.id_speaker
-                        WHERE es.id_event = ?";
+    $query_speakers = "SELECT s.nama_speaker, s.instansi
+                         FROM event_speakers es
+                         JOIN speakers s ON es.id_speaker = s.id_speaker
+                         WHERE es.id_event = ?";
     $stmt_speakers = mysqli_prepare($koneksi, $query_speakers);
     mysqli_stmt_bind_param($stmt_speakers, "i", $id_event);
     mysqli_stmt_execute($stmt_speakers);
@@ -355,36 +355,27 @@ $events_found = !empty($grouped_by_date);
             <p class="text-center text-neutral-400 text-xl">Saat ini belum ada jadwal acara yang tersedia.</p>
         <?php endif; ?>
     </main>
-    <!-- Performances -->
-    <?php
+        <?php
     // ==================================================
 // BAGIAN DATA (HANYA EDIT BAGIAN INI)
 // ==================================================
 // 'image_url' bisa diisi dengan path ke gambar, atau biarkan kosong ('') untuk menampilkan placeholder abu-abu.
     
-    $performances = [
-        [
-            'band_name' => 'The Weekend Project',
-            'image_url' => '', // Biarkan kosong untuk placeholder
-            'date' => '08 September 2025',
-            'time' => '19:00 - 20:00',
-            'location' => 'Main Stage, FPMIPA UPI'
-        ],
-        [
-            'band_name' => 'Coldplay Tribute',
-            'image_url' => '', // Ganti dengan path gambar jika ada, misal: 'img/band/coldplay.jpg'
-            'date' => '08 September 2025',
-            'time' => '20:00 - 21:00',
-            'location' => 'Main Stage, FPMIPA UPI'
-        ],
-        [
-            'band_name' => 'Acoustic Night Session',
-            'image_url' => '',
-            'date' => '08 September 2025',
-            'time' => '21:00 - 22:00',
-            'location' => 'Rooftop, Isola Building'
-        ],
-    ];
+$performances = [];
+$query_performances = "SELECT nama_penampil, tanggal_tampil, jam_tampil, lokasi_tampil, path_image_penampil FROM performance WHERE status_view = 1 ORDER BY tanggal_tampil, jam_tampil ASC";
+$result_performances = mysqli_query($koneksi, $query_performances);
+
+if ($result_performances && mysqli_num_rows($result_performances) > 0) {
+    while ($row = mysqli_fetch_assoc($result_performances)) {
+        $performances[] = [
+            'band_name' => $row['nama_penampil'],
+            'image_url' => $row['path_image_penampil'],
+            'date' => $row['tanggal_tampil'],
+            'time' => $row['jam_tampil'],
+            'location' => $row['lokasi_tampil']
+        ];
+    }
+}
     ?>
 
     <div>
@@ -396,12 +387,14 @@ $events_found = !empty($grouped_by_date);
                     Performance</h1>
 
                 <div class="space-y-12">
-
+                <?php if (empty($performances)): ?>
+                    <p class="text-center text-gray-500 text-lg">Tidak ada jadwal performance saat ini.</p>
+                <?php else: ?>
                     <?php foreach ($performances as $performance): ?>
                         <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
 
                             <?php if (!empty($performance['image_url'])): ?>
-                                <img src="<?php echo htmlspecialchars($performance['image_url']); ?>"
+                                <img src="./img/performance/<?php echo htmlspecialchars($performance['image_url']); ?>"
                                     alt="<?php echo htmlspecialchars($performance['band_name']); ?>"
                                     class="w-full md:w-1/3 lg:w-1/4 h-48 object-cover rounded-2xl flex-shrink-0">
                             <?php else: ?>
@@ -431,12 +424,24 @@ $events_found = !empty($grouped_by_date);
                                                 d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                                         </svg>
                                         <span><?php echo htmlspecialchars($performance['location']); ?></span>
+                                        <?php
+                                        // Buat URL Google Calendar
+                                        $event_date_time_start = new DateTime("{$performance['date']} {$performance['time']}");
+                                        // Asumsi durasi event 2 jam
+                                        $event_date_time_end = (clone $event_date_time_start)->modify('+2 hours');
+
+                                        $google_calendar_url = 'https://www.google.com/calendar/render?action=TEMPLATE&text=' . urlencode('Performance oleh ' . $performance['band_name']) . '&dates=' . $event_date_time_start->format('Ymd\THis') . '/' . $event_date_time_end->format('Ymd\THis') . '&details=' . urlencode('Jangan lewatkan performance menarik dari ' . $performance['band_name'] . '!') . '&location=' . urlencode($performance['location']);
+                                        ?>
+                                        <a href="<?php echo $google_calendar_url; ?>" target="_blank"
+                                            class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300 ml-4">
+                                            Add to Calendar
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
-
+                <?php endif; ?>
                 </div>
             </div>
         </section>

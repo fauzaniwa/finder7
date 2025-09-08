@@ -2,13 +2,13 @@
 // Pastikan variabel $admin_role sudah didefinisikan sebelum file ini di-include
 // Jika belum, Anda bisa mengambilnya dari sesi di sini
 if (!isset($admin_role)) {
-
+    
     $admin_role = $_SESSION['role'] ?? 'guest';
 }
 ?>
 
 <aside id="sidebar" class="bg-dark-card w-64 min-h-screen p-6 shadow-lg fixed top-0 left-0 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:block flex flex-col">
-
+    
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center">
             <span class="material-symbols-outlined text-primary-green text-3xl mr-3">
@@ -35,7 +35,7 @@ if (!isset($admin_role)) {
                     </a>
                 </li>
                 <li class="my-4 h-px bg-gray-700"></li>
-
+                
                 <?php if ($admin_role === 'master'): ?>
                 <li>
                     <a href="users.php" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
@@ -61,7 +61,13 @@ if (!isset($admin_role)) {
                         </span>
                     </button>
                     <ul id="pameran-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
-                        <li><a href="#" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Data Karya</a></li>
+                        <li><a href="karya_list.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Data Karya</a></li>
+                    </ul>
+                    <ul id="pameran-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
+                        <li><a href="manage_kategori.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Kategori Karya</a></li>
+                    </ul>
+                    <ul id="pameran-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
+                        <li><a href="manage_jenis_karya.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Jenis Karya</a></li>
                     </ul>
                 </li>
                 <?php endif; ?>
@@ -120,7 +126,7 @@ if (!isset($admin_role)) {
                             Lomba
                         </span>
                         <span class="material-symbols-outlined text-xl">
-                            expand_more
+                                expand_more
                         </span>
                     </button>
                     <ul id="lomba-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
@@ -129,14 +135,24 @@ if (!isset($admin_role)) {
                 </li>
                 <?php endif; ?>
 
+                <?php if ($admin_role === 'master' || $admin_role === 'performance'): ?>
                 <li>
-                    <a href="faq.php" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
-                        <span class="material-symbols-outlined text-2xl mr-3">
-                            help
+                    <button type="button" class="flex items-center justify-between w-full py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200" onclick="toggleDropdown('performance-menu')">
+                        <span class="flex items-center">
+                            <span class="material-symbols-outlined text-2xl mr-3">
+                                play_circle
+                            </span>
+                            Performance
                         </span>
-                        FaQ
-                    </a>
+                        <span class="material-symbols-outlined text-xl">
+                            expand_more
+                        </span>
+                    </button>
+                    <ul id="performance-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
+                        <li><a href="performance_list.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Penampil</a></li>
+                    </ul>
                 </li>
+                <?php endif; ?>
 
                 <li class="my-4 h-px bg-gray-700"></li>
 
@@ -156,7 +172,14 @@ if (!isset($admin_role)) {
                         Log Admin
                     </a>
                 </li>
-                
+                <li>
+                    <a href="faq.php" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
+                        <span class="material-symbols-outlined text-2xl mr-3">
+                            help
+                        </span>
+                        FaQ
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>
