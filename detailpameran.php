@@ -542,12 +542,12 @@ session_start();
             if (videoExtensions.includes(fileExtension)) {
                 mediaContainer.innerHTML = `
                     <video id="artwork-video" controls autoplay loop muted class="w-full h-full object-cover">
-                        <source src="./img/Karya/${artworkData.pict_karya}" type="video/${fileExtension}">
+                        <source src="./img/karya/${artworkData.pict_karya}" type="video/${fileExtension}">
                         Your browser does not support the video tag.
                     </video>`;
             } else {
                 mediaContainer.innerHTML = `
-                    <img id="artwork-image" src="./img/Karya/${artworkData.pict_karya}" alt="${artworkData.judul_karya}"
+                    <img id="artwork-image" src="./img/karya/${artworkData.pict_karya}" alt="${artworkData.judul_karya}"
                         class="w-full h-full main-image object-contain">`;
             }
 
@@ -696,10 +696,10 @@ session_start();
         card.href = `detailpameran.php?karya=${artwork.slug}`;
         card.className = "relative w-full aspect-square-container rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all text-white duration-300 block zoom-container group";
 
-        const imagePath = artwork.pict_karya ? `./img/Karya/${artwork.pict_karya}` : `./img/noimage.png`;
+        const imagePath = artwork.pict_karya ? `./img/karya/${artwork.pict_karya}` : `./img/noimage.png`;
         const isVideo = artwork.pict_karya && artwork.pict_karya.split('.').pop().toLowerCase() === 'mp4';
         const mediaTag = isVideo 
-          ? `<video autoplay loop muted class="absolute inset-0 w-full h-full object-cover zoom-img"><source src="./img/Karya/${artwork.pict_karya}" type="video/mp4"></video>`
+          ? `<video autoplay loop muted class="absolute inset-0 w-full h-full object-cover zoom-img"><source src="./img/karya/${artwork.pict_karya}" type="video/mp4"></video>`
           : `<img src="${imagePath}" alt="${artwork.judul_karya}" class="absolute inset-0 w-full h-full object-cover zoom-img">`;
 
         card.innerHTML = `
