@@ -237,22 +237,18 @@ session_start();
                   </button>
 
                   <div class="text-center">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-6">Share this Art:</h3>
-
+                    <h3 class="text-xl font-semibold text-gray-800 mb-6">Bagikan Karya Ini:</h3>
+                    <p class="text-gray-600 mb-6">Yuk, ajak teman-temanmu untuk melihat karya luar biasa ini! Bagikan link di bawah.</p>
                     <div class="flex items-center justify-center space-x-3  md:space-x-6">
-                      <a href="#" class="text-gray-400 hover:text-green-500 transition-colors">
+                      <a id="whatsapp-share" href="#" target="_blank" class="text-gray-400 hover:text-green-500 transition-colors">
                         <i class="bi bi-whatsapp md:text-5xl text-4xl"></i>
                       </a>
 
-                      <a href="#" class="text-gray-400 hover:text-gray-800 transition-colors">
+                      <a id="twitter-share" href="#" target="_blank" class="text-gray-400 hover:text-gray-800 transition-colors">
                         <i class="bi bi-twitter-x md:text-5xl text-4xl"></i>
                       </a>
 
-                      <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">
-                        <i class="bi bi-instagram md:text-5xl text-4xl"></i>
-                      </a>
-
-                      <a href="#" class="text-gray-400 hover:text-blue-700 transition-colors">
+                      <a id="linkedin-share" href="#" target="_blank" class="text-gray-400 hover:text-blue-700 transition-colors">
                         <i class="bi bi-linkedin md:text-5xl text-4xl"></i>
                       </a>
                     </div>
@@ -616,10 +612,24 @@ session_start();
         document.getElementById('replyToText').textContent = 'Tambahkan komentar Anda.';
       });
 
-      document.getElementById('sharebutton').addEventListener('click', function () {
-        document.getElementById('shareModal').style.display = 'flex';
-      });
+     // Share button functionality
+      const shareButton = document.getElementById('sharebutton');
+      const shareModal = document.getElementById('shareModal');
 
+      shareButton.addEventListener('click', () => {
+        // Get the current page URL
+        const currentUrl = encodeURIComponent(window.location.href);
+        // Set the share message
+        const shareMessage = encodeURIComponent('Yuk, lihat karya luar biasa ini!');
+
+        // Update the href for each social media link
+        document.getElementById('whatsapp-share').href = `https://wa.me/?text=${shareMessage}%20${currentUrl}`;
+        document.getElementById('twitter-share').href = `https://twitter.com/intent/tweet?text=${shareMessage}&url=${currentUrl}`;
+        document.getElementById('linkedin-share').href = `https://www.linkedin.com/sharing/share-offsite/?url=${currentUrl}`;
+
+        // Show the modal
+        shareModal.style.display = 'flex';
+      });
       // Handle comment submission
       sendCommentButton.addEventListener('click', async () => {
           const commentText = commentInput.value.trim();
