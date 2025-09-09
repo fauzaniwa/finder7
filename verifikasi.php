@@ -211,6 +211,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
         }, 1000);
     </script>
 
+    <script>
+        const otpInputs = document.querySelectorAll('.otp-input');
+
+        otpInputs.forEach((input, index) => {
+            // Pindah fokus ke input berikutnya saat satu digit diisi
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+            });
+
+            // Handle backspace untuk pindah ke input sebelumnya
+            input.addEventListener('keydown', (e) => {
+                // Periksa apakah tombol yang ditekan adalah Backspace
+                if (e.key === 'Backspace') {
+                    // Jika input kosong, pindah ke input sebelumnya
+                    if (e.target.value.length === 0 && index > 0) {
+                        e.preventDefault();
+                        otpInputs[index - 1].focus();
+                        otpInputs[index - 1].value = ''; 
+                    } else {
+                        // Jika input tidak kosong, cukup hapus isinya
+                        e.target.value = '';
+                    }
+                }
+            });
+
+            // Handle paste
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const paste = (e.clipboardData || window.clipboardData).getData('text');
+                const pasteValues = paste.split('').slice(0, otpInputs.length);
+
+                pasteValues.forEach((value, pasteIndex) => {
+                    if (index + pasteIndex < otpInputs.length) {
+                        otpInputs[index + pasteIndex].value = value;
+                    }
+                });
+
+                // Pindahkan fokus ke input terakhir setelah paste
+                const lastInput = otpInputs[index + pasteValues.length - 1];
+                if (lastInput) {
+                    lastInput.focus();
+                }
+            });
+        });
+
+        // Contoh bagaimana Anda bisa mengambil nilai OTP saat form disubmit
+        document.getElementById('otpForm').addEventListener('submit', (e) => {
+            e.preventDefault(); // Mencegah form disubmit secara default
+            
+            let otpCode = '';
+            otpInputs.forEach(input => {
+                otpCode += input.value;
+            });
+
+            if (otpCode.length === 6) {
+                // Kode OTP lengkap, Anda bisa mengirimnya ke server
+                console.log('Kode OTP:', otpCode);
+                alert('Kode OTP berhasil diverifikasi!');
+                // Tambahkan kode untuk mengirim data ke server
+            } else {
+                alert('Kode OTP tidak lengkap. Silahkan cek kembali.');
+            }
+        });
+    </script>
+
 </body>
 
 <!-- Cursor CDN -->

@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset'])) {
                     </p>
                 <?php } ?>
                 <div class="flex-col gap-2 w-full sm:w-3/4">
-                    <h1 class="text-base sm:text-xl text-black font-normal font-work pb-3">Email</h1>
+                    <h1 class="text-base sm:text-xl text-black font-normal pb-3">Email</h1>
                     <input type="email" name="email" class="w-full h-10 bg-neutral-200 rounded-2xl px-6 font-work font-medium "
                         placeholder="example@gmail.com" required>
                 </div>
@@ -187,6 +187,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset'])) {
         removeDefaultCursor: true,
         color: '#ffffff',
     });
+</script>
+
+<script>
+    
 </script>
 <!-- Cursor CDN -->
 

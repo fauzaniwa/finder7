@@ -5,13 +5,13 @@ session_start();
 include 'admin-one/dist/koneksi.php';
 
 // Ambil email dari session
-$email = $_SESSION['email'] ?? null;
+// $email = $_SESSION['email'] ?? null;
 
-if (!$email) {
-    // Jika tidak ada email di session, redirect ke halaman reset password
-    header("Location: reset_password.php");
-    exit();
-}
+// if (!$email) {
+//     // Jika tidak ada email di session, redirect ke halaman reset password
+//     header("Location: reset_password.php");
+//     exit();
+// }
 
 // Proses jika form disubmit
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
@@ -113,39 +113,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     <!-- Script Cursor -->
 </head>
 
-<body>
-    <section id="reset" style="background-image: url(./img/bgregister.png)"
+<body class="bg-neutral-950">
+    <section id="reset"
         class="bg-fil bg-cover w-full h-screen flex items-center justify-center">
 
-        <form action="" method="POST">
-            <div class="flex flex-col items-center w-fit px-6 py-20 bg-white bg-opacity-10 rounded-xl gap-4">
-                <h1 class="text-2xl md:text-3xl text-white font-semibold">Reset Password</h1>
+        <form action="" method="POST" class="w-10/12 md:w-1/2">
+            <div class="flex flex-col items-center w-full px-2 md:px-6 py-14 md:py-20 bg-white rounded-3xl gap-4">
+                <h1 class="text-2xl md:text-3xl text-black font-semibold">Reset Password</h1>
                 <hr class="w-full">
-                <p class="text-white text-center flex-col w-[350px]">
+                <p class="text-black text-center font-medium flex-col">
                     Masukkan password baru kamu.
                 </p>
-                <div class="flex-col gap-2 w-[350px]">
-                    <h1 class="text-lg md:text-xl text-white font-normal font-work">Password</h1>
+                <div class="flex-col gap-2 w-10/12">
+                    <h1 class="text-sm font-medium">Password</h1>
                     <input type="password" name="new_password" id="new_password"
-                        class="w-[350px] h-10 rounded-lg px-2 font-work font-medium"
+                        class="w-full bg-neutral-200 h-12 rounded-2xl px-2 font-normal"
                         placeholder="Masukkan kata sandi baru" required minlength="8">
                 </div>
 
-                <div class="flex-col gap-2 w-[350px]">
-                    <h1 class="text-lg md:text-xl text-white font-normal font-work">Konfirmasi Password</h1>
+                <div class="flex-col gap-2 w-10/12">
+                    <h1 class="text-sm font-medium">Konfirmasi Password</h1>
                     <input type="password" name="confirm_password" id="confirm_password"
-                        class="w-[350px] h-10 rounded-lg px-2 font-work font-medium"
+                        class="w-full bg-neutral-200 h-12 rounded-2xl px-2 font-normal"
                         placeholder="Ulangi kata sandi baru" required minlength="8">
                 </div>
 
                 <button type="submit" name="change_password"
-                    class="text-base w-full lg:text-xl text-white px-6 py-4 bg-[#BA1F36] rounded-lg font-work hover:bg-[#ba1f1f] duration-150 hover:drop-shadow-md">
+                    class="text-base w-10/12 lg:text-xl text-black px-6 py-2 bg-emerald-500 rounded-lg hover:bg-emerald-600 duration-150 hover:drop-shadow-md">
                     Simpan
                 </button>
 
                 <!-- Tempat untuk notifikasi -->
                 <?php if (isset($status_message)) { ?>
-                    <div class="mt-4 text-white text-center">
+                    <div class="mt-4 text-black text-center">
                         <?= $status_message; ?>
                     </div>
                 <?php } ?>
