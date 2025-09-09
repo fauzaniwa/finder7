@@ -38,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset'])) {
                     "Jika Anda tidak melakukan permintaan ini, harap abaikan email ini.\n\n" .
                     "Terima kasih,\n" .
                     "Tim Finder DKVI UPI";
-                $headers = "From: forgot@finderdkvupi.com\r\n" .
-                    "Reply-To: forgot@finderdkvupi.com\r\n" .
+                $headers = "From: info@finderdkvupi.com\r\n" .
+                    "Reply-To: info@finderdkvupi.com\r\n" .
                     "Content-Type: text/plain; charset=UTF-8\r\n";
 
                 if (mail($email, $subject, $message, $headers)) {
