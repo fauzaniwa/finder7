@@ -5,13 +5,13 @@ session_start();
 include 'admin-one/dist/koneksi.php';
 
 // Ambil email dari session
-// $email = $_SESSION['email'] ?? null;
+$email = $_SESSION['email'] ?? null;
 
-// if (!$email) {
-//     // Jika tidak ada email di session, redirect ke halaman reset password
-//     header("Location: reset_password.php");
-//     exit();
-// }
+if (!$email) {
+    // Jika tidak ada email di session, redirect ke halaman reset password
+    header("Location: reset_password.php");
+    exit();
+}
 
 // Proses jika form disubmit
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {

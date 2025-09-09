@@ -754,9 +754,7 @@ include 'homepage_data.php';
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-100 text-center">Profil Kolaborator
             </h1>
             <p class="text-gray-100 text-center mb-12 max-w-3xl mx-auto">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi arcu, lobortis quis ligula vel,
-                accumsan congue diam. Nullam porta enim ut tristique fermentum. Sed vestibulum sit amet arcu eu sodales.
-                Duis sed facilisis quam, id rhoncus nisi.
+                Kenali lebih dekat para kolaborator yang berkontribusi dalam acara Finder 7 Mindspace.
             </p>
         </div>
 

@@ -134,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
 <body class="bg-neutral-950 ">
     <section id="reset" class="w-10/12 mx-auto h-screen flex items-center justify-center">
 
-        <form action="otpform" method="POST" class="space-y-6 w-full md:w-1/2 bg-white rounded-3xl px-10">
+        <form action="" method="POST" class="space-y-6 w-full md:w-1/2 bg-white rounded-3xl px-10">
             <div class="flex flex-col items-center py-10 rounded-xl gap-4 ">
                 <h1 class="text-2xl md:text-3xl text-black font-semibold">Reset Password</h1>
                 <hr class="w-full">
@@ -150,12 +150,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
 
 
                 <div class="flex justify-center">
-                    <input type="text" class="otp-input" id="otp-input" maxlength="6" autocomplete="one-time-code"
+                    <input name="otp" type="text" class="otp-input" id="otp-input" maxlength="6" autocomplete="one-time-code"
                         inputmode="numeric">
                 </div>
 
                 <div class="mt-4 w-1/2">
-                    <button type="submit"
+                    <button type="submit" name="verify"
                         class="w-full py-3 px-4 bg-emerald-500 text-black font-semibold rounded-2xl hover:bg-emerald-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-800">
                         Verifikasi
                     </button>
@@ -246,3 +246,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
 <!-- Cursor CDN -->
 
 </html>
+
+
