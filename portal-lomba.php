@@ -211,6 +211,18 @@ $competitions = [
     ],
     [
         'id' => 2,
+        'title' => 'Lomba Cosplay',
+        'status' => ['Open'],
+        'deadline' => '15 September 2025',
+        'prize' => 'Uang tunai dan sertifikat',
+        'message' => 'Baca Ketentuannya dan Daftar Sekarang!',
+        'links' => [
+            'ketentuan' => 'lombacosplay.php#syarat',
+            'daftar'    => 'daftarcosplay.php.php'
+        ]
+    ],
+    [
+        'id' => 3,
         'title' => 'Lomba Poster Ilustrasi',
         'status' => ['Close'],
         'deadline' => '9 Juli 2025',
@@ -221,7 +233,7 @@ $competitions = [
         ]
     ],
     [
-        'id' => 3,
+        'id' => 4,
         'title' => 'Lomba Desain Karakter',
         'status' => ['Close'],
         'deadline' => '9 Juli 2025',
@@ -261,11 +273,11 @@ $competitions = [
         <hr class="my-4 border-t border-gray-500">
 
         <!-- Isi -->
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 h-full">
           <div class="text-base md:text-lg space-y-1">
             <p class="text-gray-300"><strong>Deadline :</strong> <?= htmlspecialchars($lomba['deadline']) ?></p>
             <p class="text-gray-300"><strong>Prize:</strong> <?= htmlspecialchars($lomba['prize']) ?></p>
-            <p class="<?= in_array('Close', $lomba['status']) ? 'text-gray-400 italic' : 'text-gray-200' ?> mt-1">
+            <p class="<?= in_array('Close', $lomba['status']) ? 'text-gray-400 italic' : 'text-gray-200' ?> mt-1 ">
               <?= htmlspecialchars($lomba['message']) ?>
             </p>
           </div>

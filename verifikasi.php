@@ -102,18 +102,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
         }
-
         .otp-input {
-            width: 40px;
-            height: 40px;
+            width: 100%;
+            height: 48px;
             text-align: center;
             font-size: 1.5rem;
             border: 2px solid #e5e7eb;
             border-radius: 8px;
             transition: all 0.2s ease-in-out;
-            background-color: #fff;
+            background-color: #e5e5e5  ;
+            letter-spacing: 0.5rem; /* Menambahkan jarak antar karakter */
         }
-
         .otp-input:focus {
             border-color: #3b82f6;
             outline: none;
@@ -149,26 +148,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
                     </p>
                 <?php } ?>
 
-                <div class="flex justify-center space-x-3 md:space-x-4">
-                    <input type="text" class="otp-input" id="otp-1" maxlength="1" autocomplete="one-time-code"
-                        data-index="0">
-                    <input type="text" class="otp-input" id="otp-2" maxlength="1" data-index="1">
-                    <input type="text" class="otp-input" id="otp-3" maxlength="1" data-index="2">
-                    <input type="text" class="otp-input" id="otp-4" maxlength="1" data-index="3">
-                    <input type="text" class="otp-input" id="otp-5" maxlength="1" data-index="4">
-                    <input type="text" class="otp-input" id="otp-6" maxlength="1" data-index="5">
+
+                <div class="flex justify-center">
+                    <input type="text" class="otp-input" id="otp-input" maxlength="6" autocomplete="one-time-code"
+                        inputmode="numeric">
                 </div>
 
-                <div class="w-full">
+                <div class="mt-4 w-1/2">
                     <button type="submit"
-                        class="w-full py-3 bg-emerald-500 text-black font-semibold rounded-2xl hover:bg-emerald-600 transition-colors duration-300 px-10">
+                        class="w-full py-3 px-4 bg-emerald-500 text-black font-semibold rounded-xl hover:bg-emerald-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-800">
                         Verifikasi
                     </button>
                 </div>
 
 
+
                 <!-- Countdown Timer dan Tombol Resend Code -->
-                <div class=" text-black text-center w-full">
+                <div class=" text-black text-center w-1/2">
                     <span id="countdown">3:00</span><br>
                     <a href="javascript:history.back()">
                         <button id="resendBtn" type="button"
@@ -212,60 +208,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
     </script>
 
     <script>
-        const otpInputs = document.querySelectorAll('.otp-input');
+        const otpInput = document.getElementById('otp-input');
 
-        otpInputs.forEach((input, index) => {
-            // Pindah fokus ke input berikutnya saat satu digit diisi
-            input.addEventListener('input', (e) => {
-                if (e.target.value.length === 1 && index < otpInputs.length - 1) {
-                    otpInputs[index + 1].focus();
-                }
-            });
-
-            // Handle backspace untuk pindah ke input sebelumnya
-            input.addEventListener('keydown', (e) => {
-                // Periksa apakah tombol yang ditekan adalah Backspace
-                if (e.key === 'Backspace') {
-                    // Jika input kosong, pindah ke input sebelumnya
-                    if (e.target.value.length === 0 && index > 0) {
-                        e.preventDefault();
-                        otpInputs[index - 1].focus();
-                        otpInputs[index - 1].value = ''; 
-                    } else {
-                        // Jika input tidak kosong, cukup hapus isinya
-                        e.target.value = '';
-                    }
-                }
-            });
-
-            // Handle paste
-            input.addEventListener('paste', (e) => {
-                e.preventDefault();
-                const paste = (e.clipboardData || window.clipboardData).getData('text');
-                const pasteValues = paste.split('').slice(0, otpInputs.length);
-
-                pasteValues.forEach((value, pasteIndex) => {
-                    if (index + pasteIndex < otpInputs.length) {
-                        otpInputs[index + pasteIndex].value = value;
-                    }
-                });
-
-                // Pindahkan fokus ke input terakhir setelah paste
-                const lastInput = otpInputs[index + pasteValues.length - 1];
-                if (lastInput) {
-                    lastInput.focus();
-                }
-            });
+        // Pastikan hanya angka yang bisa dimasukkan
+        otpInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
         });
 
         // Contoh bagaimana Anda bisa mengambil nilai OTP saat form disubmit
         document.getElementById('otpForm').addEventListener('submit', (e) => {
             e.preventDefault(); // Mencegah form disubmit secara default
             
-            let otpCode = '';
-            otpInputs.forEach(input => {
-                otpCode += input.value;
-            });
+            const otpCode = otpInput.value;
 
             if (otpCode.length === 6) {
                 // Kode OTP lengkap, Anda bisa mengirimnya ke server
