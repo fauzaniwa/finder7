@@ -92,12 +92,12 @@ body { /* the element was body */
   <div
     class="w-2/3 h-3/4 blur-3xl absolute z-0 rounded-full bg-[radial-gradient(circle,_#515151_0%,_rgba(244,114,182,0)_70%)] top-px left-1/2 -translate-x-1/2 -translate-y-1/2">
   </div>
-  <section id="register" class="w-full h-screen flex lg:flex-row flex-col-reverse sm:p-8 sm:pt-24 ">
+  <section id="register" class="w-full md:h-screen flex lg:flex-row flex-col-reverse sm:p-8 sm:pt-28 items-center ">
     <div class="order-first lg:order-last relative z-10 lg:w-1/2 w-full h-1/2 md:h-2/3 lg:h-full text-start space-y-4">
 
 
       <form action="systemdata.php" method="POST"
-        class=" hide-scrollbar max-h-full items-center h-full w-full bg-white rounded-3xl rounded-b-none sm:rounded-b-3xl">
+        class="md:overflow-y-auto hide-scrollbar max-h-full items-center h-full w-full bg-white rounded-3xl rounded-b-none sm:rounded-b-3xl">
         <div
           class="flex flex-col justify-start sm:justify-center items-center w-full min-h-full bg-white rounded-xl gap-6 px-12 py-12  sm:px-24 sm:py-24">
 
@@ -180,6 +180,10 @@ body { /* the element was body */
       <img src="img/hero/cover.gif" alt="Mindspace Characters" class="max-w-full h-fit animate-pulse" />
     </div>
   </section>
+
+   <?php
+  require '_footer.php';
+  ?>
 
   <div id="notificationModal"
     class="fixed inset-0 bg-black bg-opacity-80 z-[60] flex items-center justify-center p-4 hidden">
