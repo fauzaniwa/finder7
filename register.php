@@ -97,7 +97,7 @@ body { /* the element was body */
 
 
       <form action="systemdata.php" method="POST"
-        class="overflow-y-auto hide-scrollbar max-h-full items-center h-full w-full bg-white rounded-3xl rounded-b-none sm:rounded-b-3xl">
+        class=" hide-scrollbar max-h-full items-center h-full w-full bg-white rounded-3xl rounded-b-none sm:rounded-b-3xl">
         <div
           class="flex flex-col justify-start sm:justify-center items-center w-full min-h-full bg-white rounded-xl gap-6 px-12 py-12  sm:px-24 sm:py-24">
 

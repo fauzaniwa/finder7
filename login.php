@@ -82,7 +82,7 @@
   <section id="login" class="w-full h-screen flex lg:flex-row flex-col-reverse sm:p-8 sm:pt-24">
     <div class="order-first lg:order-last relative z-10 lg:w-1/2 w-full h-1/2 md:h-2/3 lg:h-full text-start space-y-4">
       <form action="systemdata.php" method="POST"
-        class="overflow-y-auto hide-scrollbar max-h-full items-center h-full w-full bg-white rounded-3xl rounded-b-none sm:rounded-b-3xl">
+        class=" hide-scrollbar max-h-full items-center h-full w-full bg-white rounded-3xl rounded-b-none sm:rounded-b-3xl">
         <div
           class="flex flex-col justify-start sm:justify-center items-center w-full min-h-full bg-white rounded-xl gap-6 px-10 py-10 md:px-24 md:py-24">
           <h1 class="text-2xl md:text-3xl text-neutral-600 font-semibold">Login</h1>
