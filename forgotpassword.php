@@ -144,10 +144,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset'])) {
   ?>
   
     <section id="reset"
-        class="bg-black w-full h-screen flex items-end sm:items-center  justify-center">
+        class="bg-black w-full h-screen flex items-center  justify-center">
 
-        <form action="" method="POST" class="sm:w-1/2 w-full h-auto">
-            <div class="flex flex-col items-center w-full h-full px-10 py-32 sm:py-20 sm:px-20 bg-white rounded-3xl rounded-b-none sm:rounded-3xl gap-4">
+        <form action="" method="POST" class="w-10/12 sm:w-1/2 h-auto">
+            <div class="flex flex-col items-center w-full h-full px-10 py-20 sm:px-20 bg-white rounded-3xl gap-4">
                 <h1 class="text-xl sm:text-2xl md:text-3xl text-black font-semibold">Reset Password</h1>
                 <hr class="w-full">
                 <p class="text-black text-center flex-col sm:text-base text-sm">
@@ -162,16 +162,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset'])) {
                 <?php } ?>
                 <div class="flex-col gap-2 w-full sm:w-3/4">
                     <h1 class="text-base sm:text-xl text-black font-normal font-work pb-3">Email</h1>
-                    <input type="email" name="email" class="w-full h-10 bg-neutral-200 rounded-full px-6 font-work font-medium"
+                    <input type="email" name="email" class="w-full h-10 bg-neutral-200 rounded-2xl px-6 font-work font-medium "
                         placeholder="example@gmail.com" required>
                 </div>
                 <button type="submit" name="reset"
-                    class="text-base w-full sm:w-3/4 lg:text-xl text-white px-4 py-2 bg-emerald-500 rounded-xl font-work hover:bg-emerald-700 duration-150 hover:drop-shadow-md">
+                    class="text-base w-full sm:w-3/4 font-semibold text-black px-4 py-3 bg-emerald-500 rounded-2xl font-work hover:bg-emerald-700 duration-150 hover:drop-shadow-md">
                     Kirim Permintaan Reset
                 </button>
             </div>
         </form>
     </section>
+
+    <?php
+  require '_footer.php';
+  ?>
 
 </body>
 

@@ -96,6 +96,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
         transition: all 0.5s;
       }
     </style>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        .otp-input {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            transition: all 0.2s ease-in-out;
+            background-color: #fff;
+        }
+
+        .otp-input:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        }
+    </style>
+
     <!-- Title Web & Icon -->
     <title>Reset Password</title>
     <link rel="icon" href="./img/FinderLogo.svg" type="image/x-icon" />
@@ -107,44 +132,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
     <!-- Script Cursor -->
 </head>
 
-<body>
-    <section id="reset" style="background-image: url(./img/bgregister.png)"
-        class="bg-fil bg-cover w-full h-screen flex items-center justify-center">
+<body class="bg-neutral-950 ">
+    <section id="reset" class="w-10/12 mx-auto h-screen flex items-center justify-center">
 
-        <form action="" method="POST">
-            <div class="flex flex-col items-center w-fit px-6 py-20 bg-white bg-opacity-10 rounded-xl gap-4">
-                <h1 class="text-2xl md:text-3xl text-white font-semibold">Reset Password</h1>
+        <form action="otpform" method="POST" class="space-y-6 w-full md:w-1/2 bg-white rounded-3xl px-10">
+            <div class="flex flex-col items-center py-10 rounded-xl gap-4 ">
+                <h1 class="text-2xl md:text-3xl text-black font-semibold">Reset Password</h1>
                 <hr class="w-full">
-                <p class="text-white text-center flex-col w-[350px]">
+                <p class="text-black text-center flex-col text-base">
                     Masukkan 6 digit OTP yang telah dikirim pada alamat email kamu.
                 </p>
 
                 <?php if (isset($status_message)) { ?>
-                    <p class="text-white text-center flex-col w-[350px]">
-                        <span><a href="register.php" class="font-bold text-[#BA1F36]"><?= $status_message; ?></a></span>
+                    <p class="text-black text-center flex-col text-base">
+                        <span><a href="register.php" class="font-bold text-black"><?= $status_message; ?></a></span>
                     </p>
                 <?php } ?>
-                <div class="flex-col gap-2 w-[350px]">
-                    <h1 class="text-lg md:text-xl text-white font-normal font-work">OTP</h1>
-                    <input type="text" class="w-[350px] h-10 rounded-lg px-2 font-work font-medium" name="otp"
-                        placeholder="Masukkan kode OTP" required>
+
+                <div class="flex justify-center space-x-3 md:space-x-4">
+                    <input type="text" class="otp-input" id="otp-1" maxlength="1" autocomplete="one-time-code"
+                        data-index="0">
+                    <input type="text" class="otp-input" id="otp-2" maxlength="1" data-index="1">
+                    <input type="text" class="otp-input" id="otp-3" maxlength="1" data-index="2">
+                    <input type="text" class="otp-input" id="otp-4" maxlength="1" data-index="3">
+                    <input type="text" class="otp-input" id="otp-5" maxlength="1" data-index="4">
+                    <input type="text" class="otp-input" id="otp-6" maxlength="1" data-index="5">
                 </div>
 
-                <button type="submit" name="verify"
-                    class="text-base w-full lg:text-xl text-white px-6 py-4 bg-[#BA1F36] rounded-lg font-work hover:bg-[#ba1f1f] duration-150 hover:drop-shadow-md">
-                    Verifikasi OTP
-                </button>
+                <div class="w-full">
+                    <button type="submit"
+                        class="w-full py-3 bg-emerald-500 text-black font-semibold rounded-2xl hover:bg-emerald-600 transition-colors duration-300 px-10">
+                        Verifikasi
+                    </button>
+                </div>
+
 
                 <!-- Countdown Timer dan Tombol Resend Code -->
-                <div class="mt-4 text-white text-center">
+                <div class=" text-black text-center w-full">
                     <span id="countdown">3:00</span><br>
-                    <button id="resendBtn" type="button"
-                        class="text-base w-full lg:text-xl text-white px-6 py-4 bg-gray-500 rounded-lg font-work cursor-not-allowed"
-                        disabled>
-                        <a href="javascript:history.back()">
+                    <a href="javascript:history.back()">
+                        <button id="resendBtn" type="button"
+                            class="text-base w-full font-semibold text-black px-10 py-3 bg-neutral-300 rounded-2xl font-work cursor-not-allowed"
+                            disabled>
                             Kirim Ulang Kode
-                        </a>
-                    </button>
+                        </button>
+                    </a>
                 </div>
 
             </div>
