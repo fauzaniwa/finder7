@@ -295,10 +295,12 @@ session_start();
 
         <div class="text-center">
           <h3 class="text-lg md:text-xl font-semibold text-gray-800 md:mb-6 mb-3 pt-8">Add your Comment here</h3>
-          <textarea
+          <span id="replyToText" class="text-sm text-gray-500 mb-4 block"></span>
+          <textarea id="commentInput"
             class=" text-sm md:text-base w-full h-24 md:h-64 p-4 mb-4 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"
             placeholder="Add your comment..."></textarea>
-          <button
+            <input type="hidden" id="parent-id">
+          <button id="send-comment-button"
             class="w-6/12 md:w-4/12 mx-auto px-6 py-3 text-white font-medium bg-emerald-600 rounded-lg hover:bg-emerald-800 transition-colors">
             Send
           </button>
@@ -307,93 +309,9 @@ session_start();
     </div>
   </section>
 
-
-  <div class="space-y-6 text-white p-6 rounded-3xl w-10/12 mx-auto border">
-
-    <div id="commentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75"
-      style="display: none;">
-      <div class="relative w-full max-w-xl mx-auto p-8 bg-white rounded-xl shadow-lg">
-        <button class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-          onclick="document.getElementById('commentModal').style.display = 'none';">
-          <i class="bi bi-x-lg h-6 w-6"></i>
-        </button>
-        <div class="text-center">
-          <h3 class="text-xl font-semibold text-gray-800 mb-2">Add your Comment here</h3>
-          <span id="replyToText" class="text-sm text-gray-500 mb-4 block"></span>
-          <textarea id="commentInput"
-            class="w-full h-32 p-4 mb-4 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"
-            placeholder="Add your comment..."></textarea>
-          <button
-            class="w-full px-6 py-3 text-white font-medium bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
-            Send
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex items-start space-x-4">
-      <div class="flex-shrink-0 md:w-14 md:h-14 w-10 h-10 bg-gray-600 rounded-full"></div>
-      <div>
-        <div class="flex flex-col md:flex-row md:space-x-2 md:items-center text-lg text-gray-300">
-          <span class="font-semibold text-white">Adit Ramadhan</span>
-          <span class="text-xs">10:21 · 21 Juli 2025</span>
-        </div>
-        <p class="mt-2 text-gray-200 text-sm md:text-base">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi arcu, lobortis quis ligula vel, accumsan
-          congue diam. Nullam porta enim ut tristique fermentum. Sed vestibulum sit amet arcu eu sodales.
-        </p>
-        <div class="mt-2 flex items-center space-x-4 text-sm">
-          <button id="like-btn-adit"
-            class="text-gray-400 hover:text-red-500 transition-colors focus:outline-none flex items-center space-x-1"
-            onclick="toggleLike('like-btn-adit', 'like-count-adit')">
-            <i class="bi bi-heart h-4 w-4"></i>
-            <span id="like-count-adit">0</span>
-          </button>
-          <button id="reply-btn-adit"
-            class="text-gray-400 hover:text-white transition-colors focus:outline-none flex items-center space-x-1"
-            data-username="Adit Ramadhan" onclick="openReplyModal(this.getAttribute('data-username'))">
-            <i class="bi bi-chat-dots-fill h-4 w-4"></i>
-            <span>Reply</span>
-          </button>
-        </div>
-      </div>
-    </div>
-    <br>
-    <div class="flex items-start space-x-4 ml-16">
-      <div class="flex-shrink-0 md:w-14 md:h-14 w-10 h-10 bg-gray-600 rounded-full"></div>
-      <div>
-        <div class="flex items-centertext-lg text-gray-300">
-          <div class="flex flex-col md:flex-row md:space-x-2">
-            <span class="font-semibold text-white">Denis</span>
-            <div>
-              <span class="text-xs">10:21 · 21 Juli 2025</span>
-              <span class="text-xs text-gray-500">| Replying to Adit</span>
-            </div>
-          </div>
-        </div>
-        <p class="mt-2 text-gray-200 text-sm md:text-base">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi arcu, lobortis quis ligula vel, accumsan
-          congue diam. Nullam porta enim ut tristique fermentum.
-        </p>
-        <div class="mt-2 flex items-center space-x-4 text-sm">
-          <button id="like-btn-denis"
-            class="text-gray-400 hover:text-red-500 transition-colors focus:outline-none flex items-center space-x-1"
-            onclick="toggleLike('like-btn-denis', 'like-count-denis')">
-            <i class="bi bi-heart h-4 w-4"></i>
-            <span id="like-count-denis">0</span>
-          </button>
-          <button id="reply-btn-denis"
-            class="text-gray-400 hover:text-white transition-colors focus:outline-none flex items-center space-x-1"
-            data-username="Denis" onclick="openReplyModal(this.getAttribute('data-username'))">
-            <i class="bi bi-chat-dots-fill h-4 w-4"></i>
-            <span>Reply</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
+  <div id="comments-container" class="space-y-6 text-white p-6 rounded-3xl w-10/12 mx-auto border">
   </div>
-  </div>
+
   <br /><br /><br />
 
   <section class="font-sans p-8">
@@ -404,73 +322,31 @@ session_start();
       </a>
     </div>
     <div class="container mx-auto">
-
-    <br><br>
-
-      <div class="space-y-12">
-
-        <div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a href=""
-              class="relative w-full aspect-square-container rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all text-white duration-300 block zoom-container group">
-              <img src="./img/Lomba/deschar1resize.jpg" alt="Ilustrasi Karya 2"
-                class="absolute inset-0 w-full h-full object-cover zoom-img">
-              <div
-                class="absolute inset-0 bg-gradient-to-t from-neutral-950 to-transparent  flex flex-col justify-end p-4 gap-3">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-3xl font-bold text-white">Judul Ilustrasi</h3>
-                  <button class="like-button focus:outline-none transition-transform duration-200 hover:scale-110"
-                    aria-label="Suka karya ini">
-                    <i class="bi bi-heart h-10 w-10 text-white transition-colors duration-200"></i>
-                  </button>
-                </div>
-                <p class="text-sm text-white">Kreator: Budi Setiawan</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et at, eligendi dolor magnam cupiditate
-                  commodi iure temporibus officia nostrum consequuntur!</p>
-              </div>
-            </a>
-            <a href=""
-              class="relative w-full aspect-square-container rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all text-white duration-300 block zoom-container group">
-              <img src="./img/Lomba/Juara2resize.jpg" alt="Ilustrasi Karya 2"
-                class="absolute inset-0 w-full h-full object-cover zoom-img">
-              <div
-                class="absolute inset-0 bg-gradient-to-t from-neutral-950 to-transparent flex flex-col justify-end p-4 gap-3">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-3xl font-bold text-white">Judul Ilustrasi</h3>
-                  <button class="like-button focus:outline-none transition-transform duration-200 hover:scale-110"
-                    aria-label="Suka karya ini">
-                    <i class="bi bi-heart h-10 w-10 text-white transition-colors duration-200"></i>
-                  </button>
-                </div>
-                <p class="text-sm text-white">Kreator: Budi Setiawan</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et at, eligendi dolor magnam cupiditate
-                  commodi iure temporibus officia nostrum consequuntur!</p>
-              </div>
-            </a>
-            <a href=""
-              class="relative w-full aspect-square-container rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all text-white duration-300 block zoom-container group">
-              <img src="./img/Lomba/Juara3resize.jpg" alt="Ilustrasi Karya 2"
-                class="absolute inset-0 w-full h-full object-cover zoom-img">
-              <div
-                class="absolute inset-0 bg-gradient-to-t from-neutral-950 to-transparent  flex flex-col justify-end p-4 gap-3">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-3xl font-bold text-white">Judul Ilustrasi</h3>
-                  <button class="like-button focus:outline-none transition-transform duration-200 hover:scale-110"
-                    aria-label="Suka karya ini">
-                    <i class="bi bi-heart h-10 w-10 text-white transition-colors duration-200"></i>
-                  </button>
-                </div>
-                <p class="text-sm text-white">Kreator: Budi Setiawan</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et at, eligendi dolor magnam cupiditate
-                  commodi iure temporibus officia nostrum consequuntur!</p>
-              </div>
-            </a>
-          </div>
+      <br><br>
+      <div id="more-like-this-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         </div>
-      </div>
     </div>
-
   </section>
+  
+  <div id="notificationModal"
+      class="fixed inset-0 bg-black bg-opacity-80 z-[60] flex items-center justify-center p-4 hidden">
+      <div
+        class="bg-white rounded-2xl p-8 max-w-md w-full text-center relative transform transition-all scale-95 opacity-0">
+
+        <button type="button" id="closeNotificationModalBtn"
+          class="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl font-bold">&times;</button>
+
+        <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
+
+        <p id="modalMessage" class="text-gray-700 mb-6"></p>
+
+        <a id="modalButton" href="#"
+          class="inline-block bg-[#00E091] hover:bg-[#00c77e] text-black font-semibold px-8 py-3 rounded-2xl text-lg transition-all">
+          Lanjutkan
+        </a>
+
+      </div>
+  </div>
 
   <?php
   require '_footer.php';
@@ -487,6 +363,150 @@ session_start();
       const likeButton = document.getElementById('like-button');
       const likeIcon = document.getElementById('like-icon');
       const likesCountSpan = document.getElementById('likes-count');
+      const commentsContainer = document.getElementById('comments-container');
+      const sendCommentButton = document.getElementById('send-comment-button');
+      const commentInput = document.getElementById('commentInput');
+      const parentIdInput = document.getElementById('parent-id');
+      const notificationModal = document.getElementById('notificationModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalMessage = document.getElementById('modalMessage');
+      const modalButton = document.getElementById('modalButton');
+      const closeNotificationModalBtn = document.getElementById('closeNotificationModalBtn');
+      const moreLikeThisContainer = document.getElementById('more-like-this-container');
+
+
+      const loggedIn = <?= json_encode(isset($_SESSION['user_id'])); ?>;
+      const currentUserId = <?= json_encode($_SESSION['user_id'] ?? null); ?>;
+
+      function showNotificationModal(title, message, buttonText, buttonLink) {
+          modalTitle.textContent = title;
+          modalMessage.textContent = message;
+          modalButton.textContent = buttonText;
+          modalButton.href = buttonLink;
+          notificationModal.classList.remove('hidden');
+          setTimeout(() => {
+              notificationModal.querySelector('div').classList.remove('scale-95', 'opacity-0');
+              notificationModal.querySelector('div').classList.add('scale-100', 'opacity-100');
+          }, 10);
+      }
+
+      function hideNotificationModal() {
+          notificationModal.querySelector('div').classList.remove('scale-100', 'opacity-100');
+          notificationModal.querySelector('div').classList.add('scale-95', 'opacity-0');
+          setTimeout(() => {
+              notificationModal.classList.add('hidden');
+          }, 300);
+      }
+
+      closeNotificationModalBtn.addEventListener('click', hideNotificationModal);
+      notificationModal.addEventListener('click', (e) => {
+          if (e.target === notificationModal) {
+              hideNotificationModal();
+          }
+      });
+
+      function fetchComments(artworkId) {
+          fetch(`get_comments.php?id_karya=${artworkId}`)
+              .then(response => response.json())
+              .then(data => {
+                  commentsContainer.innerHTML = '';
+                  if (data.success) {
+                      if (data.comments.length === 0 && data.display_message) {
+                          commentsContainer.innerHTML = `<p class="text-center text-gray-400">${data.display_message}</p>`;
+                      } else {
+                          data.comments.forEach(comment => {
+                              commentsContainer.appendChild(createCommentElement(comment, false));
+                              if (comment.replies.length > 0) {
+                                  comment.replies.forEach(reply => {
+                                      commentsContainer.appendChild(createCommentElement(reply, true, comment.username));
+                                  });
+                              }
+                          });
+                      }
+                  } else {
+                      commentsContainer.innerHTML = `<p class="text-center text-red-500">${data.message}</p>`;
+                  }
+              })
+              .catch(error => {
+                  console.error('Error fetching comments:', error);
+                  commentsContainer.innerHTML = `<p class="text-center text-red-500">Terjadi kesalahan saat memuat komentar.</p>`;
+              });
+      }
+
+      function createCommentElement(comment, isReply = false, parentUsername = null) {
+          const commentDiv = document.createElement('div');
+          let classes = 'flex items-start space-x-4 p-4 border rounded-lg';
+          if (isReply) {
+              classes += ' ml-8 md:ml-16';
+          }
+          commentDiv.className = classes;
+          commentDiv.innerHTML = `
+              <div class="flex-shrink-0 md:w-14 md:h-14 w-10 h-10 bg-gray-600 rounded-full"></div>
+              <div>
+                  <div class="flex flex-col md:flex-row md:space-x-2 md:items-center text-lg text-gray-300">
+                      <span class="font-semibold text-white">${comment.username}</span>
+                      <span class="text-xs">${comment.created_at}</span>
+                      ${isReply ? `<span class="text-xs text-gray-500">| Replying to ${parentUsername}</span>` : ''}
+                  </div>
+                  <p class="mt-2 text-gray-200 text-sm md:text-base">${comment.comment_text}</p>
+                  <div class="mt-2 flex items-center space-x-4 text-sm">
+                      <button id="like-btn-${comment.id_comment}"
+                          class="text-gray-400 hover:text-red-500 transition-colors focus:outline-none flex items-center space-x-1"
+                          onclick="toggleLikeComment(${comment.id_comment}, 'like-btn-${comment.id_comment}', 'like-count-${comment.id_comment}')">
+                          <i class="${comment.user_liked > 0 ? 'bi bi-heart-fill text-red-500' : 'bi bi-heart'} h-4 w-4"></i>
+                          <span id="like-count-${comment.id_comment}">${comment.likes_count}</span>
+                      </button>
+                      <button id="reply-btn-${comment.id_comment}"
+                          class="text-gray-400 hover:text-white transition-colors focus:outline-none flex items-center space-x-1"
+                          data-username="${comment.username}"
+                          data-commentid="${comment.id_comment}"
+                          onclick="openReplyModal(this.getAttribute('data-username'), this.getAttribute('data-commentid'))">
+                          <i class="bi bi-chat-dots-fill h-4 w-4"></i>
+                          <span>Reply</span>
+                      </button>
+                  </div>
+              </div>
+          `;
+          return commentDiv;
+      }
+
+      window.toggleLikeComment = function (commentId, buttonId, countId) {
+          if (!loggedIn) {
+              showNotificationModal('Login Diperlukan', 'Anda harus login untuk menyukai komentar ini.', 'Login Sekarang', 'login.php');
+              return;
+          }
+
+          const button = document.getElementById(buttonId);
+          const countSpan = document.getElementById(countId);
+          const heartIcon = button.querySelector('i');
+
+          fetch('like_comment_handler.php', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ idKomentar: commentId }),
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  countSpan.textContent = data.likes;
+                  if (data.action === 'liked') {
+                      heartIcon.classList.remove('bi-heart');
+                      heartIcon.classList.add('bi-heart-fill', 'text-red-500');
+                  } else {
+                      heartIcon.classList.remove('bi-heart-fill', 'text-red-500');
+                      heartIcon.classList.add('bi-heart');
+                  }
+              } else {
+                  alert(data.message);
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              alert('Terjadi kesalahan. Silakan coba lagi.');
+          });
+      }
 
       if (artworkSlug) {
         fetch(`get_detailpameran.php?karya=${artworkSlug}`)
@@ -504,14 +524,15 @@ session_start();
                 return;
             }
 
-            // Memperbarui konten HTML
-            artworkTitle.textContent = data.judul_karya;
-            creatorName.textContent = data.nama_karya;
-            artworkDescription.textContent = data.deskripsi;
-            likeButton.dataset.idkarya = data.id_karya;
-            likesCountSpan.textContent = `${data.likes_count} Likes`;
+            // Update HTML content
+            const artworkData = data;
+            artworkTitle.textContent = artworkData.judul_karya;
+            creatorName.textContent = artworkData.nama_karya;
+            artworkDescription.textContent = artworkData.deskripsi;
+            likeButton.dataset.idkarya = artworkData.id_karya;
+            likesCountSpan.textContent = `${artworkData.likes_count} Likes`;
 
-            if (data.user_liked > 0) {
+            if (artworkData.user_liked > 0) {
               likeIcon.classList.remove('bi-heart');
               likeIcon.classList.add('bi-heart-fill', 'text-red-500');
             } else {
@@ -519,20 +540,24 @@ session_start();
               likeIcon.classList.add('bi-heart');
             }
 
-            // Memeriksa jenis file dan menampilkan media yang sesuai
-            const fileExtension = data.pict_karya.split('.').pop().toLowerCase();
+            // Check file type and display the corresponding media
+            const fileExtension = artworkData.pict_karya.split('.').pop().toLowerCase();
             const videoExtensions = ['mp4', 'webm', 'mov'];
             if (videoExtensions.includes(fileExtension)) {
                 mediaContainer.innerHTML = `
                     <video id="artwork-video" controls autoplay loop muted class="w-full h-full object-cover">
-                        <source src="./img/Karya/${data.pict_karya}" type="video/${fileExtension}">
+                        <source src="./img/Karya/${artworkData.pict_karya}" type="video/${fileExtension}">
                         Your browser does not support the video tag.
                     </video>`;
             } else {
                 mediaContainer.innerHTML = `
-                    <img id="artwork-image" src="./img/Karya/${data.pict_karya}" alt="${data.judul_karya}"
+                    <img id="artwork-image" src="./img/Karya/${artworkData.pict_karya}" alt="${artworkData.judul_karya}"
                         class="w-full h-full main-image object-contain">`;
             }
+
+            // Fetch comments after loading artwork details
+            fetchComments(artworkData.id_karya);
+            fetchRandomArtworks();
 
           })
           .catch(error => {
@@ -543,12 +568,10 @@ session_start();
         mediaContainer.innerHTML = `<p class='text-center text-red-500 mt-10'>Slug karya tidak valid.</p>`;
       }
       
-      const loggedIn = <?= json_encode(isset($_SESSION['user_id'])); ?>;
       likeButton.addEventListener('click', async () => {
         if (!loggedIn) {
-            alert('Anda harus login untuk menyukai karya ini.');
-            window.location.href = 'login.php';
-            return;
+          showNotificationModal('Login Diperlukan', 'Anda harus login untuk menyukai karya ini.', 'Login Sekarang', 'login.php');
+          return;
         }
 
         const artworkId = likeButton.dataset.idkarya;
@@ -581,89 +604,174 @@ session_start();
           alert('Terjadi kesalahan. Silakan coba lagi.');
         }
       });
-    });
 
-    // tampilkan modal
-    document.getElementById('modalbutton').addEventListener('click', function () {
-      document.getElementById('commentModal').style.display = 'flex';
-    });
-    document.getElementById('sharebutton').addEventListener('click', function () {
-      document.getElementById('shareModal').style.display = 'flex';
-    });
+      // Show comment modal
+      document.getElementById('modalbutton').addEventListener('click', function () {
+        if (!loggedIn) {
+          showNotificationModal('Login Diperlukan', 'Anda harus login untuk berkomentar.', 'Login Sekarang', 'login.php');
+          return;
+        }
+        document.getElementById('commentModal').style.display = 'flex';
+        parentIdInput.value = '';
+        document.getElementById('replyToText').textContent = 'Tambahkan komentar Anda.';
+      });
 
+      document.getElementById('sharebutton').addEventListener('click', function () {
+        document.getElementById('shareModal').style.display = 'flex';
+      });
 
-    // reply dan like
-    function toggleLike(buttonId, countId) {
-      const button = document.getElementById(buttonId);
-      const countSpan = document.getElementById(countId);
-      let count = parseInt(countSpan.textContent);
-      const heartIcon = button.querySelector('i');
+      // Handle comment submission
+      sendCommentButton.addEventListener('click', async () => {
+          const commentText = commentInput.value.trim();
+          const artworkId = likeButton.dataset.idkarya;
+          const parentId = parentIdInput.value || null;
 
-      if (button.classList.contains('liked')) {
-        // If already liked, unlike it
-        button.classList.remove('liked', 'text-red-500');
-        button.classList.add('text-gray-400');
-        heartIcon.classList.remove('bi-heart-fill');
-        heartIcon.classList.add('bi-heart');
-        count--;
-      } else {
-        // If not liked, like it
-        button.classList.add('liked', 'text-red-500');
-        button.classList.remove('text-gray-400');
-        heartIcon.classList.remove('bi-heart');
-        heartIcon.classList.add('bi-heart-fill');
-        count++;
+          if (!commentText) {
+              alert('Komentar tidak boleh kosong.');
+              return;
+          }
+
+          try {
+              const response = await fetch('post_comment.php', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                      idKarya: artworkId,
+                      commentText: commentText,
+                      parentId: parentId,
+                  }),
+              });
+
+              const data = await response.json();
+
+              if (data.success) {
+                  alert(data.message);
+                  document.getElementById('commentModal').style.display = 'none';
+                  commentInput.value = '';
+                  fetchComments(artworkId);
+              } else {
+                  alert(data.message);
+              }
+          } catch (error) {
+              console.error('Error:', error);
+              alert('Terjadi kesalahan saat mengirim komentar.');
+          }
+      });
+      
+      // Fetch and display random artworks
+      function fetchRandomArtworks() {
+        fetch('get_random_karya.php')
+          .then(response => response.json())
+          .then(data => {
+            moreLikeThisContainer.innerHTML = '';
+            if (data.success && data.data.length > 0) {
+              data.data.forEach(artwork => {
+                const artworkCard = createArtworkCardElement(artwork);
+                moreLikeThisContainer.appendChild(artworkCard);
+              });
+            } else {
+              moreLikeThisContainer.innerHTML = `<p class="text-center text-gray-400">Tidak ada karya lain yang bisa ditampilkan.</p>`;
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching random artworks:', error);
+            moreLikeThisContainer.innerHTML = `<p class="text-center text-red-500">Terjadi kesalahan saat memuat karya serupa.</p>`;
+          });
       }
 
-      countSpan.textContent = count;
-    }
+      function createArtworkCardElement(artwork) {
+        const card = document.createElement('a');
+        card.href = `detailpameran.php?karya=${artwork.slug}`;
+        card.className = "relative w-full aspect-square-container rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all text-white duration-300 block zoom-container group";
 
-    function openReplyModal(username) {
-      const modal = document.getElementById('commentModal');
-      const replyToText = document.getElementById('replyToText');
-      const commentInput = document.getElementById('commentInput');
+        const imagePath = artwork.pict_karya ? `./img/Karya/${artwork.pict_karya}` : `./img/noimage.png`;
+        const isVideo = artwork.pict_karya && artwork.pict_karya.split('.').pop().toLowerCase() === 'mp4';
+        const mediaTag = isVideo 
+          ? `<video autoplay loop muted class="absolute inset-0 w-full h-full object-cover zoom-img"><source src="./img/Karya/${artwork.pict_karya}" type="video/mp4"></video>`
+          : `<img src="${imagePath}" alt="${artwork.judul_karya}" class="absolute inset-0 w-full h-full object-cover zoom-img">`;
 
-      // Set the reply-to text
-      replyToText.textContent = `Replying to ${username}`;
+        card.innerHTML = `
+          ${mediaTag}
+          <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 to-transparent flex flex-col justify-end p-4 gap-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-3xl font-bold text-white">${artwork.judul_karya}</h3>
+              <button class="like-button focus:outline-none transition-transform duration-200 hover:scale-110" aria-label="Suka karya ini" data-idkarya="${artwork.id_karya}">
+                <i class="${artwork.user_liked > 0 ? 'bi bi-heart-fill text-red-500' : 'bi bi-heart'} h-10 w-10 text-white transition-colors duration-200"></i>
+              </button>
+            </div>
+            <p class="text-sm text-white">Kreator: ${artwork.nama_karya}</p>
+            <p>${artwork.deskripsi.substring(0, 100)}...</p>
+          </div>
+        `;
 
-      // Show the modal
-      modal.style.display = 'flex';
+        const likeBtn = card.querySelector('.like-button');
+        likeBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            toggleLikeArtwork(likeBtn);
+        });
+        
+        return card;
+      }
+      
+      function toggleLikeArtwork(button) {
+          if (!loggedIn) {
+              showNotificationModal('Login Diperlukan', 'Anda harus login untuk menyukai karya ini.', 'Login Sekarang', 'login.php');
+              return;
+          }
 
-      // Focus the input field for user convenience
-      commentInput.focus();
-    }
-
-  </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const likeButtons = document.querySelectorAll('.like-button');
-
-      likeButtons.forEach(button => {
-        let isLiked = false;
-        button.addEventListener('click', (event) => {
-          // Mencegah navigasi ke halaman detail
-          event.preventDefault();
-
-          // Menghentikan penyebaran event ke elemen induk (tag <a>)
-          event.stopPropagation();
-
+          const artworkId = button.dataset.idkarya;
           const heartIcon = button.querySelector('i');
 
-          // Mengubah status like
-          isLiked = !isLiked;
+          fetch('like_handler.php', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ idKarya: artworkId }),
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  if (data.action === 'liked') {
+                      heartIcon.classList.remove('bi-heart', 'text-white');
+                      heartIcon.classList.add('bi-heart-fill', 'text-red-500');
+                  } else {
+                      heartIcon.classList.remove('bi-heart-fill', 'text-red-500');
+                      heartIcon.classList.add('bi-heart', 'text-white');
+                  }
+              } else {
+                  alert(data.message);
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              alert('Terjadi kesalahan. Silakan coba lagi.');
+          });
+      }
 
-          if (isLiked) {
-            // Mengubah ikon menjadi terisi dan berwarna merah
-            heartIcon.classList.remove('bi-heart', 'text-white');
-            heartIcon.classList.add('bi-heart-fill', 'text-red-500');
-          } else {
-            // Mengubah ikon menjadi kosong dan berwarna putih
-            heartIcon.classList.remove('bi-heart-fill', 'text-red-500');
-            heartIcon.classList.add('bi-heart', 'text-white');
-          }
-        });
-      });
     });
+
+    window.openReplyModal = function (username, commentId) {
+        const loggedIn = <?= json_encode(isset($_SESSION['user_id'])); ?>;
+        if (!loggedIn) {
+            showNotificationModal('Login Diperlukan', 'Anda harus login untuk membalas komentar ini.', 'Login Sekarang', 'login.php');
+            return;
+        }
+
+        const modal = document.getElementById('commentModal');
+        const replyToText = document.getElementById('replyToText');
+        const commentInput = document.getElementById('commentInput');
+        const parentIdInput = document.getElementById('parent-id');
+
+        replyToText.textContent = `Membalas komentar ${username}`;
+        parentIdInput.value = commentId;
+
+        modal.style.display = 'flex';
+        commentInput.focus();
+    }
   </script>
 </body>
 
