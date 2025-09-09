@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
             text-align: center;
             font-size: 1.5rem;
             border: 2px solid #e5e7eb;
-            border-radius: 8px;
+            border-radius: 16px;
             transition: all 0.2s ease-in-out;
             background-color: #e5e5e5  ;
             letter-spacing: 0.5rem; /* Menambahkan jarak antar karakter */
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
 
                 <div class="mt-4 w-1/2">
                     <button type="submit"
-                        class="w-full py-3 px-4 bg-emerald-500 text-black font-semibold rounded-xl hover:bg-emerald-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-800">
+                        class="w-full py-3 px-4 bg-emerald-500 text-black font-semibold rounded-2xl hover:bg-emerald-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-800">
                         Verifikasi
                     </button>
                 </div>
@@ -198,8 +198,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
             if (countdownTime === 0) {
                 clearInterval(countdownInterval);
                 resendButton.disabled = false;
-                resendButton.classList.remove('bg-gray-500', 'cursor-not-allowed');
-                resendButton.classList.add('bg-[#BA1F36]', 'hover:bg-[#ba1f1f]');
+                resendButton.classList.remove('bg-neutral-300', 'cursor-not-allowed');
+                resendButton.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
             }
 
             // Kurangi waktu
