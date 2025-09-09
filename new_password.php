@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                 </div>
 
                 <button type="submit" name="change_password"
-                    class="text-base w-10/12 lg:text-xl text-black px-6 py-2 bg-emerald-500 rounded-lg hover:bg-emerald-600 duration-150 hover:drop-shadow-md">
+                    class="text-base w-10/12 text-black px-6 py-3 bg-emerald-500 rounded-2xl hover:bg-emerald-600 duration-150 hover:drop-shadow-md">
                     Simpan
                 </button>
 
