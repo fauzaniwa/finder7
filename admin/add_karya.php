@@ -14,8 +14,30 @@ $error_message = '';
 $jenis_karya = [];
 $kategori = [];
 
+/**
+ * Generate a unique random slug of 6 characters for the 'karya' table.
+ *
+ * @param mysqli $conn The database connection.
+ * @return string The unique slug.
+ */
+function generateUniqueKaryaSlug($conn) {
+    do {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $slug = substr(str_shuffle($characters), 0, 6);
+        $sql = "SELECT slug FROM karya WHERE slug = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "s", $slug);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+        $slugExists = mysqli_stmt_num_rows($stmt) > 0;
+        mysqli_stmt_close($stmt);
+    } while ($slugExists);
+    
+    return $slug;
+}
+
 // Ambil data jenis karya dan kategori dari database untuk dropdown
-$sql_jenis = "SELECT id_jenis, jenis FROM jenis_karya ORDER BY jenis ASC";
+$sql_jenis = "SELECT id_jenis, jenis, id_kategori FROM jenis_karya ORDER BY jenis ASC";
 $result_jenis = mysqli_query($conn, $sql_jenis);
 if ($result_jenis) {
     while ($row = mysqli_fetch_assoc($result_jenis)) {
@@ -26,8 +48,9 @@ if ($result_jenis) {
 $sql_kategori = "SELECT id_kategori, nama_kategori FROM kategori ORDER BY nama_kategori ASC";
 $result_kategori = mysqli_query($conn, $sql_kategori);
 if ($result_kategori) {
+    // Ubah array menjadi asosiatif dengan id_kategori sebagai kunci
     while ($row = mysqli_fetch_assoc($result_kategori)) {
-        $kategori[] = $row;
+        $kategori[$row['id_kategori']] = $row['nama_kategori'];
     }
 }
 
@@ -93,11 +116,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
 
+            // Panggil fungsi untuk mendapatkan slug unik
+            $current_slug = generateUniqueKaryaSlug($conn);
+
             // Siapkan dan jalankan query INSERT
-            $sql = "INSERT INTO karya (judul_karya, nama_karya, instagram, deskripsi, id_jenis, NIM, id_kategori, pict_karya, optional_karya) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            // TAMBAH: `slug` pada daftar kolom dan VALUES
+            $sql = "INSERT INTO karya (slug, judul_karya, nama_karya, instagram, deskripsi, id_jenis, NIM, id_kategori, pict_karya, optional_karya) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            
             if ($stmt = mysqli_prepare($conn, $sql)) {
-                mysqli_stmt_bind_param($stmt, "ssssiisss", $param_judul, $param_nama, $param_instagram, $param_deskripsi, $param_id_jenis, $param_nim, $param_id_kategori, $param_pict, $param_optional);
+                // PERBAIKI DAN TAMBAH: Tambahkan tipe data 's' untuk slug dan perbaiki urutan tipe data lainnya
+                mysqli_stmt_bind_param($stmt, "sssssisiss", $param_slug, $param_judul, $param_nama, $param_instagram, $param_deskripsi, $param_id_jenis, $param_nim, $param_id_kategori, $param_pict, $param_optional);
                 
+                $param_slug = $current_slug; // TAMBAH: Parameter untuk slug
                 $param_judul = $current_judul;
                 $param_nama = $current_nama;
                 $param_instagram = $current_instagram;
@@ -234,7 +264,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <select id="id_jenis_0" name="id_jenis[]" required class="mt-1 block w-full px-4 py-2 rounded-md bg-dark-gray text-light-gray border-gray-700 focus:border-primary-green focus:ring focus:ring-primary-green focus:ring-opacity-50">
                                 <option value="">Pilih Jenis Karya</option>
                                 <?php foreach ($jenis_karya as $jenis): ?>
-                                    <option value="<?php echo $jenis['id_jenis']; ?>"><?php echo $jenis['jenis']; ?></option>
+                                    <?php
+                                        // Dapatkan nama kategori yang sesuai dari array $kategori
+                                        $nama_kategori = isset($kategori[$jenis['id_kategori']]) ? $kategori[$jenis['id_kategori']] : 'Tidak Diketahui';
+                                    ?>
+                                    <option value="<?php echo htmlspecialchars($jenis['id_jenis']); ?>">
+                                        <?php echo htmlspecialchars($jenis['jenis']); ?> | <?php echo htmlspecialchars($nama_kategori); ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -246,8 +282,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <label for="id_kategori_0" class="block text-sm font-medium text-light-gray">Kategori Karya</label>
                             <select id="id_kategori_0" name="id_kategori[]" class="mt-1 block w-full px-4 py-2 rounded-md bg-dark-gray text-light-gray border-gray-700 focus:border-primary-green focus:ring focus:ring-primary-green focus:ring-opacity-50">
                                 <option value="">Pilih Kategori Karya</option>
-                                <?php foreach ($kategori as $kat): ?>
-                                    <option value="<?php echo $kat['id_kategori']; ?>"><?php echo $kat['nama_kategori']; ?></option>
+                                <?php foreach ($kategori as $id_kat => $nama_kat): ?>
+                                    <option value="<?php echo htmlspecialchars($id_kat); ?>"><?php echo htmlspecialchars($nama_kat); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
