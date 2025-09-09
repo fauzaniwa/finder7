@@ -472,7 +472,7 @@ include 'homepage_data.php';
     // }
     ?>
 
-    <section class="bg-black text-white py-20 max-w-6xl lg:max-w-screen-2xl sm:py-24 relative overflow-hidden">
+    <section id="pameran" class="bg-black text-white py-20 max-w-6xl lg:max-w-screen-2xl sm:py-24 relative overflow-hidden">
         <div class="container mx-auto px-4">
 
             <div class="relative flex flex-col lg:flex-row justify-between items-center gap-12">

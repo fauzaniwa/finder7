@@ -241,7 +241,7 @@ mysqli_close($koneksi);
 
     <br><br>
 
-    <div class="bg-neutral-900 p-6 rounded-lg mt-8 w-full">
+    <!-- <div class="bg-neutral-900 p-6 rounded-lg mt-8 w-full">
       <h3 class="text-lg font-semibold text-white mb-4">(Riwayat Karir)</h3>
       <ul class="list-disc pl-5 space-y-2">
         <li>
@@ -268,7 +268,7 @@ mysqli_close($koneksi);
           <p class="text-white">Morbi nisi arcu, lobortis quis ligula vel, accumsan congue diam.</p>
         </li>
       </ul>
-    </div>
+    </div> -->
 
     <?php
     // Tutup statement dan koneksi
