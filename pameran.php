@@ -211,10 +211,10 @@ session_start();
     <section class="flex flex-col justify-center text-center gap-10">
         <h1 class="font-bold text-white text-3xl">Pilih Section Kamu!</h1>
         <div id="kategori-filter-container" class="hidden md:flex gap-10 text-white justify-center text-center font-bold">
-            </div>
+        </div>
 
         <div id="kategori-filter-mobile-container" class="fixed flex md:hidden w-10/12 bottom-5 left-0 right-0 bg-neutral-800 z-50 shadow-md justify-center items-center grid-cols-4 mx-auto rounded-3xl">
-            </div>
+        </div>
     </section>
 
     <br><br>
@@ -239,7 +239,7 @@ session_start();
 
     <section>
         <div id="jenis-karya-filter-container" class="flex w-10/12 gap-4 md:gap-16 justify-center mx-auto overflow-x-auto pb-4">
-            </div>
+        </div>
     </section>
 
     <br><br>
@@ -248,6 +248,9 @@ session_start();
         <div class="container mx-auto">
             <div id="karya-container" class="space-y-12">
                 <div id="loading-spinner" class="text-center text-white">Memuat karya...</div>
+            </div>
+            <div id="load-more-container" class="text-center mt-8 hidden">
+                <button id="load-more-btn" class="text-white button">Muat Lebih Banyak</button>
             </div>
         </div>
     </section>
@@ -262,19 +265,19 @@ session_start();
     <div id="notificationModal"
         class="fixed inset-0 bg-black bg-opacity-80 z-[60] flex items-center justify-center p-4 hidden">
         <div
-          class="bg-white rounded-2xl p-8 max-w-md w-full text-center relative transform transition-all scale-95 opacity-0">
+            class="bg-white rounded-2xl p-8 max-w-md w-full text-center relative transform transition-all scale-95 opacity-0">
 
-          <button type="button" id="closeNotificationModalBtn"
-            class="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl font-bold">&times;</button>
+            <button type="button" id="closeNotificationModalBtn"
+                class="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl font-bold">&times;</button>
 
-          <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
+            <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
 
-          <p id="modalMessage" class="text-gray-700 mb-6"></p>
+            <p id="modalMessage" class="text-gray-700 mb-6"></p>
 
-          <a id="modalButton" href="#"
-            class="inline-block bg-[#00E091] hover:bg-[#00c77e] text-black font-semibold px-8 py-3 rounded-2xl text-lg transition-all">
-            Lanjutkan
-          </a>
+            <a id="modalButton" href="#"
+                class="inline-block bg-[#00E091] hover:bg-[#00c77e] text-black font-semibold px-8 py-3 rounded-2xl text-lg transition-all">
+                Lanjutkan
+            </a>
 
         </div>
     </div>
@@ -288,6 +291,8 @@ session_start();
         const kategoriFilterMobileContainer = document.getElementById('kategori-filter-mobile-container');
         const jenisKaryaFilterContainer = document.getElementById('jenis-karya-filter-container');
         const loadingSpinner = document.getElementById('loading-spinner');
+        const loadMoreContainer = document.getElementById('load-more-container');
+        const loadMoreBtn = document.getElementById('load-more-btn');
 
         // Modal elements
         const notificationModal = document.getElementById('notificationModal');
@@ -302,6 +307,8 @@ session_start();
             search: ''
         };
         let allJenisKarya = [];
+        let offset = 0;
+        const limit = 6;
 
         async function fetchFilters() {
             try {
@@ -317,27 +324,41 @@ session_start();
             }
         }
 
-        async function fetchData() {
+        async function fetchData(append = false) {
+            if (!append) {
+                offset = 0;
+                karyaContainer.innerHTML = '';
+            }
             loadingSpinner.classList.remove('hidden');
-            let url = 'get_pameran_data.php?';
+            loadMoreContainer.classList.add('hidden');
+
+            let url = `get_pameran_data.php?limit=${limit}&offset=${offset}`;
             const params = new URLSearchParams(currentFilter).toString();
-            url += params;
+            url += `&${params}`;
 
             try {
                 const response = await fetch(url);
                 const data = await response.json();
 
                 loadingSpinner.classList.add('hidden');
-                karyaContainer.innerHTML = '';
+                
                 if (data.success && data.data.length > 0) {
-                    displayKarya(data.data);
-                } else {
+                    displayKarya(data.data, append);
+                    if (data.hasMore) {
+                        loadMoreContainer.classList.remove('hidden');
+                    } else {
+                        loadMoreContainer.classList.add('hidden');
+                    }
+                    offset += data.data.length;
+                } else if (!append) {
                     karyaContainer.innerHTML = `<div class="text-center text-white">Tidak ada karya yang ditemukan.</div>`;
                 }
 
             } catch (error) {
                 loadingSpinner.classList.add('hidden');
-                karyaContainer.innerHTML = `<div class="text-center text-red-500">Gagal memuat data: ${error.message}</div>`;
+                if (!append) {
+                    karyaContainer.innerHTML = `<div class="text-center text-red-500">Gagal memuat data: ${error.message}</div>`;
+                }
                 console.error('Error fetching data:', error);
             }
         }
@@ -385,8 +406,11 @@ session_start();
             });
         }
 
-        function displayKarya(karyaList) {
-            karyaContainer.innerHTML = '';
+        function displayKarya(karyaList, append) {
+            if (!append) {
+                karyaContainer.innerHTML = '';
+            }
+
             const groupedKarya = karyaList.reduce((acc, karya) => {
                 const kategori = karya.nama_kategori || 'Tanpa Kategori';
                 if (!acc[kategori]) {
@@ -397,17 +421,23 @@ session_start();
             }, {});
 
             for (const kategori in groupedKarya) {
-                const categoryDiv = document.createElement('div');
-                categoryDiv.innerHTML = `<h2 class="text-2xl md:text-3xl font-bold text-white mb-6">${kategori}</h2>`;
-                const gridDiv = document.createElement('div');
-                gridDiv.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6';
+                let categoryDiv = document.querySelector(`.category-group[data-kategori="${kategori}"]`);
+                if (!categoryDiv) {
+                    categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'category-group';
+                    categoryDiv.dataset.kategori = kategori;
+                    categoryDiv.innerHTML = `<h2 class="text-2xl md:text-3xl font-bold text-white mb-6">${kategori}</h2>
+                                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>`;
+                    karyaContainer.appendChild(categoryDiv);
+                }
 
+                const gridDiv = categoryDiv.querySelector('div');
                 groupedKarya[kategori].forEach(karya => {
                     const artworkHTML = createArtworkCard(karya);
-                    gridDiv.innerHTML += artworkHTML;
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = artworkHTML;
+                    gridDiv.appendChild(tempDiv.firstElementChild);
                 });
-                categoryDiv.appendChild(gridDiv);
-                karyaContainer.appendChild(categoryDiv);
             }
 
             // Re-apply like button logic
@@ -417,38 +447,38 @@ session_start();
         }
 
         function createArtworkCard(karya) {
-    const mediaPath = karya.pict_karya ? `./img/karya/${karya.pict_karya}` : (karya.optional_karya ? `./img/karya/${karya.optional_karya}` : '');
-    const isVideo = mediaPath.endsWith('.mp4');
+            const mediaPath = karya.pict_karya ? `./img/karya/${karya.pict_karya}` : (karya.optional_karya ? `./img/karya/${karya.optional_karya}` : '');
+            const isVideo = mediaPath.endsWith('.mp4');
 
-    const isLiked = karya.user_liked > 0;
-    const heartFill = isLiked ? 'currentColor' : 'none';
-    const heartColor = isLiked ? 'text-red-500' : 'text-white';
+            const isLiked = karya.user_liked > 0;
+            const heartFill = isLiked ? 'currentColor' : 'none';
+            const heartColor = isLiked ? 'text-red-500' : 'text-white';
 
-    return `
-        <a href="detailpameran.php?karya=${karya.slug}" class="relative w-full aspect-square-container rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all text-white duration-300 block zoom-container group">
-            ${isVideo ?
-                `<video src="${mediaPath}" class="absolute inset-0 w-full h-full object-cover zoom-img" autoplay loop muted playsinline></video>` :
-                `<img src="${mediaPath}" alt="${karya.judul_karya}" class="absolute inset-0 w-full h-full object-cover zoom-img">`
-            }
-            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 to-transparent flex flex-col justify-end p-4 gap-3 z-20">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xl md:text-3xl font-bold text-white">${karya.judul_karya}</h3>
-                    <div class="flex items-center space-x-2">
-                        <span class="like-count text-sm" data-id="${karya.id_karya}">${karya.likes_count}</span>
-                        <button class="like-button focus:outline-none transition-transform duration-200 hover:scale-110" aria-label="Suka karya ini" data-id="${karya.id_karya}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="md:h-10 md:w-10 w-6 h-6 transition-colors duration-200 ${heartColor}" fill="${heartFill}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                        </button>
+            return `
+                <a href="detailpameran.php?karya=${karya.slug}" class="relative w-full aspect-square-container rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all text-white duration-300 block zoom-container group">
+                    ${isVideo ?
+                        `<video src="${mediaPath}" class="absolute lazyload inset-0 w-full h-full object-cover zoom-img" autoplay loop muted playsinline></video>` :
+                        `<img src="${mediaPath}" alt="${karya.judul_karya}" class="absolute lazyload inset-0 w-full h-full object-cover zoom-img">`
+                    }
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 to-transparent flex flex-col justify-end p-4 gap-3 z-20">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-xl md:text-3xl font-bold text-white">${karya.judul_karya}</h3>
+                            <div class="flex items-center space-x-2">
+                                <span class="like-count text-sm" data-id="${karya.id_karya}">${karya.likes_count}</span>
+                                <button class="like-button focus:outline-none transition-transform duration-200 hover:scale-110" aria-label="Suka karya ini" data-id="${karya.id_karya}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="md:h-10 md:w-10 w-6 h-6 transition-colors duration-200 ${heartColor}" fill="${heartFill}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-white">Kreator: ${karya.nama_karya}</p>
+                        <p class="text-xs md:text-sm">${karya.deskripsi ? karya.deskripsi.substring(0, 100) + '...' : ''}</p>
                     </div>
-                </div>
-                <p class="text-sm text-white">Kreator: ${karya.nama_karya}</p>
-                <p class="text-xs md:text-sm">${karya.deskripsi ? karya.deskripsi.substring(0, 100) + '...' : ''}</p>
-            </div>
-        </a>
-    `;
-}
-        
+                </a>
+            `;
+        }
+
         async function handleLike(event) {
             event.preventDefault();
             event.stopPropagation();
@@ -515,6 +545,11 @@ session_start();
         }
         
         closeNotificationModalBtn.addEventListener('click', hideNotificationModal);
+        notificationModal.addEventListener('click', (e) => {
+            if (e.target === notificationModal) {
+                hideNotificationModal();
+            }
+        });
         modalButton.addEventListener('click', (e) => {
             if (modalButton.href.endsWith('#')) {
                 e.preventDefault();
@@ -575,11 +610,17 @@ session_start();
             fetchData();
         });
 
+        loadMoreBtn.addEventListener('click', () => {
+            fetchData(true);
+        });
+
         // Initial load
         document.addEventListener('DOMContentLoaded', () => {
             fetchFilters();
             fetchData();
         });
+        
+        
     </script>
 </body>
 
