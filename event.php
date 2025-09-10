@@ -260,7 +260,7 @@ $events_found = !empty($grouped_by_date);
                     <?php foreach ($events as $event): ?>
 
                     <?php // AWAL DARI BLOK KODE YANG BARU ?>
-                    <div class="flex flex-col md:flex-row md:items-start gap-6">
+                    <div class="flex flex-col lg:flex-row md:flex-row md:items-start gap-6">
 
                         <?php // BAGIAN KIRI: GAMBAR ?>
                         <div class="w-full md:w-1/3 lg:w-1/4 flex-shrink-0">
@@ -303,11 +303,11 @@ $events_found = !empty($grouped_by_date);
                             <div class="flex justify-between items-center mt-1 pr-3">
                                 <span class="text-neutral-400 text-sm">Lokasi:
                                     <?php echo htmlspecialchars($event['lokasi_event']); ?></span>
-                                <span class="font-semibold text-sm">Kuota Tersedia:
+                                <span class="font-semibold text-sm">Kuota:
                                     <?php echo htmlspecialchars($event['sisa_kuota']); ?></span>
                             </div>
 
-                            <div class="flex space-x-4 mt-6">
+                            <div class="flex space-x-12 lg:space-x-4 mt-6">
                                 <?php
                                             $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug');
                                             $user_has_ticket = false;
