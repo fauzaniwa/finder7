@@ -342,7 +342,7 @@ include 'homepage_data.php';
     </section>
     <!-- Mascot -->
     <section class="py-20 px-4">
-        <div class="max-w-6xl lg:max-w-screen-2xl mx-auto">
+        <div class="container mx-auto">
             <div class="text-center mb-12">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl text-gray-100 font-bold mb-2">Get to Know About Them!</h2>
                 <p class="text-base md:text-lg italic text-gray-100">Maskot Finder 7 yang lucu-lucu!</p>
@@ -542,7 +542,7 @@ include 'homepage_data.php';
             </div>
         </div>
     </section>
-
+    <!-- Jadwal Acara -->
     <section id="jadwal" class="bg-neutral-950 text-gray-100 min-h-screen">
         <main class="container mx-auto px-6 py-20 pt-32">
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-16">
@@ -591,9 +591,8 @@ include 'homepage_data.php';
                                 foreach ($limited_events as $event):
                                     ?>
 
-                        <div class="flex items-start gap-6">
-
-                            <div class="w-1/3 flex-shrink-0">
+                        <div class="flex flex-col lg:flex-row items-start gap-6">
+                            <div class="w-full lg:w-1/3 flex-shrink-0">
                                 <?php if (!empty($event['thumbnail_event'])): ?>
                                 <img src="./img/thumbnail/<?php echo htmlspecialchars($event['thumbnail_event']); ?>"
                                     alt="<?php echo htmlspecialchars($event['judul_event']); ?>"
@@ -603,7 +602,7 @@ include 'homepage_data.php';
                                 <?php endif; ?>
                             </div>
 
-                            <div class="w-2/3">
+                            <div class="w-2/2">
                                 <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?>
                                 </h3>
                                 <?php if (!empty($event['speakers'])): ?>
@@ -626,7 +625,7 @@ include 'homepage_data.php';
                                         <?php echo htmlspecialchars($event['kuota']); ?></span>
                                 </div>
 
-                                <div class="flex space-x-4 mt-6">
+                                <div class="flex justify-between lg:justify-start space-x-4 mt-6">
                                     <?php
                                                 $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug');
 
