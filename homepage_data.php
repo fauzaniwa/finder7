@@ -11,7 +11,7 @@ include 'admin-one/dist/koneksi.php';
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 // Query untuk mendapatkan data dari tabel event dengan show_event = 1 dan diurutkan berdasarkan urutan_show
-$query_event = "SELECT id_event, slug, thumbnail_event, judul_event, jadwal_event, waktu_event, kuota, lokasi_event, tiket_event, event_status FROM event WHERE show_event = 1 ORDER BY urutan_show ASC";
+$query_event = "SELECT id_event, slug, judul_event, jadwal_event, waktu_event, kuota, lokasi_event, tiket_event, event_status FROM event WHERE show_event = 1 ORDER BY urutan_show ASC";
 
 // Persiapkan statement untuk query event
 $stmt_event = mysqli_prepare($koneksi, $query_event);
