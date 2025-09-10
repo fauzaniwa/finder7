@@ -1,13 +1,6 @@
-<?php
-// Pastikan variabel $admin_role sudah didefinisikan sebelum file ini di-include
-// Jika belum, Anda bisa mengambilnya dari sesi di sini
-if (!isset($admin_role)) {
-    
-    $admin_role = $_SESSION['role'] ?? 'guest';
-}
-?>
 
-<aside id="sidebar" class="bg-dark-card w-64 min-h-screen p-6 shadow-lg fixed top-0 left-0 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:block flex flex-col">
+
+<aside id="sidebar" class="bg-dark-card w-64 h-screen p-6 shadow-lg fixed top-0 left-0 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:block flex flex-col">
     
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center">
@@ -62,11 +55,7 @@ if (!isset($admin_role)) {
                     </button>
                     <ul id="pameran-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
                         <li><a href="karya_list.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Data Karya</a></li>
-                    </ul>
-                    <ul id="pameran-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
                         <li><a href="manage_kategori.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Kategori Karya</a></li>
-                    </ul>
-                    <ul id="pameran-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
                         <li><a href="manage_jenis_karya.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Jenis Karya</a></li>
                     </ul>
                 </li>
@@ -126,11 +115,12 @@ if (!isset($admin_role)) {
                             Lomba
                         </span>
                         <span class="material-symbols-outlined text-xl">
-                                expand_more
+                            expand_more
                         </span>
                     </button>
                     <ul id="lomba-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
-                        <li><a href="#" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Peserta Lomba</a></li>
+                        <li><a href="../wacom/donotenter.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Peserta Lomba Wacom</a></li>
+                        <li><a href="../cosplay/donotenter.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Peserta Lomba Cosplay</a></li>
                     </ul>
                 </li>
                 <?php endif; ?>

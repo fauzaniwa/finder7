@@ -125,6 +125,17 @@ session_start();
 <body class="bg-black pt-40">
     <?php require '_navbar.php'; ?>
     <div class="flex flex-col justify-center items-center pb-20">
+
+            <!-- Closed Modal -->
+        <div id="ClosedPengumpulan"
+            class="hidden fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+            <div class="bg-neutral-900 rounded-xl px-8 py-6 w-11/12 md:w-1/2 text-center text-white shadow-lg relative">
+                <h2 class="text-xl md:text-2xl font-bold mb-4 text-emerald-400">Pendaftaran Telah Ditutup!</h2>
+                <p class="text-sm md:text-base text-neutral-300">Mohon maaf, waktu pendaftaran lomba telah berakhir.</p>
+                <a href="../wacom/"
+                    class="inline-block mt-6 bg-emerald-400 hover:bg-emerald-600 text-black px-6 py-2 rounded-xl shadow">Oke</a>
+            </div>
+        </div>
         <div id="successModal"
             class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 hidden">
             <div class="bg-emerald-400 text-black rounded-xl p-8 max-w-sm text-center shadow-lg">
@@ -224,6 +235,39 @@ session_start();
             </form>
         </div>
     </div>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const now = new Date();
+            const wibOffset = 7 * 60; // WIB = UTC+7
+            const localOffset = now.getTimezoneOffset();
+            const utc = now.getTime() + localOffset * 60000;
+            const wibTime = new Date(utc + (wibOffset * 60000));
+
+            const closeDate = new Date("2025-09-09T23:59:59+07:00");
+            if (wibTime >= closeDate) {
+                const modal = document.getElementById("ClosedPengumpulan");
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
+
+                const form = document.getElementById("form");
+                if (form) {
+                    form.querySelectorAll("input, textarea, button, select").forEach(el => el.disabled = true);
+                }
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === '1') {
+                const modal = document.getElementById('successModal');
+                modal.classList.remove('hidden');
+
+                document.getElementById('closeSuccessModal').addEventListener('click', () => {
+                    modal.classList.add('hidden');
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                });
+            }
+        });
+    </script>
     <script>
         // Skrip untuk modal sukses
         document.addEventListener("DOMContentLoaded", () => {

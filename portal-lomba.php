@@ -139,7 +139,7 @@
 
         <div class="justify-center flex flex-col items-center p-10 max-w-xl mx-auto py-72 ">
 
-            <h1 class="text-white text-3xl md:text-5xl font-semibold text-center"> FINDER X WACOM X NEON EXPERIENCE</h1>
+            <h1 class="text-white text-3xl md:text-5xl font-semibold text-center">FINDER 7 COSPLAY</h1>
             <br><br>
             <div class="countdown flex justify-center gap-2 items-center mb-4">
                 <div class="flex flex-col items-center justify-center">
@@ -181,11 +181,11 @@
 
 
             <br><br>
-            <h1 class="text-white text-2xl md:text-4xl font-semibold text-center"> Ayo Submit Karyamu!</h1>
+            <h1 class="text-white text-2xl md:text-4xl font-semibold text-center">Ayo Tunjukkan Pesonamu!</h1>
             <br>
             <h3 class="text-white text-base md:text-2xl italic mb-5 text-center"> Jangan lupa baca syarat dan
                 ketentuannya dulu ya!</h3>
-            <a href="#ketentuan">
+            <a href="#portallomba">
                 <button
                     class="submit-btn  bg-emerald-600 hover:bg-emerald-800 transition-all duration-300 ease-in-out px-10 py-3 md:px-20 md:py-5 rounded-2xl md:rounded-3xl mt-6 text-base md:text-xl text-white  ">Lihat
                     Ketentuan</button>
@@ -199,26 +199,27 @@
 $competitions = [
     [
         'id' => 1,
-        'title' => 'Finder 7 x Wacom: Ilustrasi Buku',
-        'status' => ['Open'],
-        'deadline' => 'Diperpanjang - 9 September 2025',
-        'prize' => 'Satu unit wacom, sertifikat, dan masih banyak lagi!',
-        'message' => 'Baca Ketentuannya dan Daftar Sekarang!',
-        'links' => [
-            'ketentuan' => './wacom/#ketentuan',
-            'daftar'    => './wacom/submitkaryawacom.php'
-        ]
-    ],
-    [
-        'id' => 2,
         'title' => 'Lomba Cosplay',
         'status' => ['Open'],
         'deadline' => '15 September 2025',
         'prize' => 'Uang tunai dan sertifikat',
         'message' => 'Baca Ketentuannya dan Daftar Sekarang!',
         'links' => [
-            'ketentuan' => 'lombacosplay.php#syarat',
-            'daftar'    => 'daftarcosplay.php.php'
+            'ketentuan' => './cosplay/index.php#syarat',
+            'daftar'    => './cosplay/submitcosplay.php'
+        ]
+    ],
+    [
+
+        'id' => 2,
+        'title' => 'Finder 7 x Wacom: Ilustrasi Buku',
+        'status' => ['Close'],
+        'deadline' => 'Diperpanjang - 9 September 2025',
+        'prize' => 'Satu unit wacom, sertifikat, dan masih banyak lagi!',
+        'message' => 'Baca Ketentuannya dan Daftar Sekarang!',
+        'links' => [
+            'ketentuan' => './wacom/#ketentuan',
+            'daftar'    => './wacom/submitkaryawacom.php'
         ]
     ],
     [
@@ -247,7 +248,7 @@ $competitions = [
 ?>
 
 <main class="flex items-center justify-center p-4">
-  <section class="bg-[#121212] p-8 rounded-3xl w-full max-w-7xl mx-auto shadow-lg">
+  <section id="portallomba" class="bg-[#121212] p-8 rounded-3xl w-full max-w-7xl mx-auto shadow-lg">
     <h1 class="text-4xl font-bold text-white text-center my-8">Lomba Finder 7</h1>
 
     <div class="space-y-8">
@@ -436,40 +437,40 @@ $competitions = [
     // Hapus localStorage lama (kalau pernah pakai sebelumnya)
     localStorage.removeItem('countdownEnd');
 
-// Target: 9 September 2025 pukul 23:59 WIB → 16:59 UTC
-const targetDate = new Date(Date.UTC(2025, 8, 9, 16, 59, 0));
+// Target: 15 September 2025 pukul 23:59 WIB → 16:59 UTC
+const targetDate = new Date(Date.UTC(2025, 8, 15, 16, 59, 0));
 
-    const endTime = targetDate.getTime();
+const endTime = targetDate.getTime();
 
-    const digits = document.querySelectorAll('.digit');
+const digits = document.querySelectorAll('.digit');
 
-    function updateCountdown() {
-        const now = Date.now();
-        let remaining = Math.floor((endTime - now) / 1000);
+function updateCountdown() {
+    const now = Date.now();
+    let remaining = Math.floor((endTime - now) / 1000);
 
-        if (remaining < 0) remaining = 0;
+    if (remaining < 0) remaining = 0;
 
-        const days = Math.floor(remaining / (24 * 3600));
-        const hours = Math.floor((remaining % (24 * 3600)) / 3600);
-        const minutes = Math.floor((remaining % 3600) / 60);
+    const days = Math.floor(remaining / (24 * 3600));
+    const hours = Math.floor((remaining % (24 * 3600)) / 3600);
+    const minutes = Math.floor((remaining % 3600) / 60);
 
-        const timeStr =
-            String(days).padStart(2, '0') +
-            String(hours).padStart(2, '0') +
-            String(minutes).padStart(2, '0');
+    const timeStr =
+        String(days).padStart(2, '0') +
+        String(hours).padStart(2, '0') +
+        String(minutes).padStart(2, '0');
 
-        digits.forEach((digitEl, index) => {
-            digitEl.textContent = timeStr[index];
-        });
+    digits.forEach((digitEl, index) => {
+        digitEl.textContent = timeStr[index];
+    });
 
-        if (remaining <= 0) {
-            clearInterval(timer);
-            console.log("Waktu habis!");
-        }
+    if (remaining <= 0) {
+        clearInterval(timer);
+        console.log("Waktu habis!");
     }
+}
 
-    const timer = setInterval(updateCountdown, 1000);
-    updateCountdown();
+const timer = setInterval(updateCountdown, 1000);
+updateCountdown();
 
 
 

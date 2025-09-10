@@ -7,14 +7,10 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     exit;
 }
 
-// Catatan: require_once 'koneksi.php'; sudah benar.
-// Path '../admin-one/dist/koneksi.php' yang Anda sebutkan akan error
-// karena process_wacom.php berada di admin-one/dist/,
-// dan koneksi.php juga berada di folder yang sama.
 require_once '../admin-one/dist/koneksi.php';
 
-// Ambil semua data dari tabel pendaftaran_wacom
-$sql = "SELECT * FROM pendaftaran_wacom ORDER BY tanggal_pendaftaran DESC";
+// Ambil semua data dari tabel pendaftaran_cosplay
+$sql = "SELECT * FROM pendaftaran_cosplay";
 $result = $koneksi->query($sql);
 ?>
 <!DOCTYPE html>
@@ -22,7 +18,7 @@ $result = $koneksi->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin</title>
+    <title>Dashboard Admin - Lomba Cosplay</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -88,7 +84,7 @@ $result = $koneksi->query($sql);
         
         <div class="bg-neutral-900 text-white p-6 rounded-lg shadow-lg mb-6">
             <h2 class="text-xl font-semibold">Selamat datang, <?php echo htmlspecialchars($_SESSION['admin_name']); ?>!</h2>
-            <p class="text-sm mt-2 text-neutral-400">Anda berhasil masuk ke halaman admin Lomba Wacom x Finder.</p>
+            <p class="text-sm mt-2 text-neutral-400">Anda berhasil masuk ke halaman admin Lomba Cosplay Finder.</p>
         </div>
 
         <div class="flex justify-between items-center mb-4">
@@ -103,8 +99,8 @@ $result = $koneksi->query($sql);
                         <tr>
                             <th class="px-3 sm:px-5 py-3 border-b-2 border-neutral-700 bg-neutral-800 text-left text-xs font-semibold uppercase tracking-wider">No.</th>
                             <th class="px-3 sm:px-5 py-3 border-b-2 border-neutral-700 bg-neutral-800 text-left text-xs font-semibold uppercase tracking-wider">Nama Lengkap</th>
-                            <th class="px-3 sm:px-5 py-3 border-b-2 border-neutral-700 bg-neutral-800 text-left text-xs font-semibold uppercase tracking-wider">Judul Karya</th>
-                            <th class="px-3 sm:px-5 py-3 border-b-2 border-neutral-700 bg-neutral-800 text-left text-xs font-semibold uppercase tracking-wider">Drive</th>
+                            <th class="px-3 sm:px-5 py-3 border-b-2 border-neutral-700 bg-neutral-800 text-left text-xs font-semibold uppercase tracking-wider">Nama Karakter</th>
+                            <th class="px-3 sm:px-5 py-3 border-b-2 border-neutral-700 bg-neutral-800 text-left text-xs font-semibold uppercase tracking-wider">Media Sosial</th>
                             <th class="px-3 sm:px-5 py-3 border-b-2 border-neutral-700 bg-neutral-800 text-left text-xs font-semibold uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
@@ -117,16 +113,14 @@ $result = $koneksi->query($sql);
             echo "<tr>";
             echo "<td class='px-3 sm:px-5 py-5 border-b border-neutral-800 bg-neutral-900 text-sm'>" . $row_number . "</td>";
             echo "<td class='px-3 sm:px-5 py-5 border-b border-neutral-800 bg-neutral-900 text-sm'>" . htmlspecialchars($row['nama_lengkap']) . "</td>";
-            echo "<td class='px-3 sm:px-5 py-5 border-b border-neutral-800 bg-neutral-900 text-sm'>" . htmlspecialchars($row['judul_karya']) . "</td>";
+            echo "<td class='px-3 sm:px-5 py-5 border-b border-neutral-800 bg-neutral-900 text-sm'>" . htmlspecialchars($row['nama_karakter']) . "</td>";
             
-            // Perubahan di sini: Mengganti teks link dengan tombol
             echo "<td class='px-3 sm:px-5 py-5 border-b border-neutral-800 bg-neutral-900 text-sm'>";
-            echo "<a href='" . htmlspecialchars($row['link_karya']) . "' target='_blank' class='bg-purple-500 text-white px-3 py-1 rounded text-xs hover:bg-purple-700'>Lihat Drive</a>";
+            echo "<a href='https://www.instagram.com/" . htmlspecialchars($row['media_sosial']) . "' target='_blank' class='bg-purple-500 text-white px-3 py-1 rounded text-xs hover:bg-purple-700'>Lihat Media Sosial</a>";
             echo "</td>";
             
             echo "<td class='px-3 sm:px-5 py-5 border-b border-neutral-800 bg-neutral-900 text-sm whitespace-nowrap'>";
-            // echo "<button class='bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 mr-2' onclick='openPaymentModal(\"../../wacom/uploads/" . htmlspecialchars($row['bukti_pembayaran']) . "\")'>Bukti Pembayaran</button>";
-            echo "<button class='bg-emerald-500 text-white px-3 py-1 rounded text-xs hover:bg-emerald-700' onclick='openDataModal({$data_json})'>Data Lengkap</button>";
+            echo "<button class='bg-emerald-500 text-white px-3 py-1 rounded text-xs hover:bg-emerald-700' onclick='openDataModal(" . $data_json . ")'>Data Lengkap</button>";
             echo "</td>";
             echo "</tr>";
             $row_number++;
@@ -150,11 +144,12 @@ $result = $koneksi->query($sql);
             const dataContent = document.getElementById('dataContent');
             dataContent.innerHTML = '';
             const fields = [
-                { label: 'Nama Lengkap', key: 'nama_lengkap' }, { label: 'Nomor Telepon', key: 'nomor_telepon' },
-                { label: 'Email', key: 'email' }, { label: 'Instansi', key: 'instansi' },
-                { label: 'Judul Karya', key: 'judul_karya' }, { label: 'Media Sosial', key: 'media_sosial' },
-                { label: 'Deskripsi Karya', key: 'deskripsi_karya' }, { label: 'Link Karya', key: 'link_karya' },
-                { label: 'Kategori Karya', key: 'kategori_karya' }, { label: 'Tanggal Pendaftaran', key: 'tanggal_pendaftaran' },
+                { label: 'Nama Lengkap', key: 'nama_lengkap' },
+                { label: 'Nama Karakter', key: 'nama_karakter' },
+                { label: 'Email', key: 'email' },
+                { label: 'Media Sosial', key: 'media_sosial' },
+                { label: 'Persetujuan', key: 'persetujuan' },
+                { label: 'Tanggal Pendaftaran', key: 'tanggal_pendaftaran' },
             ];
             fields.forEach(field => {
                 const value = data[field.key] || '-';

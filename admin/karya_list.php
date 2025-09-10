@@ -79,7 +79,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
                 <table class="min-w-full divide-y divide-gray-700">
                     <thead class="bg-dark-gray">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-light-gray uppercase tracking-wider">Gambar/Video</th>
+                            <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-light-gray uppercase tracking-wider">Gambar/Video</th> -->
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-light-gray uppercase tracking-wider">Judul Karya</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-light-gray uppercase tracking-wider">Jenis</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-light-gray uppercase tracking-wider">Kategori</th>
@@ -156,9 +156,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
                         }
 
                         row.innerHTML = `
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-mid-gray">
-                                ${mediaPreview}
-                            </td>
+                            // <td class="px-6 py-4 whitespace-nowrap text-sm text-mid-gray">
+                            //     ${mediaPreview}
+                            // </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-mid-gray">${karya.judul_karya}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-mid-gray">${karya.jenis}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-mid-gray">${karya.nama_kategori}</td>

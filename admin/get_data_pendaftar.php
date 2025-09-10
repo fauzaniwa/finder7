@@ -54,7 +54,7 @@ JOIN
 JOIN
     `event` AS e ON t.id_event = e.id_event
 LEFT JOIN 
-    `Path_Pembayaran` AS pp ON t.id_tiket = pp.id_tiket";
+    `path_pembayaran` AS pp ON t.id_tiket = pp.id_tiket";
 
 // Bangun query untuk total data
 $sql_count = "SELECT COUNT(*)
