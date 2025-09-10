@@ -543,7 +543,6 @@ include 'homepage_data.php';
         </div>
     </section>
 
-    <!-- Jadwal -->
     <section id="jadwal" class="bg-neutral-950 text-gray-100 min-h-screen">
         <main class="container mx-auto px-6 py-20 pt-32">
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-16">
@@ -592,9 +591,9 @@ include 'homepage_data.php';
                                 foreach ($limited_events as $event):
                                     ?>
 
-                        <div class="flex flex-col lg:flex-row items-start gap-6">
+                        <div class="flex items-start gap-6">
 
-                            <div class="w-full lg:w-1/3 flex-shrink-0">
+                            <div class="w-1/3 flex-shrink-0">
                                 <?php if (!empty($event['thumbnail_event'])): ?>
                                 <img src="./img/thumbnail/<?php echo htmlspecialchars($event['thumbnail_event']); ?>"
                                     alt="<?php echo htmlspecialchars($event['judul_event']); ?>"
@@ -604,7 +603,7 @@ include 'homepage_data.php';
                                 <?php endif; ?>
                             </div>
 
-                            <div class="w-2/2">
+                            <div class="w-2/3">
                                 <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?>
                                 </h3>
                                 <?php if (!empty($event['speakers'])): ?>
@@ -627,7 +626,7 @@ include 'homepage_data.php';
                                         <?php echo htmlspecialchars($event['kuota']); ?></span>
                                 </div>
 
-                                <div class="flex space-x-12 lg:space-x-4 mt-6">
+                                <div class="flex space-x-4 mt-6">
                                     <?php
                                                 $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug');
 
