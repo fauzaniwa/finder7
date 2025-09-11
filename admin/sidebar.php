@@ -1,4 +1,15 @@
 
+<?php
+// Pastikan sesi sudah dimulai di awal setiap halaman yang menggunakan navbar ini
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Pastikan variabel $admin_role sudah didefinisikan sebelum file ini di-include
+// Jika belum, Anda bisa mengambilnya dari sesi di sini
+$admin_role = $_SESSION['role'] ?? 'guest';
+?>
+
 
 <aside id="sidebar" class="bg-dark-card w-64 h-screen p-6 shadow-lg fixed top-0 left-0 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:block flex flex-col">
     
@@ -25,6 +36,11 @@
                             dashboard
                         </span>
                         Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="qrcode_list.php" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
+                         <span class="material-symbols-outlined align-middle mr-2">add_box</span> Buat QR Code
                     </a>
                 </li>
                 <li class="my-4 h-px bg-gray-700"></li>
