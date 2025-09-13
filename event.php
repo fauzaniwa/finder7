@@ -243,7 +243,8 @@ $events_found = !empty($grouped_by_date);
                 $total_cards = count($grouped_by_date);
                 foreach ($grouped_by_date as $tanggal => $events):
                     $card_count++;
-                    $border_class = ($card_count < $total_cards) ? 'lg:border-r lg:border-neutral-800' : '';
+                    // Logika untuk menambahkan border di antara kolom
+                    $border_class = ($card_count % 2 != 0 && $card_count < $total_cards) ? 'lg:border-r lg:border-neutral-800' : '';
                     ?>
             <div class="flex flex-col space-y-8 px-4 <?php echo $border_class; ?>">
                 <div class="flex items-center space-x-4">
@@ -257,8 +258,8 @@ $events_found = !empty($grouped_by_date);
                 </div>
 
                 <div class="flex flex-col space-y-12">
-                    <div class="flex flex-col lg:flex-row items-start gap-0 lg:gap-6">
-                        <?php foreach ($events as $event): ?>
+                    <?php foreach ($events as $event): ?>
+                    <div class="flex flex-col lg:flex-row items-start gap-6">
                         <div class="w-full lg:w-1/3 flex-shrink-0">
                             <?php if (!empty($event['thumbnail_event'])): ?>
                             <img src="./img/thumbnail/<?php echo htmlspecialchars($event['thumbnail_event']); ?>"
@@ -268,7 +269,7 @@ $events_found = !empty($grouped_by_date);
                             <div class="w-full aspect-square bg-neutral-800 rounded-xl"></div>
                             <?php endif; ?>
                         </div>
-                        <br>
+
                         <div class="w-full">
                             <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?></h3>
                             <?php if (!empty($event['speakers'])): ?>
@@ -284,7 +285,7 @@ $events_found = !empty($grouped_by_date);
                             </p>
                             <?php endif; ?>
 
-                            <div class="flex justify-between items-center mt-1 pr-3">
+                            <div class="flex justify-between items-center mt-3 pr-3">
                                 <span class="text-neutral-400 text-sm">Waktu:
                                     <?php echo htmlspecialchars($event['waktu_event']); ?></span>
                                 <span class="font-semibold text-sm">
@@ -304,14 +305,8 @@ $events_found = !empty($grouped_by_date);
                             <div class="flex justify-between lg:justify-start space-x-4 mt-6">
                                 <?php
                                             $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug');
-                                            $user_has_ticket = false;
-                                            $is_verified_ticket = false;
-
-                                            // Cek apakah user sudah mendaftar dan dapatkan status verifikasinya
-                                            if (isset($events_with_tickets[$event['id_event']])) {
-                                                $user_has_ticket = true;
-                                                $is_verified_ticket = ($events_with_tickets[$event['id_event']] == 1);
-                                            }
+                                            $user_has_ticket = isset($events_with_tickets[$event['id_event']]);
+                                            $is_verified_ticket = $user_has_ticket && ($events_with_tickets[$event['id_event']] == 1);
                                             ?>
                                 <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
                                     class="border border-neutral-600 rounded-xl px-5 py-2 text-sm hover:bg-white hover:text-black transition-colors duration-300">Detail
@@ -329,29 +324,21 @@ $events_found = !empty($grouped_by_date);
                                 <?php endif; ?>
                                 <?php else: ?>
                                 <?php
-                                                $sisa_kuota = isset($event['sisa_kuota']) ? $event['sisa_kuota'] : 0;
-                                                ?>
-                                <?php if ($event['event_status'] == 0): ?>
-                                <?php if ($sisa_kuota > 0): ?>
+                                                $sisa_kuota = $event['sisa_kuota'] ?? 0;
+                                                if ($event['event_status'] == 0 && $sisa_kuota > 0):
+                                                    ?>
                                 <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
                                     class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
-                                <?php else: ?>
+                                <?php else:
+                                                    $button_text = 'Kuota Penuh';
+                                                    if ($event['event_status'] == 1)
+                                                        $button_text = 'Telah Berakhir';
+                                                    if ($event['event_status'] == 4)
+                                                        $button_text = 'Segera Hadir';
+                                                    ?>
                                 <button
                                     class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
-                                    disabled>Kuota Penuh</button>
-                                <?php endif; ?>
-                                <?php elseif ($event['event_status'] == 1): ?>
-                                <button
-                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
-                                    disabled>Telah Berakhir</button>
-                                <?php elseif ($event['event_status'] == 2): ?>
-                                <button
-                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
-                                    disabled>Kuota Penuh</button>
-                                <?php elseif ($event['event_status'] == 4): ?>
-                                <button
-                                    class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-sm cursor-not-allowed"
-                                    disabled>Segera Hadir</button>
+                                    disabled><?php echo $button_text; ?></button>
                                 <?php endif; ?>
                                 <?php endif; ?>
                             </div>
@@ -362,7 +349,6 @@ $events_found = !empty($grouped_by_date);
             </div>
             <?php endforeach; ?>
         </div>
-
 
         <?php else: ?>
         <p class="text-center text-neutral-400 text-xl">Saat ini belum ada jadwal acara yang tersedia.</p>

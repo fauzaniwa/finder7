@@ -287,7 +287,8 @@ include 'homepage_data.php';
                     <div
                         class="inline-flex flex-col md:flex-row justify-center items-center gap-10 md:gap-20 mb-8 md:mb-12">
                         <img class="w-60 md:w-72 h-auto md:h-24 object-contain"
-                            src="img/Finder 7 Logo Title Tagline Full White.png" alt="Logo Finder 7 Mindspace" />
+                            src="img/FINDER 7 LOGO/Finder 7 Logopack_Lockup Title White.png"
+                            alt="Logo Finder 7 Mindspace" />
                         <img class="w-44 md:w-52 h-auto md:h-24 object-contain" src="img/DKVUPI WHITE 1.png"
                             alt="Logo DKV UPI" />
                     </div>
@@ -553,14 +554,12 @@ include 'homepage_data.php';
             // Mengelompokkan semua event berdasarkan tanggal dari $events_data
             $grouped_by_date = [];
             foreach ($events_data as $event) {
-                $tanggal = $event['jadwal_event']; // Menggunakan 'jadwal_event' sebagai kunci
+                $tanggal = $event['jadwal_event'];
                 $grouped_by_date[$tanggal][] = $event;
             }
 
-            // Ambil hanya 3 tanggal pertama dari array yang sudah dikelompokkan
-            $limited_grouped_by_date = array_slice($grouped_by_date, 0, 3, true);
-
-            // Cek apakah ada event yang ditemukan setelah pengelompokan dan pembatasan
+            // Ambil hanya 4 tanggal pertama
+            $limited_grouped_by_date = array_slice($grouped_by_date, 0, 4, true);
             $events_found = !empty($limited_grouped_by_date);
             ?>
 
@@ -572,7 +571,8 @@ include 'homepage_data.php';
                     $total_cards = count($limited_grouped_by_date);
                     foreach ($limited_grouped_by_date as $tanggal => $events):
                         $card_count++;
-                        $border_class = ($card_count < $total_cards && $total_cards > 1) ? 'lg:border-r lg:border-neutral-800' : '';
+                        // Menambahkan kembali border kanan untuk memisahkan kolom
+                        $border_class = ($card_count % 2 != 0 && $card_count < $total_cards) ? 'lg:border-r lg:border-neutral-800' : '';
                         ?>
                 <div class="flex flex-col space-y-8 px-4 <?php echo $border_class; ?>">
                     <div class="flex items-center space-x-4">
@@ -587,10 +587,10 @@ include 'homepage_data.php';
 
                     <div class="flex flex-col space-y-12">
                         <?php
+                                // Loop untuk setiap event di dalam tanggal yang sama
                                 $limited_events = array_slice($events, 0, 3);
                                 foreach ($limited_events as $event):
                                     ?>
-
                         <div class="flex flex-col lg:flex-row items-start gap-6">
                             <div class="w-full lg:w-1/3 flex-shrink-0">
                                 <?php if (!empty($event['thumbnail_event'])): ?>
@@ -602,7 +602,7 @@ include 'homepage_data.php';
                                 <?php endif; ?>
                             </div>
 
-                            <div class="w-2/2">
+                            <div class="w-full">
                                 <h3 class="text-lg font-bold"><?php echo htmlspecialchars($event['judul_event']); ?>
                                 </h3>
                                 <?php if (!empty($event['speakers'])): ?>
@@ -628,16 +628,8 @@ include 'homepage_data.php';
                                 <div class="flex justify-between lg:justify-start space-x-4 mt-6">
                                     <?php
                                                 $slug_event = htmlspecialchars($event['slug'] ?? 'default-slug');
-
-                                                // --- LOGIKA PERBAIKAN DI SINI ---
-                                                $user_has_ticket = false;
-                                                $is_verified_ticket = false;
-
-                                                // Cek apakah user sudah mendaftar dan dapatkan status verifikasinya
-                                                if (isset($events_with_tickets[$event['id_event']])) {
-                                                    $user_has_ticket = true;
-                                                    $is_verified_ticket = ($events_with_tickets[$event['id_event']] == 1);
-                                                }
+                                                $user_has_ticket = isset($events_with_tickets[$event['id_event']]);
+                                                $is_verified_ticket = $user_has_ticket && ($events_with_tickets[$event['id_event']] == 1);
                                                 ?>
                                     <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
                                         class="border border-neutral-600 rounded-xl px-5 py-2 text-base hover:bg-white hover:text-black transition-colors duration-300">Detail
@@ -655,39 +647,29 @@ include 'homepage_data.php';
                                     <?php endif; ?>
                                     <?php else: ?>
                                     <?php
-                                                    $sisa_kuota = isset($event['sisa_kuota']) ? $event['sisa_kuota'] : 0;
-                                                    ?>
-                                    <?php if ($event['event_status'] == 0): ?>
-                                    <?php if ($sisa_kuota > 0): ?>
+                                                    $sisa_kuota = $event['sisa_kuota'] ?? 0;
+                                                    if ($event['event_status'] == 0 && $sisa_kuota > 0): ?>
                                     <a href="detailevent.php?slug=<?php echo $slug_event; ?>"
                                         class="border border-neutral-700 rounded-xl px-5 py-2 hover:border-emerald-800 hover:bg-emerald-950 hover:text-emerald-400 transition-colors duration-300">Daftar</a>
-                                    <?php else: ?>
+                                    <?php else:
+                                                        $button_text = 'Kuota Penuh';
+                                                        if ($event['event_status'] == 1)
+                                                            $button_text = 'Telah Berakhir';
+                                                        if ($event['event_status'] == 4)
+                                                            $button_text = 'Segera Hadir';
+                                                        ?>
                                     <button
                                         class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
-                                        disabled>Kuota Penuh</button>
-                                    <?php endif; ?>
-                                    <?php elseif ($event['event_status'] == 1): ?>
-                                    <button
-                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
-                                        disabled>Telah Berakhir</button>
-                                    <?php elseif ($event['event_status'] == 2): ?>
-                                    <button
-                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
-                                        disabled>Kuota Penuh</button>
-                                    <?php elseif ($event['event_status'] == 4): ?>
-                                    <button
-                                        class="border border-neutral-700 text-neutral-500 rounded-xl px-5 py-2 text-base cursor-not-allowed"
-                                        disabled>Segera Hadir</button>
+                                        disabled><?php echo $button_text; ?></button>
                                     <?php endif; ?>
                                     <?php endif; ?>
                                 </div>
                             </div>
-
                         </div>
-                        <?php endforeach; ?>
+                        <?php endforeach; // Akhir loop untuk event ?>
                     </div>
                 </div>
-                <?php endforeach; ?>
+                <?php endforeach; // Akhir loop untuk tanggal ?>
             </div>
 
             <div class="text-center mt-20">
@@ -850,10 +832,10 @@ include 'homepage_data.php';
     </script>
 
     <!-- FAQ -->
-    <section class="bg-black text-gray-100 py-16 sm:py-20">
-        <div class="container mx-auto px-4 max-w-6xl lg:max-w-screen-2xl ">
+    <section class="bg-white text-black py-12 lg:py-20 rounded-t-2xl">
+        <div class="container mx-auto px-6 lg:px-8">
 
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-12 text-gray-100 text-center font-work">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-12 text-black text-center font-work">
                 FAQ (Frequently Asked Questions)
             </h2>
 
@@ -881,7 +863,7 @@ include 'homepage_data.php';
                         $jawaban = htmlspecialchars($row['jawaban']);
 
                         // Mencetak HTML dengan style yang diinginkan
-                        echo '<details class="group rounded-lg bg-transparent open:bg-[#1c1c1c] transition-colors duration-300">';
+                        echo '<details class="group rounded-xl bg-transparent border border-neutral-900 open:bg-black open:text-white transition-colors duration-300">';
                         echo '<summary class="flex cursor-pointer list-none items-center justify-between p-4 sm:p-5 font-medium">';
 
                         // Menampilkan Topik/Pertanyaan
@@ -889,14 +871,14 @@ include 'homepage_data.php';
 
                         // Ikon Chevron dengan 2 state (buka/tutup)
                         echo '<span class="relative h-5 w-5 shrink-0">';
-                        echo '<img src="img/icon/chevron-down.svg" alt="Buka" class="group-open:hidden h-full w-full">';
+                        echo '<img src="img/icon/black-chevron-down.svg" alt="Buka" class="group-open:hidden h-full w-full">';
                         echo '<img src="img/icon/chevron-up.svg" alt="Tutup" class="hidden group-open:block h-full w-full">';
                         echo '</span>';
 
                         echo '</summary>';
 
                         // Menampilkan Jawaban
-                        echo '<div class="px-4 sm:px-5 pb-5 text-gray-400">';
+                        echo '<div class="px-4 sm:px-5 pb-5 text-neutral-200">';
                         echo '<p class="font-work font-light">' . nl2br($jawaban) . '</p>';
                         echo '</div>';
 
@@ -904,7 +886,7 @@ include 'homepage_data.php';
                     }
                 } else {
                     // Jika tidak ada data
-                    echo '<p class="font-work text-gray-400 text-center">Belum ada FAQ tersedia.</p>';
+                    echo '<p class="font-work text-gray-700 text-center">Belum ada FAQ tersedia.</p>';
                 }
 
                 // Tutup koneksi
@@ -934,15 +916,16 @@ include 'homepage_data.php';
         });
     }
     </script>
+
     <!-- partnership -->
-    <section class="bg-black text-white w-full py-20 lg:py-32">
+    <section class="bg-white text-black w-full py-20 lg:py-32">
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
 
                 <div class="lg:w-1/3">
-                    <p class="text-neutral-400 mb-4">Partnership</p>
+                    <p class=" text-lg mb-4">Partnership</p>
                     <div class="relative">
-                        <img src="img/Finder 7 Logopack_Lockup Full White small.png" alt="Logo Finder7"
+                        <img src="img/FINDER 7 LOGO/Finder 7 Logopack_Lockup Title Black.png" alt="Logo Finder7"
                             class="w-64 h-auto transform -rotate-3">
                     </div>
                 </div>
@@ -951,46 +934,61 @@ include 'homepage_data.php';
                     X
                 </div>
 
-                <div class="w-full lg:w-1/2 h-96 overflow-hidden">
-                    <div class="flex gap-4 h-full">
+                <div class="w-full lg:w-1/2">
+                    <div class="flex gap-4">
 
-                        <div class="w-1/2">
-                            <div class="animate-scroll-up">
-                                <img src="img/logo_support/FPSD.png" alt="Partnership image 1" class="w-full mb-4">
-                                <img src="img/logo_support/FPSD.png" alt="Partnership image 2" class="w-full mb-4">
-                                <img src="img/logo_support/FPSD.png" alt="Partnership image 3" class="w-full mb-4">
-                                <img src="img/logo_support/FPSD.png" alt="Partnership image 1" class="w-full mb-4">
-                                <img src="img/logo_support/FPSD.png" alt="Partnership image 2" class="w-full mb-4">
-                                <img src="img/logo_support/FPSD.png" alt="Partnership image 3" class="w-full mb-4">
+                        <div class="w-1/2 flex flex-col text-center">
+                            <h3 class="mb-4 text-md ">Supported By</h3>
+                            <div class="h-96 overflow-hidden">
+                                <div class="animate-scroll-up w-1/2 mx-auto">
+                                    <img src="img/logo_support/1.png" alt="Partnership image 1" class="w-full mb-4">
+                                    <img src="img/logo_support/2.png" alt="Partnership image 2" class="w-2/2 mb-4">
+                                    <img src="img/logo_support/3.png" alt="Partnership image 3" class="w-2/2 mb-4">
+                                    <img src="img/logo_support/4.png" alt="Partnership image 1" class="w-full mb-4">
+                                    <img src="img/logo_support/5.png" alt="Partnership image 2" class="w-full mb-4">
+                                    <img src="img/logo_support/6.png" alt="Partnership image 3" class="w-full mb-4">
+                                    <img src="img/logo_support/7.png" alt="Partnership image 1" class="w-full mb-4">
+                                    <img src="img/logo_support/8.png" alt="Partnership image 2" class="w-full mb-4">
+                                    <img src="img/logo_support/9-2.png" alt="Partnership image 3" class="w-full mb-4">
+                                    <img src="img/logo_support/10.png" alt="Partnership image 1" class="w-full mb-4">
+                                    <img src="img/logo_support/11.png" alt="Partnership image 2" class="w-full mb-4">
+                                    <img src="img/logo_support/12.png" alt="Partnership image 3" class="w-full mb-4">
+                                </div>
                             </div>
                         </div>
 
-                        <div class="w-1/2">
-                            <div class="animate-scroll-down">
-                                <img src="img/logo_support/FPSD.png" alt="Partnership image 4" class="w-full mb-4">
-                                <img src="img/logo_support/FPSD.png" alt="Partnership image 5" class="w-full mb-4">
-                                <img src="img/logo_support/FPSD.png" alt="Partnership image 6" class="w-full mb-4">
-                                <img src="img/logo_support/FPSD.png" alt="Partnership image 4" class="w-full mb-4">
-                                <img src="img/logo_support/FPSD.png" alt="Partnership image 5" class="w-full mb-4">
-                                <img src="img/logo_support/FPSD.png" alt="Partnership image 6" class="w-full mb-4">
+                        <div class="w-1/2 flex flex-col text-center">
+                            <h3 class="mb-4 text-md ">Sponsored By</h3>
+                            <div class="h-96 overflow-hidden">
+                                <div class="animate-scroll-down w-1/2 mx-auto">
+                                    <img src="img/logo_support/13.png" alt="Partnership image 4" class="w-full mb-4">
+                                    <img src="img/logo_support/14.png" alt="Partnership image 5" class="w-full mb-4">
+                                    <img src="img/logo_support/15.png" alt="Partnership image 6" class="w-full mb-4">
+                                    <img src="img/logo_support/16.png" alt="Partnership image 4" class="w-full mb-4">
+                                    <img src="img/logo_support/17.png" alt="Partnership image 5" class="w-full mb-4">
+                                    <img src="img/logo_support/18.png" alt="Partnership image 6" class="w-full mb-4">
+                                    <img src="img/logo_support/19.png" alt="Partnership image 4" class="w-full mb-4">
+                                    <img src="img/logo_support/20.png" alt="Partnership image 5" class="w-full mb-4">
+                                    <img src="img/logo_support/21.png" alt="Partnership image 6" class="w-full mb-4">
+                                    <img src="img/logo_support/22.png" alt="Partnership image 4" class="w-full mb-4">
+                                </div>
                             </div>
                         </div>
 
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
     <!-- Map -->
-    <section class="py-16 px-6">
+    <section class="bg-white py-16 px-6">
         <div class="max-w-5xl mx-auto text-center space-y-8">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-100">Lokasi Finder 7</h2>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-900">Lokasi Finder 7</h2>
 
-            <div class="w-full max-w-full md:max-w-4xl mx-auto bg-gray-300 rounded-2xl overflow-hidden">
+            <div class="w-full max-w-full md:max-w-4xl mx-auto bg-gray-700 rounded-2xl overflow-hidden">
                 <iframe class="w-full h-64 sm:h-96"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.2348973267035!2d107.59106691057444!3d-6.862428093107444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6b943c2c5ff%3A0xee36226510a79e76!2sUniversitas%20Pendidikan%20Indonesia!5e0!3m2!1sid!2sid!4v1710655960109!5m2!1sid!2sid"
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7922.517281165602!2d107.5893352!3d-6.8595739!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e7bf37d87713%3A0x137d6350dd5a6645!2sFAKULTAS%20PENDIDIKAN%20SENI%20dan%20DESAIN!5e0!3m2!1sid!2sid!4v1757781636688!5m2!1sid!2sid"
                     style="border: 0" allowfullscreen="" loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
@@ -1011,7 +1009,7 @@ include 'homepage_data.php';
     new kursor({
         type: 4,
         removeDefaultCursor: true,
-        color: '#ffffff',
+        color: '#34d399',
     });
     </script>
     <!-- Cursor CDN -->
