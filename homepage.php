@@ -176,36 +176,41 @@ include 'homepage_data.php';
         animation: loop-scroll 80s linear infinite;
     }
     </style>
-
+    <!-- Partner -->
     <style>
-    @keyframes scroll-up {
+    /* Animasi scroll ke kiri */
+    @keyframes scroll-left {
         from {
-            transform: translateY(0);
+            transform: translateX(0);
         }
 
         to {
-            transform: translateY(-100%);
+            transform: translateX(-100%);
         }
     }
 
-    @keyframes scroll-down {
+    /* Animasi scroll ke kanan */
+    @keyframes scroll-right {
         from {
-            transform: translateY(-100%);
+            transform: translateX(-100%);
         }
 
         to {
-            transform: translateY(0);
+            transform: translateX(0);
         }
     }
 
-    .animate-scroll-up {
-        animation: scroll-up 40s linear infinite;
+    .animate-scroll-left {
+        animation: scroll-left 60s linear infinite;
     }
 
     .animate-scroll-down {
-        animation: scroll-down 40s linear infinite;
+        /* Mengubah scroll-down menjadi scroll-right */
+        animation: scroll-right 60s linear infinite;
     }
     </style>
+
+
 
     <title>Finder 7 - Homepage</title>
     <link rel="icon" href="./img/FinderLogo.svg" type="image/x-icon" />
@@ -835,9 +840,9 @@ include 'homepage_data.php';
     <section class="bg-white text-black py-12 lg:py-20 rounded-t-2xl">
         <div class="container mx-auto px-6 lg:px-8">
 
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-12 text-black text-center font-work">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-12 text-black text-center font-work">
                 FAQ (Frequently Asked Questions)
-            </h2>
+            </h1>
 
             <div id="faq-container" class="mx-auto space-y-3">
 
@@ -920,57 +925,122 @@ include 'homepage_data.php';
     <!-- partnership -->
     <section class="bg-white text-black w-full py-20 lg:py-32">
         <div class="container mx-auto px-6">
-            <div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
-
-                <div class="lg:w-1/3">
-                    <p class=" text-lg mb-4">Partnership</p>
-                    <div class="relative">
-                        <img src="img/FINDER 7 LOGO/Finder 7 Logopack_Lockup Title Black.png" alt="Logo Finder7"
-                            class="w-64 h-auto transform -rotate-3">
-                    </div>
+            <div class="flex flex-col items-center justify-between gap-12 lg:gap-16">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-black text-center">Partnership
+                </h1>
+                <div class="relative">
+                    <img src="img/FINDER 7 LOGO/Finder 7 Logopack_Lockup Title Black.png" alt="Logo Finder7"
+                        class="w-64 h-auto ">
                 </div>
+
 
                 <div class="text-5xl font-light text-neutral-600 hidden lg:block">
                     X
                 </div>
 
-                <div class="w-full lg:w-1/2">
-                    <div class="flex gap-4">
+                <div class="w-full ">
+                    <div class="flex flex-col justify-center items-start gap-20">
 
-                        <div class="w-1/2 flex flex-col text-center">
-                            <h3 class="mb-4 text-md ">Supported By</h3>
-                            <div class="h-96 overflow-hidden">
-                                <div class="animate-scroll-up w-1/2 mx-auto">
-                                    <img src="img/logo_support/1.png" alt="Partnership image 1" class="w-full mb-4">
-                                    <img src="img/logo_support/2.png" alt="Partnership image 2" class="w-2/2 mb-4">
-                                    <img src="img/logo_support/3.png" alt="Partnership image 3" class="w-2/2 mb-4">
-                                    <img src="img/logo_support/4.png" alt="Partnership image 1" class="w-full mb-4">
-                                    <img src="img/logo_support/5.png" alt="Partnership image 2" class="w-full mb-4">
-                                    <img src="img/logo_support/6.png" alt="Partnership image 3" class="w-full mb-4">
-                                    <img src="img/logo_support/7.png" alt="Partnership image 1" class="w-full mb-4">
-                                    <img src="img/logo_support/8.png" alt="Partnership image 2" class="w-full mb-4">
-                                    <img src="img/logo_support/9-2.png" alt="Partnership image 3" class="w-full mb-4">
-                                    <img src="img/logo_support/10.png" alt="Partnership image 1" class="w-full mb-4">
-                                    <img src="img/logo_support/11.png" alt="Partnership image 2" class="w-full mb-4">
-                                    <img src="img/logo_support/12.png" alt="Partnership image 3" class="w-full mb-4">
+                        <div class="w-full flex flex-col text-center">
+                            <h2 class="mb-6 text-md lg:text-lg ">Supported By</h2>
+                            <div class="h-auto overflow-hidden flex items-center">
+                                <div class="flex animate-scroll-left">
+                                    <img src="img/logo_support/1.png" alt="Partnership image 1"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/2.png" alt="Partnership image 2"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/3.png" alt="Partnership image 3"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/4.png" alt="Partnership image 4"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/5.png" alt="Partnership image 5"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/6.png" alt="Partnership image 6"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/7.png" alt="Partnership image 7"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/8.png" alt="Partnership image 8"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/9-2.png" alt="Partnership image 9"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/10.png" alt="Partnership image 10"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/11.png" alt="Partnership image 11"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/12.png" alt="Partnership image 12"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/1.png" alt="Partnership image 1"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/2.png" alt="Partnership image 2"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/3.png" alt="Partnership image 3"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/4.png" alt="Partnership image 4"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/5.png" alt="Partnership image 5"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/6.png" alt="Partnership image 6"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/7.png" alt="Partnership image 7"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/8.png" alt="Partnership image 8"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/9-2.png" alt="Partnership image 9"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/10.png" alt="Partnership image 10"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/11.png" alt="Partnership image 11"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/12.png" alt="Partnership image 12"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="w-1/2 flex flex-col text-center">
-                            <h3 class="mb-4 text-md ">Sponsored By</h3>
-                            <div class="h-96 overflow-hidden">
-                                <div class="animate-scroll-down w-1/2 mx-auto">
-                                    <img src="img/logo_support/13.png" alt="Partnership image 4" class="w-full mb-4">
-                                    <img src="img/logo_support/14.png" alt="Partnership image 5" class="w-full mb-4">
-                                    <img src="img/logo_support/15.png" alt="Partnership image 6" class="w-full mb-4">
-                                    <img src="img/logo_support/16.png" alt="Partnership image 4" class="w-full mb-4">
-                                    <img src="img/logo_support/17.png" alt="Partnership image 5" class="w-full mb-4">
-                                    <img src="img/logo_support/18.png" alt="Partnership image 6" class="w-full mb-4">
-                                    <img src="img/logo_support/19.png" alt="Partnership image 4" class="w-full mb-4">
-                                    <img src="img/logo_support/20.png" alt="Partnership image 5" class="w-full mb-4">
-                                    <img src="img/logo_support/21.png" alt="Partnership image 6" class="w-full mb-4">
-                                    <img src="img/logo_support/22.png" alt="Partnership image 4" class="w-full mb-4">
+                        <div class="w-full flex flex-col text-center">
+                            <h2 class="mb-6 text-md lg:text-lg ">Sponsored By</h2>
+                            <div class="h-auto overflow-hidden flex items-center">
+                                <div class="flex animate-scroll-down">
+                                    <img src="img/logo_support/13.png" alt="Partnership image 13"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/14.png" alt="Partnership image 14"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/15.png" alt="Partnership image 15"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/16.png" alt="Partnership image 16"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/17.png" alt="Partnership image 17"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/18.png" alt="Partnership image 18"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/19.png" alt="Partnership image 19"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/20.png" alt="Partnership image 20"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/21.png" alt="Partnership image 21"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/22.png" alt="Partnership image 22"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/13.png" alt="Partnership image 13"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/14.png" alt="Partnership image 14"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/15.png" alt="Partnership image 15"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/16.png" alt="Partnership image 16"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/17.png" alt="Partnership image 17"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/18.png" alt="Partnership image 18"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/19.png" alt="Partnership image 19"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/20.png" alt="Partnership image 20"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/21.png" alt="Partnership image 21"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
+                                    <img src="img/logo_support/22.png" alt="Partnership image 22"
+                                        class="h-16 w-auto mx-4 flex-shrink-0">
                                 </div>
                             </div>
                         </div>
