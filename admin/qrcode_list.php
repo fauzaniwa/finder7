@@ -4,7 +4,7 @@ require_once 'config.php';
 require_once 'functions.php';
 
 // Cek apakah user sudah login dan memiliki role 'master'
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] !== 'master') {
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }

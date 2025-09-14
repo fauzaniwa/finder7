@@ -1,4 +1,3 @@
-
 <?php
 // Pastikan sesi sudah dimulai di awal setiap halaman yang menggunakan navbar ini
 if (session_status() === PHP_SESSION_NONE) {
@@ -12,7 +11,7 @@ $admin_role = $_SESSION['role'] ?? 'guest';
 
 
 <aside id="sidebar" class="bg-dark-card w-64 h-screen p-6 shadow-lg fixed top-0 left-0 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:block flex flex-col">
-    
+
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center">
             <span class="material-symbols-outlined text-primary-green text-3xl mr-3">
@@ -40,9 +39,32 @@ $admin_role = $_SESSION['role'] ?? 'guest';
                 </li>
                 <li>
                     <a href="qrcode_list.php" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
-                         <span class="material-symbols-outlined align-middle mr-2">add_box</span> Buat QR Code
+                           <span class="material-symbols-outlined align-middle mr-2">add_box</span> Buat QR Code
                     </a>
                 </li>
+                <li class="my-4 h-px bg-gray-700"></li>
+
+                <?php if ($admin_role === 'master' || $admin_role === 'pameran'): ?>
+                <li>
+                    <a href="scan_absen_pameran.php" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
+                        <span class="material-symbols-outlined text-2xl mr-3">
+                            qr_code_scanner
+                        </span>
+                        Scan Absen Pameran
+                    </a>
+                </li>
+                <?php endif; ?>
+
+                <?php if ($admin_role === 'master' || $admin_role === 'seminar' || $admin_role === 'workshop'): ?>
+                <li>
+                    <a href="scan_absen_seminar.php" class="flex items-center py-2 px-4 rounded-lg text-light-gray hover:bg-dark-gray transition-colors duration-200">
+                        <span class="material-symbols-outlined text-2xl mr-3">
+                            qr_code_scanner
+                        </span>
+                        Scan Absen Seminar Workshop
+                    </a>
+                </li>
+                <?php endif; ?>
                 <li class="my-4 h-px bg-gray-700"></li>
                 
                 <?php if ($admin_role === 'master'): ?>
@@ -73,6 +95,8 @@ $admin_role = $_SESSION['role'] ?? 'guest';
                         <li><a href="karya_list.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Data Karya</a></li>
                         <li><a href="manage_kategori.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Kategori Karya</a></li>
                         <li><a href="manage_jenis_karya.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Jenis Karya</a></li>
+                        <li><a href="absenpameran.php" class="block py-2 rounded-lg hover:bg-dark-gray transition-colors duration-200">Absen Pameran</a></li>
+
                     </ul>
                 </li>
                 <?php endif; ?>
@@ -131,7 +155,7 @@ $admin_role = $_SESSION['role'] ?? 'guest';
                             Lomba
                         </span>
                         <span class="material-symbols-outlined text-xl">
-                            expand_more
+                                expand_more
                         </span>
                     </button>
                     <ul id="lomba-menu" class="dropdown-menu pl-8 mt-2 space-y-2 text-sm text-mid-gray">
